@@ -1,0 +1,260 @@
+<head>
+  <title>Employee Profile</title>
+</head>
+<body>
+  <div class="container">
+    
+    <header>
+    	<h1>Employee Profile</h1>
+      {{> loginButtons align="right"}}
+            {{#if currentUser}}
+<main>
+    	<section class="profile">
+    	  <form class="new-profile">
+        	<p class="Paragtitle">Personal data</p>
+        	<table border="1" cellpadding="5">
+        			<col width="260">
+        			<col width="300">
+		  		<tr>
+		  			<td>First name</td>
+		  			<td colspan=2><input type="text" name="finame" ></td>
+		  		</tr>
+		  		<tr>
+		  			<td>Family name</td>
+		  			<td colspan=2><input type="text" name="faname" placeholder="Type your family name" /></td>
+		  		</tr>
+		  		<tr>
+		  			<td valign=middle>Address</td>
+		  			<td colspan=2><input type="text" name="street" placeholder="Type your street name, nb" /><br>
+		  			<input type="text" name="zip" placeholder="Type your ZIP number" /><br>
+		  			<input type="text" name="city" placeholder="Type your city name" /></td>
+		  		</tr>
+		  		<tr>
+		  			<td>Nationality</td>
+		  			<td><input type="text" name="nationality" placeholder="Type your nationality" /></td>
+		  			<td align=middle><input  type="checkbox" name="sourcetaxed" checked="{{sourcetaxed}}" /><span>Source tax?</span></td>
+		  		</tr>
+		  		<tr>
+		  			<td>Domicile number: +41(0)</td>
+		  			<td colspan=2><input type="text" pattern="\d*" maxlength="9" name="dnumber" placeholder="Type your domicile number" /></td>
+		  		</tr>
+		  		<tr>
+		  			<td>Mobile number: +41(0)</td>
+		  			<td colspan=2><input type="text" pattern="\d*" maxlength="9" id="mnumber" placeholder="Type your mobile number" /></td>
+		  		</tr>
+		  		<tr>
+		  			<td>Date of birth</td>
+		  			<td colspan=2><input type="date" name="birth" placeholder="Type your birthdate" /></td>
+		  		</tr>
+		  		<tr>
+		  			<td>AHV/AVS number</td>
+		  			<td colspan=2><input type="text" pattern="\d*" maxlength="13" name="ahv" placeholder="Type your AHV nbr (13 characters)" /></td>
+		  		</tr>
+		  		<tr>
+		  			<td>Start sate</td>
+		  			<td colspan=2><input type="date" name="sdate" placeholder="Type your start date" /></td>
+		  		</tr>
+		  	</table>
+		  	<br>
+
+		  	<p class="Paragtitle">Family data</p>
+        	<table border="1">
+		  		<tr>
+		  			<td>Date of marriage</td>
+		  			<td colspan=2><input type="date" name="mdate" placeholder="Type your marriage date" /></td>
+		  		</tr>
+		  		<tr>
+		  			<td>Spouse name</td>
+		  			<td><input type="text" name="sfaname" placeholder="Type your spouse first name" /></td>
+		  			<td><input type="text" name="sfiname" placeholder="Type your spouse family name" /></td>
+		  		</tr>
+		  		<tr>
+		  			<td>Child 1 name, date of birth</td>
+		  			<td><input type="text" name="ch1name" placeholder="Type your child 1 first name" /></td>
+		  			<td><input type="date" name="ch1bdate" placeholder="Type your child 1 birth date" /></td>
+		  		</tr>
+		  		<tr>
+		  			<td>Child 2 name, date of birth</td>
+		  			<td><input type="text" name="ch2name" placeholder="Type your child 2 first name" /></td>
+		  			<td><input type="date" name="ch2bdate" placeholder="Type your child 2 birth date" /></td>
+		  		</tr>
+		  		<tr>
+		  			<td>Child 3 name, date of birth</td>
+		  			<td><input type="text" name="ch3name" placeholder="Type your child 3 first name" /></td>
+		  			<td><input type="date" name="ch3bdate" placeholder="Type your child 3 birth date" /></td>
+		  		</tr>
+		  	</table>
+		  	<br>
+
+		  	<p class="Paragtitle">Emergency</p>
+        	<table class="text-col clearfix" border="1">
+		  		<tr>
+		  			<td>Name</td>
+		  			<td><input type="text" name="em1name" placeholder="Type here" /></td>
+		  			<td><input type="text" name="em2name" placeholder="Type here" /></td>		  			
+		  		</tr>
+		  		<tr>
+		  			<td>Relation</td>
+		  			<td><input type="text" name="relation1" placeholder="Type here" /></td>
+		  			<td><input type="text" name="relation2" placeholder="Type here" /></td>		  			
+		  		</tr>
+		  		<tr>
+		  			<td>Phone number</td>
+		  			<td><input type="text" name="phone1" placeholder="Type here" /></td>
+		  			<td><input type="text" name="phone2" placeholder="Type here" /></td>
+		  		</tr>
+		  	</table>
+		  	<br>
+
+		  	<p class="Paragtitle">Bank account for salary payments (CHF)</p>
+        	<table border="1">
+		  		<tr>
+		  			<td>Bank name</td>
+		  			<td colspan=2><input type="text" name="bankname" placeholder="Type your bank name" /></td>
+		  		</tr>
+		  		<tr>
+		  			<td>Place, ZIP</td>
+		  			<td><input type="text" name="bankplace" placeholder="Type your bank place" /></td>
+		  			<td><input type="text" name="bankzip" placeholder="Type your bank ZIP" /></td>
+		  		</tr>
+		  		<tr>
+		  			<td>Clearing/IBAN</td>
+		  			<td colspan=2><input type="text" name="iban" maxlength="21" placeholder="Type your IBAN" /></td>
+		  		</tr>
+		  		<tr>
+		  			<td>Account number</td>
+		  			<td colspan=2><input type="text" name="accnbr" placeholder="Type your account number" /></td>
+		  		</tr>
+		  		<tr>
+		  			<td>In the name of</td>
+		  			<td colspan=2><input type="text" name="accname" placeholder="Type your account name" /></td>
+		  		</tr>
+		  	</table>
+		  	<br>
+
+		  	<p class="Paragtitle">Bank account for salary payments (EUR)</p>
+        	<table border="1">
+		  		<tr>
+		  			<td>Bank name</td>
+		  			<td colspan=2><input type="text" name="eurbankname" placeholder="Type your bank name" /></td>
+		  		</tr>
+		  		<tr>
+		  			<td>Place, ZIP</td>
+		  			<td><input type="text" name="eurbankplace" placeholder="Type your bank place" /></td>
+		  			<td><input type="text" name="eurbankzip" placeholder="Type your bank ZIP" /></td>
+		  		</tr>
+		  		<tr>
+		  			<td>Clearing/IBAN</td>
+		  			<td colspan=2><input type="text" name="euriban" maxlength="21" placeholder="Type your IBAN" /></td>
+		  		</tr>
+		  		<tr>
+		  			<td>Account number</td>
+		  			<td colspan=2><input type="text" name="euraccnbr" placeholder="Type your account number" /></td>
+		  		</tr>
+		  		<tr>
+		  			<td>In the name of</td>
+		  			<td colspan=2><input type="text" name="euraccname" placeholder="Type your account name" /></td>
+		  		</tr>
+		  	</table>
+		  	</form>
+		  	<br>
+		  	<input type="submit" value="Submit your personal information">
+        
+        <br><br>
+		</section>
+
+<!--           CV section             -->
+
+		<section class="cv">
+		<h1>CV inputs</h1>
+		<p class="Paragtitle">Language skills</p>
+		<form class="new-language">
+        	<input type="text" name="langue" placeholder="Type to add a new language" />
+        	<input type="text" name="skill" placeholder="Type to add the level">
+        	<input type="submit" value="Add a language">
+      	</form>
+      	<br>
+      	<ul>
+      		{{#each languages}}
+        	{{> language}}
+      		{{/each}}
+    	</ul>
+    	</section>
+    	<br><br>
+
+<!--           Degree section             -->
+
+    	<section class="degrees">
+		<p class="Paragtitle">Diplomas</p>
+		<form class="new-degree">
+        	<input type="text" name="ddate" placeholder="MM.YYYY"><br>
+        	<input type="text" name="dip" placeholder="Type the diploma title" /><br>
+        	<input type="text" name="uni" placeholder="Type the university name">
+        	<input type="submit" value="Add a diploma">
+      	</form>
+      	<br>
+      	<ul>
+      		{{#each degrees}}
+        	{{> degree}}
+      		{{/each}}
+    	</ul>
+    	</section>
+    	<br><br>
+
+<!--        Professional experience section        -->
+
+    	<section class="experiences">
+		<p class="Paragtitle">Professional experience</p>
+		<form class="new-experience">
+        	<input type="text" name="stdate" placeholder="Starting date: MM.YYYY">
+        	<input type="text" name="enddate" placeholder="End date: MM.YYYY/now">
+        	<input type="text" name="company" placeholder="Company">
+        	<input type="text" name="jobtitle" placeholder="Job title">
+        	<br><br>
+        	<p>Description</p>
+        	<textarea rows="4" cols="50" name="explanation"></textarea>
+        	<input type="submit" value="Add an experience">
+
+      	</form>
+      	<br>
+      	<ul>
+      		{{#each experiences}}
+        	{{> experience}}
+      		{{/each}}
+    	</ul>
+    	</section>
+</main>
+     {{/if}}
+    
+   </header>
+    
+    
+  </div>
+</body>
+
+<template name="personalinfo">
+</template>
+
+<template name="language"> 
+  <!--<li class="{{#if checked}}checked{{/if}}">-->
+    <li>
+    <button class="delete">&times;</button>
+    <span class="text">{{langue}} : {{skill}}</span>
+  </li>
+</template>
+
+<template name="degree"> 
+  <!--<li class="{{#if checked}}checked{{/if}}">-->
+    <li>
+    <button class="delete">&times;</button>
+    <span class="text">{{ddate}}: {{dip}} : {{uni}}</span>
+  </li>
+</template>
+
+<template name="experience"> 
+  <!--<li class="{{#if checked}}checked{{/if}}">-->
+    <li>
+    <button class="delete">&times;</button>
+    <span class="text">{{stdate}} - {{enddate}}: {{company}} : {{jobtitle}} : {{explanation}}</span>
+  </li>
+</template>

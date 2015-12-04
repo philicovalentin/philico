@@ -2,6 +2,29 @@ Personalinfo = new Mongo.Collection("personalinfo");
 Languages = new Mongo.Collection("languages");
 Degrees = new Mongo.Collection("degrees");
 Experiences = new Mongo.Collection("experiences");
+/*Accounts = new Mongo.Collection("accounts");
+*/
+
+var imageStore = new FS.Store.GridFS("images");
+
+Images = new FS.Collection("images", {
+ stores: [imageStore]
+});
+
+Images.allow({
+ insert: function(){
+ return true;
+ },
+ update: function(){
+ return true;
+ },
+ remove: function(){
+ return true;
+ },
+ download: function(){
+ return true;
+ }
+});
 
 if (Meteor.isClient) {
   // This code only runs on the client
@@ -11,7 +34,7 @@ if (Meteor.isClient) {
       return Personalinfo.find()},
 
     languages: function () {
-       return Languages.find({checked: {$ne: true}});},
+       return Languages.find()},
 
     degrees: function () {
       return Degrees.find({checked: {$ne: true}});},
@@ -23,6 +46,23 @@ if (Meteor.isClient) {
   
   
 Template.body.events({
+    "change .myFileInput": function(event, template) {
+      FS.Utility.eachFile(event, function(file) {
+        Images.insert(file, function (err, fileObj) {
+          if (err){
+             // handle error
+          } else {
+             // handle success depending what you need to do
+            var userId = Meteor.userId();
+            var imagesURL = {
+              "profile.image": "/Philico/philico/images/" + fileObj._id
+            };
+            Meteor.users.update(userId, {$set: imagesURL});
+          }
+        })
+      })
+    },
+    
     "submit .new-profile": function (event) {
       // Prevent default browser form submit
       if (event.target.accname.value=="")
@@ -255,11 +295,39 @@ Template.experience.events({
   }
 });
  
+Template.register.events({
+        'submit form': function(event) {
+            event.preventDefault();
+            var message = document.getElementById("regmail");
+            message.innerHTML= "";
+            var emailVar = event.target.registerEmail.value;
+            var passwordVar = event.target.registerPassword.value;
+            if (emailVar.indexOf('@philico.com') == -1) {message.innerHTML= "Please use your Philico's email address"}
+           else{
+            Accounts.createUser({
+            email: emailVar,
+            password: passwordVar
+        });
+        }
+        }
+    });
+
+Template.login.events({
+    'submit form': function(event) {
+        event.preventDefault();
+        var emailVar = event.target.loginEmail.value;
+        var passwordVar = event.target.loginPassword.value;
+        console.log(Accounts.users.find({ "emails.address" :emailVar}))
+    }
+});
 
 
-  Accounts.ui.config({
+Template.dashboard.events({
+    'click .logout': function(event){
+        event.preventDefault();
+        Meteor.logout();
+    }
+});
 
-    passwordSignupFields: "EMAIL_ONLY"
 
-  });
 }

@@ -5,11 +5,14 @@
   <div class="container">
     
     <header>
-    	<h1>Employee Profile</h1>
-      {{> loginButtons align="right"}}
+    	<h1>Employee Profile
+    	<img align="right" src="http://www.philico.com/website/wp-content/uploads/2014/11/logo-e1417190403668.png" alt="HTML5 Icon">
+    	</h1>
+
             {{#if currentUser}}
+            {{> dashboard}}
 <main>
-    	<section class="profile">
+     	<section class="profile">
     	  <form class="new-profile">
         	<p class="Paragtitle">Personal data</p>
         	<table border="1" cellpadding="5">
@@ -167,6 +170,9 @@
 
 		<section class="cv">
 		<h1>CV inputs</h1>
+		<p class="Paragtitle">Profile photo</p>
+		<br>
+		<input type="file" name="ima"  class="myFileInput">
 		<p class="Paragtitle">Language skills</p>
 		<form class="new-language">
         	<input type="text" name="langue" placeholder="Type to add a new language" />
@@ -224,6 +230,9 @@
     	</ul>
     	</section>
 </main>
+	{{else}}
+        {{> register}}
+        {{> login}}
      {{/if}}
     
    </header>
@@ -257,4 +266,29 @@
     <button class="delete">&times;</button>
     <span class="text">{{stdate}} - {{enddate}}: {{company}} : {{jobtitle}} : {{explanation}}</span>
   </li>
+</template>
+
+<template name="register">
+    <form>
+        <input type="email" name="registerEmail">
+        <input type="password" name="registerPassword">
+        <input type="submit" value="Register">
+        <p  id="regmail"></p>
+    </form>
+</template>
+
+<template name="login">
+    <form>
+        <input type="email" name="loginEmail">
+        <input type="password" name="loginPassword">
+        <input type="submit" value="Login">
+    </form>
+    <div class="login-help">
+		<a href="#">Register</a> - <a href="#">Forgot Password</a>
+	</div>
+</template>
+
+<template name="dashboard">
+    <p>You're logged in</p>
+    <p><a href="#" class="logout">Logout</a></p>
 </template>

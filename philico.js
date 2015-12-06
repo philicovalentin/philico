@@ -43,6 +43,12 @@ if (Meteor.isClient) {
       return Experiences.find({checked: {$ne: true}});},
 
   });
+
+  Template.dashboard.helpers ({
+      emailVar: function(){
+      return Session.get("emailVar");
+      }
+  });
   
   
 Template.body.events({
@@ -317,7 +323,6 @@ Template.login.events({
         event.preventDefault();
         var emailVar = event.target.loginEmail.value;
         var passwordVar = event.target.loginPassword.value;
-        console.log(Accounts.users.find({ "emails.address" :emailVar}))
     }
 });
 
@@ -328,6 +333,5 @@ Template.dashboard.events({
         Meteor.logout();
     }
 });
-
 
 }

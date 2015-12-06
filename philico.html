@@ -5,10 +5,12 @@
   <div class="container">
     
     <header>
-    	<h1>Employee Profile
-    	<img align="right" src="http://www.philico.com/website/wp-content/uploads/2014/11/logo-e1417190403668.png" alt="HTML5 Icon">
-    	</h1>
-
+    <div id="mainheader">
+    	<span class="headertitle">Employee Profile</span>
+    	<a href="http://www.philico.com">
+    		<img align="right" src="http://www.philico.com/website/wp-content/uploads/2014/11/logo-e1417190403668.png" alt="HTML5 Icon">
+    	</a>
+    </div>
             {{#if currentUser}}
             {{> dashboard}}
 <main>
@@ -284,11 +286,11 @@
         <input type="submit" value="Login">
     </form>
     <div class="login-help">
-		<a href="#">Register</a> - <a href="#">Forgot Password</a>
+		<a href="#">Forgot Password</a>
 	</div>
 </template>
 
 <template name="dashboard">
-    <p>You're logged in</p>
+    <p>You're logged in</p><span class="text">{{emailVar}}</span>
     <p><a href="#" class="logout">Logout</a></p>
 </template>

@@ -16,6 +16,24 @@ body {
   font-size: 14px;
 }
 
+#mainheader {
+  display: flex;
+  align-items: center;
+}
+
+#mainheader a {
+   -webkit-flex: 1; 
+   flex: 1;
+}
+
+.headertitle {
+  font-size: 1.5em;
+  margin: 0;
+  margin-bottom: 10px;
+  display: inline-block;
+  margin-right: 1em;
+}
+
 .container {
   background: #fff;
   border-radius: 3px;

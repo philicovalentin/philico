@@ -86,7 +86,7 @@ ul {
   background: white;
 }
 
-.delete {
+.deletealanguage {
   float: right;
   font-weight: bold;
   background: none;
@@ -137,16 +137,20 @@ header .hide-completed {
     clear: both;
   }
 
-  .new-profile input {
-    padding-bottom: 5px;
-  }
+
 }
 
 .Paragtitle{
   font-weight: bold;
 }
 
-.profile{
+ .cvsectionname {
+    border-bottom: 3px solid #000;
+    padding-bottom: 0em;
+}
 
- }
+td {
+  vertical-align: top;
+  padding-bottom: 0.75em;
+}
 

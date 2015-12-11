@@ -21,5 +21,4 @@ insecure                # Allow all DB writes from clients (for prototyping)
 twbs:bootstrap
 bootstrap
 accounts-password
-cfs:standard-packages
-cfs:gridfs
+accounts-ui

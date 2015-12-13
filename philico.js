@@ -32,7 +32,7 @@ if (Meteor.isClient) {
   Template.body.helpers({
     
     initialisation: function () {
-      if (Personalinfo.find(Meteor.user().emails[0].address).count() === 0) {
+      if (Personalinfo.find({ _id: Meteor.user().emails[0].address}).count() === 0) {
       Personalinfo.insert({
         _id: Meteor.user().emails[0].address,
         email: Meteor.user().emails[0].address,
@@ -44,7 +44,7 @@ if (Meteor.isClient) {
         nationality1: "",
         nationality2: "",
         nationality3: "",
-        /*sourcetax: false,*/
+        sourcetaxed: "no",
         dnumber: "",
         mnumber: "",
         birth: "",
@@ -106,6 +106,8 @@ if (Meteor.isClient) {
       return Languages.find({owner: Meteor.user().emails[0].address})},
    
   });
+
+
   
 Template.body.events({
  /* "submit .new-cv": function (event) {
@@ -121,6 +123,19 @@ Template.body.events({
     });
     }
   },*/
+
+    "submit .newcv": function(event) {
+      event.preventDefault();
+      Blaze.saveAsPDF(Template.cvtemp, {
+      filename: "cv.pdf", // optional, default is "document.pdf"
+       // optional, render the template with this data context
+      x: 0, // optional, left starting position on resulting PDF, default is 4 units
+      y: 0, // optional, top starting position on resulting PDF, default is 4 units
+      orientation: "portrait", // optional, "landscape" or "portrait" (default)
+      unit: "in", // optional, unit for coordinates, one of "pt", "mm" (default), "cm", or "in"
+      format: "letter" // optional, see Page Formats, default is "a4"
+    });
+    },
 
     "change .myFileInput": function(event, template) {
       FS.Utility.eachFile(event, function(file) {
@@ -150,7 +165,7 @@ Template.body.events({
       var nationality1=event.target.nationality1.value;
       var nationality2=event.target.nationality2.value;
       var nationality3=event.target.nationality3.value;
-      /*var sourcetax=(event.target.sourcetaxed===true);*/
+      var sourcetaxed=event.target.sourcetaxed.value;
       var dnumber=event.target.dnumber.value;
       var mnumber=event.target.mnumber.value;
       var birth=event.target.birth.value;
@@ -186,9 +201,10 @@ Template.body.events({
       var euraccname=event.target.euraccname.value;
       
       Meteor.call("addPersonalinfo", finame, faname, street, zip, city, nationality1, nationality2, nationality3,
-       /*sourcetax,*/ dnumber, mnumber, birth, ahv, sdate, phposition, mdate, sfaname, sfiname, ch1name, ch1bdate, 
+       sourcetaxed, dnumber, mnumber, birth, ahv, sdate, phposition, mdate, sfaname, sfiname, ch1name, ch1bdate, 
        ch2name, ch2bdate, ch3name, ch3bdate, em1name, relation1, phone1, em2name, relation2, phone2, bankname, 
        bankplace, bankzip, iban, accnbr, accname, eurbankname, eurbankplace, eurbankzip, euriban, euraccnbr, euraccname);
+      
       event.target.finame.value="";
       event.target.faname.value="";
       event.target.street.value="";
@@ -197,7 +213,7 @@ Template.body.events({
       event.target.nationality1.value="";
       event.target.nationality2.value="";
       event.target.nationality3.value="";
-      /*if(sourcetax==true){sourcetaxed=checked};*/
+      event.target.sourcetaxed.value="?";
       event.target.dnumber.value="";
       event.target.mnumber.value="";
       event.target.birth.value="";
@@ -253,6 +269,8 @@ Template.body.events({
       var stdate = event.target.stdate.value;
       var enddate = event.target.enddate.value;
       var customer = event.target.customer.value;
+      var customercity = event.target.customercity.value;
+      var department = event.target.department.value;
       var projecttitle1 = event.target.projecttitle1.value;
       var projecttitle2 = event.target.projecttitle2.value;
       var projecttitle3 = event.target.projecttitle3.value;
@@ -262,13 +280,15 @@ Template.body.events({
       var projectdescription3 = event.target.projectdescription3.value;
       var projectdescription4 = event.target.projectdescription4.value;
       
-      Meteor.call('addExperience', company, stdate, enddate, customer, projecttitle1, projecttitle2, 
+      Meteor.call('addExperience', company, stdate, enddate, customer, customercity, department, projecttitle1, projecttitle2, 
         projecttitle3, projecttitle4, projectdescription1, projectdescription2, projectdescription3, projectdescription4)
       // Clear form
       event.target.company.value="";
       event.target.stdate.value="";
       event.target.enddate.value="";
       event.target.customer.value="";
+      event.target.customercity.value="";
+      event.target.department.value="";
       event.target.projecttitle1.value="";
       event.target.projecttitle2.value="";
       event.target.projecttitle3.value="";
@@ -286,21 +306,20 @@ Template.body.events({
       var empstdate = event.target.empstdate.value;
       var empenddate = event.target.empenddate.value;
       var empcompany = event.target.empcompany.value;
+      var empcity = event.target.empcity.value;
       var empposition = event.target.empposition.value;
       
-      Meteor.call('addEmployment', empstdate, empenddate, empcompany, empposition )
+      Meteor.call('addEmployment', empstdate, empenddate, empcompany, empcity, empposition )
       // Clear form
       event.target.empstdate.value="";
       event.target.empenddate.value="";
       event.target.empcompany.value="";
+      event.target.empcity.value="";
       event.target.empposition.value="";
 
     },
 
       "submit .new-degree": function (event) {
-      if (event.target.ddate.value=="" || event.target.dip.value=="" || event.target.uni.value=="")
-        {return false;}
-      else {
       event.preventDefault();
       var ddate = event.target.ddate.value;
       var dip = event.target.dip.value;
@@ -311,20 +330,17 @@ Template.body.events({
       event.target.ddate.value = "";
       event.target.dip.value = "";
       event.target.uni.value = "";
-    }},
+    },
 
      "submit .new-language": function (event) {
-      if (event.target.langue.value=="" || event.target.skill.value=="")
-        {return false;}
-      else {
       event.preventDefault();
       var langue = event.target.langue.value;
       var skill= event.target.skill.value;
-        Meteor.call("addLanguage", langue, skill);
+      Meteor.call("addLanguage", langue, skill);
       // Clear form
       event.target.langue.value = "";
-      event.target.skill.value = "";
-    }},
+      event.target.skill.value = "mothertongue";
+    },
 
       "click .deleteanexperience": function () {
       Meteor.call("deleteExperience", this._id);
@@ -376,16 +392,15 @@ if (Meteor.isServer) {
       }
     });
   });
-};
+  };
   
 
 Meteor.methods({
 
   addPersonalinfo: function(finame, faname, street, zip, city, nationality1, nationality2, nationality3,
-     /*sourcetax,*/ dnumber, mnumber, birth, ahv, sdate, phposition, mdate, sfaname, sfiname, ch1name, ch1bdate, ch2name, ch2bdate,
+     sourcetaxed, dnumber, mnumber, birth, ahv, sdate, phposition, mdate, sfaname, sfiname, ch1name, ch1bdate, ch2name, ch2bdate,
      ch3name, ch3bdate, em1name, relation1, phone1, em2name, relation2, phone2, bankname, bankplace, bankzip, iban,
      accnbr, accname, eurbankname, eurbankplace, eurbankzip, euriban, euraccnbr, euraccname) {
-
     Personalinfo.update(Meteor.user().emails[0].address,
       { $set: 
         {
@@ -397,7 +412,7 @@ Meteor.methods({
      nationality1: nationality1,
      nationality2: nationality2,
      nationality3: nationality3,
-     /*sourcetax: sourcetax,*/
+     sourcetaxed: sourcetaxed,
      dnumber: dnumber,
      mnumber: mnumber,
      birth: birth,
@@ -463,14 +478,16 @@ Meteor.methods({
     )
   },
 
-  addExperience: function(company, stdate, enddate, customer, projecttitle1, projecttitle2, 
+  addExperience: function(company, stdate, enddate, customer, customercity, department, projecttitle1, projecttitle2, 
         projecttitle3, projecttitle4, projectdescription1, projectdescription2, projectdescription3, projectdescription4) {
     Experiences.insert({
         owner: Meteor.user().emails[0].address,
         company: company, 
         stdate: stdate, 
         enddate: enddate, 
-        customer: customer, 
+        customer: customer,
+        customercity: customercity,
+        department: department, 
         projecttitle1: projecttitle1, 
         projecttitle2: projecttitle2, 
         projecttitle3: projecttitle3, 
@@ -483,7 +500,7 @@ Meteor.methods({
       });
 
     Personalinfo.update(Meteor.user().emails[0].address,
-    { $addToSet: {experiences: [company, stdate, enddate, customer, projecttitle1, projecttitle2, 
+    { $addToSet: {experiences: [company, stdate, enddate, customer, customercity, department, projecttitle1, projecttitle2, 
         projecttitle3, projecttitle4, projectdescription1, projectdescription2, projectdescription3, projectdescription4 ] } }
     )   
   },
@@ -494,7 +511,9 @@ Meteor.methods({
         var deletedcompany= myDocument.company;
         var deletedstdate= myDocument.stdate; 
         var deletedenddate= myDocument.enddate; 
-        var deletedcustomer= myDocument.customer; 
+        var deletedcustomer= myDocument.customer;
+        var deletedcutomercity= myDocument.customercity;
+        var deleteddepartment= myDocument.department;
         var deletedprojecttitle1= myDocument.projecttitle1;
         var deletedprojecttitle2= myDocument.projecttitle2; 
         var deletedprojecttitle3= myDocument.projecttitle3; 
@@ -506,9 +525,9 @@ Meteor.methods({
     }
     Personalinfo.update(
     { _id: Meteor.user().emails[0].address },
-    { $pull: { experiences: [deletedcompany, deletedstdate, deletedenddate, deletedcustomer, deletedprojecttitle1, 
-      deletedprojecttitle2, deletedprojecttitle3, deletedprojecttitle4, deletedprojectdescription1, 
-      deletedprojectdescription2, deletedprojectdescription3, deletedprojectdescription4 ] } },
+    { $pull: { experiences: [deletedcompany, deletedstdate, deletedenddate, deletedcustomer, deletedcustomercity, 
+      deleteddepartment, deletedprojecttitle1, deletedprojecttitle2, deletedprojecttitle3, deletedprojecttitle4, 
+      deletedprojectdescription1, deletedprojectdescription2, deletedprojectdescription3, deletedprojectdescription4 ] } },
     { multi: true }
     );
     Experiences.remove(id);
@@ -520,12 +539,13 @@ Meteor.methods({
           empstdate: empstdate,
           empenddate: empenddate,
           empcompany: empcompany,
+          empcity: empcity,
           empposition: empposition,
           createdAt: new Date(),            // current time
       });
 
     Personalinfo.update(Meteor.user().emails[0].address,
-    { $addToSet: {employments: [empstdate, empenddate, empcompany, empposition ] } }
+    { $addToSet: {employments: [empstdate, empenddate, empcompany, empcity, empposition ] } }
     )   
   },
 
@@ -535,11 +555,12 @@ Meteor.methods({
       var deletedempstdate = myDocument.empstdate;
       var deletedempenddate = myDocument.empenddate;
       var deletedempcompany = myDocument.empcompany;
+      var deletedempcity = myDocument.empcity;
       var deletedempposition = myDocument.empposition;
     }
     Personalinfo.update(
     { _id: Meteor.user().emails[0].address },
-    { $pull: { employments: [deletedempstdate, deletedempenddate, deletedempcompany, deletedempposition ] } },
+    { $pull: { employments: [deletedempstdate, deletedempenddate, deletedempcompany, deletedempcity, deletedempposition ] } },
     { multi: true }
     );
     Employments.remove(id);

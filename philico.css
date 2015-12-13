@@ -66,18 +66,18 @@ form {
   position: relative;
 }
 
-.new-profile input {
-  box-sizing: border-box;
-  padding: 10px 0;
-  position: relative;
-  border: none;
-  width: 100%;
-  padding-right: 80px;
-  font-size: 1em;
+.container input {
+  display: block;
+  margin: 0;
+  font-family: sans-serif;
+  appearance: none;
+  box-shadow: none;
+  border-radius: none;
 }
 
-.new-profile input:focus{
-  outline: 0;
+.container input:focus{
+  border: solid 1px #707070;
+  box-shadow: 0 0 5px 1px #969696;
 }
 
 ul {
@@ -86,7 +86,7 @@ ul {
   background: white;
 }
 
-.deletealanguage {
+#delete {
   float: right;
   font-weight: bold;
   background: none;
@@ -102,37 +102,13 @@ li {
   border-bottom: #eee solid 1px;
 }
 
-li .text {
-  margin-left: 10px;
-}
-
-li.checked {
-  color: #888;
-}
-
-li.checked .text {
-  text-decoration: line-through;
-}
-
-li.private {
-  background: #eee;
-  border-color: #ddd;
-}
-
-header .hide-completed {
-  float: right;
-}
-
-.toggle-private {
-  margin-left: 5px;
-}
 
 @media (max-width: 600px) {
   li {
     padding: 12px 15px;
   }
 
-  .search {
+.search {
     width: 150px;
     clear: both;
   }

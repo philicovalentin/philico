@@ -34,40 +34,62 @@
         <col width="220">
 		  		<tr>
 		  			<td>First name*</td>
-		  			<td><input type="text" name="finame" placeholder="First name" required></td>
+		  			<td>{{#unless finame}}<input type="text" name="finame" placeholder="First name" required>{{/unless}}</td>
             <td></td>
             <td>{{finame}}</td>
 		  		</tr>
+          <tr></tr>
 		  		<tr>
 		  			<td>Family name*</td>
-		  			<td><input type="text" name="faname" placeholder="Family name" required></td>
+		  			<td>{{#unless faname}}<input type="text" name="faname" placeholder="Family name" required>{{/unless}}</td>
             <td></td>
             <td>{{faname}}</td>
 		  		</tr>
+          <tr></tr>
 		  		<tr>
 		  			<td>Address*</td>
-		  			<td><input type="text" name="street" placeholder="Street, nb" required><br>
-		  			    <input type="text" name="zip" placeholder="ZIP" required><br>
-		  			    <input type="text" name="city" placeholder="City" required></td>
+		  			<td><input type="text" name="street" placeholder="Street, number" required></td>
             <td></td>
-            <td><p>{{street}}</p>
-                <p>{{zip}}</p>
-                <p>{{city}}</p></td>
+            <td>{{street}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><input type="text" name="zip" placeholder="ZIP" required></td>
+            <td></td>
+            <td>{{zip}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><input type="text" name="city" placeholder="City" required></td>
+            <td></td>
+            <td>{{city}}</td>
 		  		</tr>
+          <tr></tr>
 		  		<tr>
 		  			<td>Nationality*</td>
-		  			<td><input type="text" name="nationality1" placeholder="Nationality 1" required><br>
-                <input type="text" name="nationality2" placeholder="Nationality 2" /><br>
-                <input type="text" name="nationality3" placeholder="Nationality 3" />
-            </td>
+		  			<td><input type="text" name="nationality1" placeholder="Nationality 1" required></td>
             <td></td>
-            <td><p>{{nationality1}}</p>
-                <p>{{nationality2}}</p>
-                <p>{{nationality3}}</p></td>
-		  		</tr>
+            <td>{{nationality1}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><input type="text" name="nationality2" placeholder="Nationality 2" /></td>
+            <td>{{nationality2}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><input type="text" name="nationality3" placeholder="Nationality 3" /></td>
+            <td>{{nationality3}}</td>
+          </tr>
           <tr>
             <td>Source tax</td>
-            <td><input  type="text" name="sourcetaxed" placeholder="yes/no/?" /></td>
+            <td><select class="options" name="sourcetaxed">
+                  <option class="options" value="?">?</option>
+                  <option class="options" value="yes">Yes</option>
+                  <option class="options" value="no">No</option>
+                </select></td>
+            <td></td>
+            <td>{{sourcetaxed}}</td>
           </tr>
 		  		<tr>
 		  			<td>Domicile phone number: +41(0)</td>
@@ -83,19 +105,19 @@
 		  		</tr>
 		  		<tr>
 		  			<td>Date of birth*</td>
-		  			<td><input type="date" name="birth" placeholder="Birthdate" required></td>
+		  			<td>{{#unless birth}}<input type="date" name="birth" placeholder="Birthdate" required>{{/unless}}</td>
             <td></td>
             <td>{{birth}}</td>
 		  		</tr>
 		  		<tr>
 		  			<td>AHV/AVS number</td>
-		  			<td><input type="text" pattern="\d*" maxlength="13" name="ahv" placeholder="AHV/AVS (13 characters)" /></td>
+		  			<td>{{#unless ahv}}<input type="text" pattern="\d*" maxlength="13" name="ahv" placeholder="AHV/AVS (13 characters)" />{{/unless}}</td>
             <td></td>
             <td>{{ahv}}</td>
 		  		</tr>
 		  		<tr>
 		  			<td>Start date in Philico*</td>
-		  			<td><input type="date" name="sdate" placeholder="Start date" required></td>
+		  			<td>{{#unless sdate}}<input type="date" name="sdate" placeholder="Start date" required>{{/unless}}</td>
             <td></td>
             <td>{{sdate}}</td>
 		  		</tr>
@@ -166,7 +188,7 @@
         <col width="5">
         <col width="120">
           <tr>
-            <td><strong>Details</strong></td>
+            <td><strong></strong></td>
             <td><strong>Person 1*</strong></td>
             <td></td>
             <td><strong>Person 2</strong></td>
@@ -308,38 +330,42 @@
 	<section class="competencies">
 	<h1>CORE COMPETENCIES</h1>
 		<form class="new-competency">
-      {{#each competencies}}
 			<p class="Paragtitle">Communication and Analytical Skills</p>
       <table>
-      <col width="250">
-      <col width="5">
+      <col width="220">
+      <col width="10">
 			 <tr>
         <td><textarea rows="4" cols="250" name="comskill" required></textarea></td>
         <td></td>
+        {{#each competencies}}
         <td>{{comskill}}</td>
+        {{/each}}
        </tr>
       </table>
       <p class="Paragtitle">Business Expertise</p>
       <table>
-      <col width="250">
-      <col width="5">
+      <col width="220">
+      <col width="10">
        <tr>
         <td><textarea rows="4" cols="250" name="businessskill" required></textarea></td>
         <td></td>
+        {{#each competencies}}
         <td>{{businessskill}}</td>
+        {{/each}}
        </tr>
       </table>
       <p class="Paragtitle">Technical Expertise</p>
       <table>
-      <col width="250">
-      <col width="5">
+      <col width="220">
+      <col width="10">
        <tr>
         <td><textarea rows="4" cols="250" name="technicalskill" required></textarea></td>
         <td></td>
+        {{#each competencies}}
         <td>{{technicalskill}}</td>
+        {{/each}}
        </tr>
       </table>
-      {{/each}}
 			<input type="submit" value="Submit competencies">
 		</form>
 		<br>
@@ -352,37 +378,85 @@
   <section class="experiences">
 	<h1>PROJECT EXPERIENCE</h1>
 		<form class="new-experience">
-      <input type="text" name="company" placeholder="Company" required><br>
-    	<input type="text" name="stdate" placeholder="Starting date: MM.YYYY" required><br>
-    	<input type="text" name="enddate" placeholder="End date: MM.YYYY/now" required><br>
-      <input type="text" name="customer" placeholder="Customer" required><br>
       <table>
+      <col width="220">
+      <col width="10">
+      <col width="220">
+      <tr>
+        <td>Company name</td>
+        <td></td>
+        <td><input type="text" name="company" placeholder="Company" required></td>
+      </tr>
+      <tr>
+        <td>Start date</td>
+        <td></td>
+        <td><input type="text" name="stdate" placeholder="MM.YYYY" required></td>
+      </tr>
+      <tr>
+        <td>End date</td>
+        <td></td>
+        <td><input type="text" name="enddate" placeholder="MM.YYYY/today" required></td>
+      </tr>
+      <tr>
+        <td>Client name</td>
+        <td></td>
+        <td><input type="text" name="customer" placeholder="Customer" required></td>
+      </tr>
+      <tr>
+        <td>City</td>
+        <td></td>
+        <td><input type="text" name="customercity" placeholder="City" required></td>
+      </tr>
+      <tr>
+        <td>Department</td>
+        <td></td>
+        <td><input type="text" name="department" placeholder="Department" required></td>
+      </tr>
+      </table>
+      <table>
+      <col width="220">
+      <col width="10">
+      <col width="220">
+      <col width="10">
+      <col width="220">
+      <col width="10">
+      <col width="220">
         <tr>
           <th>Project 1</th>
+          <th></th>
           <th>Project 2</th>
+          <th></th>
           <th>Project 3</th>
+          <th></th>
           <th>Project 4</th>
         </tr>
         <tr>
           <td><input type="text" name="projecttitle1" placeholder="Project title 1" required></td>
+          <td></td>
           <td><input type="text" name="projecttitle2" placeholder="Project title 2"></td>
+          <td></td>
           <td><input type="text" name="projecttitle3" placeholder="Project title 3"></td>
+          <td></td>
           <td><input type="text" name="projecttitle4" placeholder="Project title 4"></td>
         </tr>
         <tr>
           <td><textarea name="projectdescription1" required></textarea></td>
+          <td></td>
           <td><textarea name="projectdescription2"></textarea></td>
+          <td></td>
           <td><textarea name="projectdescription3"></textarea></td>
+          <td></td>
           <td><textarea name="projectdescription4"></textarea></td>
         </tr>
       </table>
-      <input type="submit" value="Add project experience">
+      <input type="submit" value="Add an experience">
     </form>
     <br>
+
   <ul>
 		{{#each experiences}}
   	<li>
-    <button class="deleteanexperience">&times;</button><br>
+    <button id="delete" class="deleteanexperience">&times;</button><br>
     <table>
       <col width="220">
       <col width="10">
@@ -392,7 +466,7 @@
       <tr>
         <td>{{stdate}} - {{enddate}}</td>
         <td></td>
-        <td><p>{{customer}}</p>
+        <td><p>{{customer}}, {{customercity}} - {{department}}</p>
             <p>{{projecttitle1}}</p>
             <p>{{projectdescription1}}</p>
             <p>{{projecttitle2}}</p>
@@ -415,24 +489,51 @@
   <section class="employment">
   <h1>EMPLOYMENT HISTORY</h1>
     <form class="new-employment">
-      <input type="text" name="empstdate" placeholder="Starting date: MM.YYYY"><br>
-      <input type="text" name="empenddate" placeholder="End date: MM.YYYY/now"><br>
-      <input type="text" name="empcompany" placeholder="Company name" /><br>
-      <input type="text" name="empposition" placeholder="Position"><br>
+      <table>
+      <col width="220">
+      <col width="10">
+      <col width="220">
+      <tr>
+        <td>Start date</td>
+        <td></td>
+        <td><input type="text" name="empstdate" placeholder="MM.YYYY" required></td>
+      </tr>
+      <tr>
+        <td>End date</td>
+        <td></td>
+        <td><input type="text" name="empenddate" placeholder="End date: MM.YYYY/today" required></td>
+      </tr>
+      <tr>
+        <td>Company name</td>
+        <td></td>
+        <td><input type="text" name="empcompany" placeholder="Company name" required></td>
+      </tr>
+      <tr>
+        <td>City</td>
+        <td></td>
+        <td><input type="text" name="empcity" placeholder="City" required></td>
+      </tr>
+      <tr>
+        <td>Position</td>
+        <td></td>
+        <td><input type="text" name="empposition" placeholder="Position" required></td>
+      </tr>
+      </table>
       <input type="submit" value="Add an employment">
     </form>
     <br>
+
   <ul>
     {{#each employments}}
     <li>
-    <button class="deleteanemployment">&times;</button><br>
+    <button id="delete" class="deleteanemployment">&times;</button><br>
     <table>
       <col width="220">
       <col width="10">
       <tr>
-        <td>{{stdate}} - {{enddate}}</td>
+        <td>{{empstdate}} - {{empenddate}}</td>
         <td></td>
-        <td><p>{{empcompany}}<br>
+        <td><p>{{empcompany}}, {{empcity}}<br>
                {{empposition}}</p></td>
       </tr>
       </table>
@@ -448,16 +549,34 @@
   <section class="degrees">
   <h1>DEGREES</h1>
     <form class="new-degree">
-      <input type="text" name="ddate" placeholder="MM.YYYY" required><br>
-      <input type="text" name="dip" placeholder="Diploma title" required><br>
-      <input type="text" name="uni" placeholder="University" required><br>
-      <input type="submit" value="Add a diploma">
+      <table>
+      <col width="220">
+      <col width="10">
+      <col width="220">
+      <tr>
+        <td>Graduation date</td>
+        <td></td>
+        <td><input type="text" name="ddate" placeholder="MM.YYYY" required></td>
+      </tr>
+      <tr>
+        <td>Degree</td>
+        <td></td>
+        <td><input type="text" name="dip" placeholder="Degree title" required></td>
+      </tr>
+      <tr>
+        <td>University/Company</td>
+        <td></td>
+        <td><input type="text" name="uni" placeholder="University" required></td>
+      </tr>
+      </table>
+      <input type="submit" value="Add a degree">
     </form>
     <br>
+
   <ul>
   {{#each degrees}}
     <li>
-      <button class="deleteadegree">&times;</button>
+      <button id="delete" class="deleteadegree">&times;</button>
       <table>
       <col width="220">
       <col width="10">
@@ -479,16 +598,35 @@
     
   <section class="languages">
   <h1>LANGUAGE SKILLS</h1>
-  <form class="new-language">
-        <input type="text" name="langue" placeholder="Type to add a new language" />
-        <input type="text" name="skill" placeholder="Type to add the level">
+    <form class="new-language">
+        <table>
+        <col width="220">
+        <col width="10">
+        <col width="220">
+          <tr>
+            <td>Language</td>
+            <td></td>
+            <td><input type="text" name="langue" placeholder="Language" required></td>
+          </tr>
+          <tr>
+            <td>Skill</td>
+            <td></td>
+            <td><select class="options" name="skill" required>
+                  <option class="options" value="mothertongue">Mother tongue</option>
+                  <option class="options" value="writtenandspokenfluency">Written and spoken fluency</option>
+                  <option class="options" value="professional">Professional</option>
+                  <option class="options" value="intermediate">Intermediate</option>
+                  <option class="options" value="beginner">Beginner</option></select></td>
+          </tr>
+        </table>  
         <input type="submit" value="Add a language">
-  </form>
-  <br>
+    </form>
+    <br>
+
   <ul>
   {{#each languages}}
     <li>
-      <button class="deletealanguage">&times;</button>
+      <button id="delete" class="deletealanguage">&times;</button>
       <table>
       <col width="220">
       <col width="10">
@@ -507,11 +645,11 @@
 
 <!--           CV section             -->
 
-  	<form class="new-cv">   
-      <input type="submit" value="Generate CV">
+  	<form class="newcv">   
+      <input type="submit" value="Add a cv">
+
     </form>
     	
-    {{> cvtemp}}
 
 </main>
      
@@ -524,178 +662,11 @@
 
 
 <template name="cvtemp">
-<form>
-	<div>
-	<img align="left" src="http://www.philico.com/website/wp-content/uploads/2014/11/logo-e1417190403668.png" alt="HTML5 Icon">
-	</div>
-	<a>
-			<img align="right" src="img/me.jpg" height="142" width="136" alt="HTML5 Icon">
-	</a>
-	<br><br><br>
- 
-	<p class="headertitle">{{langue}} {{skill}}</p><br>
 
-  <span>  {{stdate}} - {{enddate}}: {{company}} : {{jobtitle}} : {{explanation}} </span>
+
  
 	<p>Curriculum Vitae</p>
 	<br><br>
 
-		<table>
-			<col width="260px" />
-   			<col width="300px" />
-			<tr>
-				<td class="cvsectionname" colspan="2">PERSONAL INFORMATION</td>
-			</tr>
-			<tr>
-				<td>Age</td>
-				<td>26</td>
-			</tr>
-			<tr>
-				<td>Natioanality</td>
-				<td>Tunisian</td>
-			</tr>
-			<tr>
-				<td rowspan="3">Address</td>
-				<td>Boulevard James Fazy, 10</td>
-			</tr>
-			<tr>
-				<td>1201 Genève</td>
-			</tr>
-			<tr>
-				<td>Switzerland</td>
-			</tr>
-			<tr>
-				<td>Contact</td>
-				<td>walid.benhammoud@philico.com</td>
-			</tr>
-		</table>
-		<br>
 
-		<table>
-			<col width="260px" />
-   			<col width="300px" />
-   			<tr>
-				<td class="cvsectionname" colspan="2">CORE COMPETENCIES</td>
-			</tr>
-			<tr>
-				<td >Communication and Analytical Skills</td>
-				<td>Motivated and dynamic with an entrepreneurial spirit. Flexible and highly committed to the success of projects. Good team player able to adapt quickly to new challenges and to collaborate effectively with people at different levels. Solid abstract thinking and analytitcal capacities.</td>
-			</tr>
-			<tr>
-				<td>Professional Experience</td>
-				<td>CFA level 1 candidate. Mechanical Engineering internships in the energy sector. Teaching activities at EPFL and Lémania Boarding school.</td>
-			</tr>
-			<tr>
-				<td>Technical Expertise</td>
-				<td>Curious and passionate about IT. C++ and MS Office VBA Programming.</td>
-			</tr>
-		</table>
-		<br>
-
-		<table>
-			<col width="260px" />
-   			<col width="300px" />
-   			<tr>
-				<td class="cvsectionname" colspan="2">PROJECTS AND INTERSHIPS</td>
-			</tr>
-			<tr>
-				<td rowspan="3">07.2014 - 03.2015</td>
-				<td>Alstom Power, Baden - Switzerland</td>
-			</tr>
-			<tr>
-				<td>Master thesis (grade 6/6)</td>
-			</tr>
-			<tr>
-				<td>Strategic Planning and Market Intelligence. Development and preparation of business plans for gas turbines. Set up of a complex optimization tool providing the best operation regime for gas power plants to increase profitability.</td>
-			</tr>
-			<tr>
-				<td rowspan="3">07.2010 - 08.2010</td>
-				<td>BOBST SA, Lausanne - Switzerland</td>
-			</tr>
-			<tr>
-				<td>Internship</td>
-			</tr>
-			<tr>
-				<td>Learn manufacturing processes and development of a pneumatic motor.</td>
-			</tr>
-		</table>
-		<br>
-
-		<table>
-			<col width="260px" />
-   			<col width="300px" />
-   			<tr>
-				<td class="cvsectionname" colspan="2">EMPLOYMENT HISTORY</td>
-			</tr>
-			<tr>
-				<td rowspan="2">10.2015 - now</td>
-				<td>Philico AG, Speicher</td>
-			</tr>
-			<tr>
-				<td>Junior Consultant</td>
-			</tr>
-			<tr>
-				<td rowspan="2">04.2013 - 06.2014</td>
-				<td>Lémania Boarding School, Lausanne</td>
-			</tr>
-			<tr>
-				<td>Headmaster (managing students)</td>
-			</tr>
-			<tr>
-				<td rowspan="2">09.2011 - 06.2014</td>
-				<td>EPFL, Lausanne</td>
-			</tr>
-			<tr>
-				<td>Teaching Assistant</td>
-			</tr>
-		</table>
-		<br>
-
-		<table>
-			<col width="260px" />
-   			<col width="300px" />
-   			<tr>
-				<td class="cvsectionname" colspan="2">DEGREES</td>
-			</tr>
-			<tr>
-				<td rowspan="2">10.2015</td>
-				<td>Avaloq</td>
-			</tr>
-			<tr>
-				<td>Avaloq Certified Professional</td>
-			</tr>
-			<tr>
-				<td rowspan="2">02.2015</td>
-				<td>EPFL</td>
-			</tr>
-			<tr>
-				<td>MSc. in Mechanical Engineering</td>
-			</tr>
-		</table>
-		<br>
-
-		<table>
-			<col width="260px" />
-   			<col width="300px" />
-			<tr>
-				<td class="cvsectionname" colspan="2">LANGUAGE SKILLS</td>
-			</tr>
-			<tr>
-				<td>French</td>
-				<td>Mother tongue</td>
-			</tr>
-			<tr>
-				<td>Arabic</td>
-				<td>Mother tongue</td>
-			</tr>
-			<tr>
-				<td>English</td>
-				<td>Written and spoken fluency</td>
-			</tr>
-			<tr>
-				<td>German</td>
-				<td>Basic knowledge</td>
-			</tr>
-		</table>
-</form>
 </template>

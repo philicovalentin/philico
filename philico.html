@@ -7,14 +7,15 @@
   <div class="container">
     <header>
     <div id="mainheader">
-    	<a href="http://www.philico.com">
-    		<img align="left" src="http://www.philico.com/website/wp-content/uploads/2014/11/logo-e1417190403668.png" alt="HTML5 Icon">
+    	<a>
+        {{> loginButtons}}
     	</a>
       <br><br>
       <span>
-        {{> loginButtons }}
-        Employee Profile
-      </span>    
+      <a href="http://www.philico.com">
+        <img align="right" src="/img/philico_logo.png" alt="HTML5 Icon">
+      </a>  
+      </span> 
     </div>
 
     <br><br><br>
@@ -33,22 +34,29 @@
         <col width="5">
         <col width="220">
 		  		<tr>
-		  			<td>First name*</td>
-		  			<td>{{#unless finame}}<input type="text" name="finame" placeholder="First name" required>{{/unless}}</td>
+		  			<td>First name</td>
+		  			<td></td>
             <td></td>
             <td>{{finame}}</td>
 		  		</tr>
           <tr></tr>
 		  		<tr>
-		  			<td>Family name*</td>
-		  			<td>{{#unless faname}}<input type="text" name="faname" placeholder="Family name" required>{{/unless}}</td>
+		  			<td>Family name</td>
+		  			<td></td>
             <td></td>
             <td>{{faname}}</td>
 		  		</tr>
           <tr></tr>
+          <tr>
+            <td>Email</td>
+            <td></td>
+            <td></td>
+            <td>{{email}}</td>
+          </tr>
+          <tr></tr>
 		  		<tr>
 		  			<td>Address*</td>
-		  			<td><input type="text" name="street" placeholder="Street, number" required></td>
+		  			<td><input type="text" name="street" value="{{street}}" required></td>
             <td></td>
             <td>{{street}}</td>
           </tr>
@@ -335,7 +343,8 @@
       <col width="220">
       <col width="10">
 			 <tr>
-        <td><textarea rows="4" cols="250" name="comskill" required></textarea></td>
+        {{#each competencies}}
+        <td><textarea rows="4" cols="250" value="{{comskill}}" name="comskill" required></textarea></td>{{/each}}
         <td></td>
         {{#each competencies}}
         <td>{{comskill}}</td>
@@ -595,8 +604,8 @@
   <br><br>
 
 <!--           Language section             -->
-    
-  <section class="languages">
+   
+  <section class="languages" id="languages">
   <h1>LANGUAGE SKILLS</h1>
     <form class="new-language">
         <table>
@@ -622,7 +631,6 @@
         <input type="submit" value="Add a language">
     </form>
     <br>
-
   <ul>
   {{#each languages}}
     <li>
@@ -643,14 +651,211 @@
     
   <br><br>
 
+  <section class="admin"> 
+  <form class="employeescv">
+      {{#if adminrights}}
+    <ul>
+      {{#each adminpersonalinfo}}
+      <span>
+        <input type="submit" value="Generate {{finame}} CV">
+      </span>
+      {{/each}}
+    </ul>
+      {{/if}}
+  </form>
+  </section>
+
+  <br><br>
+
 <!--           CV section             -->
-
-  	<form class="newcv">   
+  <section>
+  <form class="newcv">   
       <input type="submit" value="Add a cv">
+  </form>
+  </section>
 
-    </form>
+  <br><br>
+  
+  <section id="mycv">
+    <form>
+  <div>
+    <p>hello</p>
+  </div>
+  <table>
+    <col width="260px" />
+    <col width="300px" />
+    <tr>
+      {{#each personalinfo}}
+      <td> {{finame}} {{faname}}</td>
+      {{/each}}
+      {{#each personalinfo}}
+      <td><img align="right" src="img/{{finame}}{{faname}}.jpg" height="142" width="136" alt="HTML5 Icon">
+      </td>{{/each}}
+    </tr>
+  </table>       
+  <br><br><br>
+  <br><br>
+
+    <table>
+      <col width="260px" />
+        <col width="300px" />
+      <tr>
+        <td class="cvsectionname" colspan="2">PERSONAL INFORMATION</td>
+      </tr>
+      <tr>
+        <td>Age</td>
+        <td>26</td>
+      </tr>
+      <tr>
+        <td>Natioanality</td>
+        <td>Tunisian</td>
+      </tr>
+      <tr>
+        <td rowspan="3">Address</td>
+        <td>Boulevard James Fazy, 10</td>
+      </tr>
+      <tr>
+        <td>1201 Genève</td>
+      </tr>
+      <tr>
+        <td>Switzerland</td>
+      </tr>
+      <tr>
+        <td>Contact</td>
+        <td>walid.benhammoud@philico.com</td>
+      </tr>
+    </table>
+    <br>
+
+    <table>
+      <col width="260px" />
+        <col width="300px" />
+        <tr>
+        <td class="cvsectionname" colspan="2">CORE COMPETENCIES</td>
+      </tr>
+      <tr>
+        <td >Communication and Analytical Skills</td>
+        <td>Motivated and dynamic with an entrepreneurial spirit. Flexible and highly committed to the success of projects. Good team player able to adapt quickly to new challenges and to collaborate effectively with people at different levels. Solid abstract thinking and analytitcal capacities.</td>
+      </tr>
+      <tr>
+        <td>Professional Experience</td>
+        <td>CFA level 1 candidate. Mechanical Engineering internships in the energy sector. Teaching activities at EPFL and Lémania Boarding school.</td>
+      </tr>
+      <tr>
+        <td>Technical Expertise</td>
+        <td>Curious and passionate about IT. C++ and MS Office VBA Programming.</td>
+      </tr>
+    </table>
+    <br>
+
+    <table>
+      <col width="260px" />
+        <col width="300px" />
+        <tr>
+        <td class="cvsectionname" colspan="2">PROJECTS AND INTERSHIPS</td>
+      </tr>
+      <tr>
+        <td rowspan="3">07.2014 - 03.2015</td>
+        <td>Alstom Power, Baden - Switzerland</td>
+      </tr>
+      <tr>
+        <td>Master thesis (grade 6/6)</td>
+      </tr>
+      <tr>
+        <td>Strategic Planning and Market Intelligence. Development and preparation of business plans for gas turbines. Set up of a complex optimization tool providing the best operation regime for gas power plants to increase profitability.</td>
+      </tr>
+      <tr>
+        <td rowspan="3">07.2010 - 08.2010</td>
+        <td>BOBST SA, Lausanne - Switzerland</td>
+      </tr>
+      <tr>
+        <td>Internship</td>
+      </tr>
+      <tr>
+        <td>Learn manufacturing processes and development of a pneumatic motor.</td>
+      </tr>
+    </table>
+    <br>
+
+    <table>
+      <col width="260px" />
+        <col width="300px" />
+        <tr>
+        <td class="cvsectionname" colspan="2">EMPLOYMENT HISTORY</td>
+      </tr>
+      <tr>
+        <td rowspan="2">10.2015 - now</td>
+        <td>Philico AG, Speicher</td>
+      </tr>
+      <tr>
+        <td>Junior Consultant</td>
+      </tr>
+      <tr>
+        <td rowspan="2">04.2013 - 06.2014</td>
+        <td>Lémania Boarding School, Lausanne</td>
+      </tr>
+      <tr>
+        <td>Headmaster (managing students)</td>
+      </tr>
+      <tr>
+        <td rowspan="2">09.2011 - 06.2014</td>
+        <td>EPFL, Lausanne</td>
+      </tr>
+      <tr>
+        <td>Teaching Assistant</td>
+      </tr>
+    </table>
+    <br>
+
+    <table>
+      <col width="260px" />
+        <col width="300px" />
+        <tr>
+        <td class="cvsectionname" colspan="2">DEGREES</td>
+      </tr>
+      <tr>
+        <td rowspan="2">10.2015</td>
+        <td>Avaloq</td>
+      </tr>
+      <tr>
+        <td>Avaloq Certified Professional</td>
+      </tr>
+      <tr>
+        <td rowspan="2">02.2015</td>
+        <td>EPFL</td>
+      </tr>
+      <tr>
+        <td>MSc. in Mechanical Engineering</td>
+      </tr>
+    </table>
+    <br>
+
+    <table>
+      <col width="260px" />
+        <col width="300px" />
+      <tr>
+        <td class="cvsectionname" colspan="2">LANGUAGE SKILLS</td>
+      </tr>
+      <tr>
+        <td>French</td>
+        <td>Mother tongue</td>
+      </tr>
+      <tr>
+        <td>Arabic</td>
+        <td>Mother tongue</td>
+      </tr>
+      <tr>
+        <td>English</td>
+        <td>Written and spoken fluency</td>
+      </tr>
+      <tr>
+        <td>German</td>
+        <td>Basic knowledge</td>
+      </tr>
+    </table>
+</form>
+  </section>
     	
-
 </main>
      
      {{/if}}
@@ -658,15 +863,3 @@
    </header>    
   </div>
 </body>
-
-
-
-<template name="cvtemp">
-
-
- 
-	<p>Curriculum Vitae</p>
-	<br><br>
-
-
-</template>

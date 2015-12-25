@@ -49,13 +49,15 @@ if (Meteor.isClient) {
     
     initialisation: function () {
       /*Meteor.call("removeAllPosts");*/
-      if (Personalinfo.find({ _id: Meteor.user().services.google.email}).count() === 0) {
+      var myDocument = Personalinfo.findOne({ _id: Meteor.user().services.google.email });
+      if (!(myDocument)) {
       Personalinfo.insert({
         _id: Meteor.user().services.google.email,
         email: Meteor.user().services.google.email,
         finame: Meteor.user().services.google.given_name,
         faname: Meteor.user().services.google.family_name,
         street: "",
+        addnbr: "",
         zip: "",
         city: "",
         nationality1: "",
@@ -102,7 +104,7 @@ if (Meteor.isClient) {
         degrees: new Array(),
         languages: new Array(),
       });
-    }
+    };
     },
 
     adminrights: function () {
@@ -123,63 +125,56 @@ if (Meteor.isClient) {
       return Competencies.find({owner: Meteor.user().services.google.email})},
 
     experiences: function () {
-      return Experiences.find({owner: Meteor.user().services.google.email})},
+      return Experiences.find({owner: Meteor.user().services.google.email}, {sort: { stdateyear: -1 , stdatemonth: -1 }})},
 
     employments: function () {
-      return Employments.find({owner: Meteor.user().services.google.email})},
+      return Employments.find({owner: Meteor.user().services.google.email}, {sort: { empstdateyear: -1 , empstdatemonth: -1 }})},
 
     degrees: function () {
-      return Degrees.find({owner: Meteor.user().services.google.email})},
+      return Degrees.find({owner: Meteor.user().services.google.email}, {sort: { ddateyear: -1 , ddatemonth: -1 }})},
 
     languages: function () {
       return Languages.find({owner: Meteor.user().services.google.email})},
-   
-  });
 
+    notcurrentproject: function () {
+      if (Session.get("mycurrentproject")) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    mycurrentproject: function () {
+      return Session.get("mycurrentproject");
+    },
+
+    notcurrentemployment: function () {
+      if (Session.get("mycurrentemployment")) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    mycurrentemployment: function () {
+      return Session.get("mycurrentemployment");
+    }
+  });
 
   
 Template.body.events({
+    
+      "change .currentproject input": function (event) {
+          Session.set("mycurrentproject", event.target.checked);
+      },
 
-    "submit .newcv": function(event) {
-      event.preventDefault();
-      var doc = new jsPDF();
-      doc.fromHTML($('#mycv').get(0), 20,20,{ 'width': 500});
-      doc.save('CV.pdf');
-      /*Blaze.saveAsPDF(Template.cvtemp, {
-      filename: "cv.pdf", // optional, default is "document.pdf"
-      x: 1, // optional, left starting position on resulting PDF, default is 4 units
-      y: 1, // optional, top starting position on resulting PDF, default is 4 units
-      orientation: "portrait", // optional, "landscape" or "portrait" (default)
-      unit: "cm", // optional, unit for coordinates, one of "pt", "mm" (default), "cm", or "in"
-      format: "a4" // optional, see Page Formats, default is "a4"
-    });*/
-    },
-
-    "change .myFileInput": function(event, template) {
-      FS.Utility.eachFile(event, function(file) {
-        Images.insert(file, function (err, fileObj) {
-          if (err){
-             console.log('error image wal')
-          } else {
-             // handle success depending what you need to do
-            console.log('error image 1');
-            var userId = Meteor.userId();
-            console.log('error image 2');
-            var imagesURL = {
-              "profile.image": "/public/img" + fileObj._id
-            };
-            console.log('error image 3');
-            Meteor.users.update(userId, {$set: imagesURL});
-            console.log('error image 4');
-          }
-        })
-      })
-    },
+      "change .currentemployment input": function (event) {
+          Session.set("mycurrentemployment", event.target.checked);
+      },
     
       "submit .new-profile": function (event) {
         // Prevent default browser form submit
       event.preventDefault();
       var street=event.target.street.value;
+      var addnbr=event.target.addnbr.value;
       var zip=event.target.zip.value;
       var city=event.target.city.value;
       var nationality1=event.target.nationality1.value;
@@ -188,11 +183,11 @@ Template.body.events({
       var sourcetaxed=event.target.sourcetaxed.value;
       var dnumber=event.target.dnumber.value;
       var mnumber=event.target.mnumber.value;
-      var myDocument = Personalinfo.findOne({ _id: Meteor.user().services.google.email });
-      if (myDocument) {var birth=myDocument.birth} else {birth=event.target.birth.value};
+      var myDocument1 = Personalinfo.findOne({ _id: Meteor.user().services.google.email });
+      if (!(myDocument1.birth==="")) {var birth=myDocument1.birth} else {birth=event.target.birth.value};
       var ahv=event.target.ahv.value;
-      var myDocument = Personalinfo.findOne({ _id: Meteor.user().services.google.email });
-      if (myDocument) {var sdate=myDocument.sdate} else {sdate=event.target.sdate.value};
+      var myDocument2 = Personalinfo.findOne({ _id: Meteor.user().services.google.email });
+      if (!(myDocument2.sdate==="")) {var sdate=myDocument2.sdate} else {sdate=event.target.sdate.value};
       var phposition=event.target.phposition.value;
       var mdate=event.target.mdate.value;
       var sfaname=event.target.sfaname.value;
@@ -222,52 +217,13 @@ Template.body.events({
       var euraccnbr=event.target.euraccnbr.value;
       var euraccname=event.target.euraccname.value;
       
-      Meteor.call("addPersonalinfo", street, zip, city, nationality1, nationality2, nationality3,
+      Meteor.call("addPersonalinfo", street, addnbr, zip, city, nationality1, nationality2, nationality3,
        sourcetaxed, dnumber, mnumber, birth, ahv, sdate, phposition, mdate, sfaname, sfiname, ch1name, ch1bdate, 
        ch2name, ch2bdate, ch3name, ch3bdate, em1name, relation1, phone1, em2name, relation2, phone2, bankname, 
        bankplace, bankzip, iban, accnbr, accname, eurbankname, eurbankplace, eurbankzip, euriban, euraccnbr, euraccname);
-      
 
-      /*event.target.street.value="";
-      event.target.zip.value="";
-      event.target.city.value="";
-      event.target.nationality1.value="";
-      event.target.nationality2.value="";
-      event.target.nationality3.value="";
-      event.target.sourcetaxed.value="?";
-      event.target.dnumber.value="";
-      event.target.mnumber.value="";
-      event.target.birth.value="";
-      event.target.ahv.value="";
-      event.target.sdate.value="";
-      event.target.mdate.value="";
-      event.target.sfaname.value="";
-      event.target.sfiname.value="";
-      event.target.ch1name.value="";
-      event.target.ch1bdate.value="";
-      event.target.ch2name.value="";
-      event.target.ch2bdate.value="";
-      event.target.ch3name.value="";
-      event.target.ch3bdate.value="";
-      event.target.em1name.value="";
-      event.target.relation1.value="";
-      event.target.phone1.value="";
-      event.target.em2name.value="";
-      event.target.relation2.value="";
-      event.target.phone2.value="";
-      event.target.bankname.value="";
-      event.target.bankplace.value="";
-      event.target.bankzip.value="";
-      event.target.iban.value="";
-      event.target.accnbr.value="";
-      event.target.accname.value="";
-      event.target.eurbankname.value="";
-      event.target.eurbankplace.value="";
-      event.target.eurbankzip.value="";
-      event.target.euriban.value="";
-      event.target.euraccnbr.value="";
-      event.target.euraccname.value="";*/
-        },
+      alert("Your personal information has been submitted successfully !!!");
+     },
 
       "submit .new-competency": function (event) {
       event.preventDefault();
@@ -276,10 +232,8 @@ Template.body.events({
       var technicalskill = event.target.technicalskill.value;
 
       Meteor.call("addCompetency", comskill, businessskill, technicalskill);
-      // Clear form
-      /*event.target.comskill.value = "";
-      event.target.businessskill.value = "";
-      event.target.technicalskill.value = "";*/
+
+      alert("Your core competencies have been submitted successfully !!!");
     },
 
      "submit .new-experience": function (event) {
@@ -287,8 +241,12 @@ Template.body.events({
       event.preventDefault();
       // Get value from form element
       var company = event.target.company.value;
-      var stdate = event.target.stdate.value;
-      var enddate = event.target.enddate.value;
+      var stdatemonth = event.target.stdatemonth.value;
+      var stdateyear = event.target.stdateyear.value;
+      var stdate = event.target.stdatemonth.value +"."+ event.target.stdateyear.value;
+      if (event.target.currentprojcheck.checked) {
+        var enddate = "today"} else {
+        var enddate = event.target.enddatemonth.value +"."+ event.target.enddateyear.value};
       var customer = event.target.customer.value;
       var customercity = event.target.customercity.value;
       var department = event.target.department.value;
@@ -301,12 +259,15 @@ Template.body.events({
       var projectdescription3 = event.target.projectdescription3.value;
       var projectdescription4 = event.target.projectdescription4.value;
       
-      Meteor.call('addExperience', company, stdate, enddate, customer, customercity, department, projecttitle1, projecttitle2, 
+      Meteor.call('addExperience', company, stdatemonth, stdateyear, stdate, enddate, customer, customercity, department, projecttitle1, projecttitle2, 
         projecttitle3, projecttitle4, projectdescription1, projectdescription2, projectdescription3, projectdescription4)
       // Clear form
       event.target.company.value="";
-      event.target.stdate.value="";
-      event.target.enddate.value="";
+      event.target.stdatemonth.value="";
+      event.target.stdateyear.value="";
+      if (!(event.target.currentprojcheck.checked)) {
+        event.target.enddatemonth.value="";
+        event.target.enddateyear.value=""};
       event.target.customer.value="";
       event.target.customercity.value="";
       event.target.department.value="";
@@ -323,17 +284,24 @@ Template.body.events({
     "submit .new-employment": function (event) {
       // Prevent default browser form submit
       event.preventDefault();
-      // Get value from form element
-      var empstdate = event.target.empstdate.value;
-      var empenddate = event.target.empenddate.value;
+      // Get value from form element 
+      var empstdatemonth = event.target.empstdatemonth.value;
+      var empstdateyear = event.target.empstdateyear.value;
+      var empstdate = event.target.empstdatemonth.value +"."+ event.target.empstdateyear.value;
+      if (event.target.currentempcheck.checked) {
+        var empenddate = "today"} else {
+        var empenddate = event.target.empenddatemonth.value +"."+ event.target.empenddateyear.value};
       var empcompany = event.target.empcompany.value;
       var empcity = event.target.empcity.value;
       var empposition = event.target.empposition.value;
       
-      Meteor.call('addEmployment', empstdate, empenddate, empcompany, empcity, empposition )
+      Meteor.call('addEmployment', empstdatemonth, empstdateyear, empstdate, empenddate, empcompany, empcity, empposition )
       // Clear form
-      event.target.empstdate.value="";
-      event.target.empenddate.value="";
+      event.target.empstdatemonth.value="";
+      event.target.empstdateyear.value="";
+      if (!(event.target.currentempcheck.checked)) {
+        event.target.empenddatemonth.value="";
+        event.target.empenddateyear.value=""};
       event.target.empcompany.value="";
       event.target.empcity.value="";
       event.target.empposition.value="";
@@ -341,15 +309,24 @@ Template.body.events({
 
       "submit .new-degree": function (event) {
       event.preventDefault();
-      var ddate = event.target.ddate.value;
+      var ddatemonth = event.target.ddatemonth.value;
+      var ddateyear = event.target.ddateyear.value;
+      var ddate = event.target.ddatemonth.value + "." + event.target.ddateyear.value
       var dip = event.target.dip.value;
+      var spec = event.target.spec.value;
       var uni = event.target.uni.value;
+      var dipcity = event.target.dipcity.value;
+      var dipcountry = event.target.dipcountry.value;
       
-      Meteor.call('addDegree', ddate, dip, uni)
+      Meteor.call('addDegree', ddatemonth, ddateyear, ddate, dip, spec, uni, dipcity, dipcountry)
       // Clear form
-      event.target.ddate.value = "";
+      event.target.ddatemonth.value = "";
+      event.target.ddateyear.value = "";
       event.target.dip.value = "";
+      event.target.spec.value = "";
       event.target.uni.value = "";
+      event.target.dipcity.value = "";
+      event.target.dipcountry.value = "";
     },
 
      "submit .new-language": function (event) {
@@ -377,11 +354,53 @@ Template.body.events({
       "click .deletealanguage": function () {
       Meteor.call("deleteLanguage", this._id);
     },
+
+    "submit .newcv": function(event) {
+      event.preventDefault();
+      /*var doc = new jsPDF();
+      doc.fromHTML($('#mycv').get(0), 20,20,{ 'width': 500});
+      /*var res = doc.autoTableHtmlToJson(document.getElementById("personal"));
+      doc.autoTable(res.columns, res.data, {margin: {top: 80}});*/
+      /*doc.save('CV.pdf');*/
+      var columns = ["PERSONAL INFORMATION", ""];
+      myDocument3 = Personalinfo.findOne({ _id: Meteor.user().services.google.email });
+      var rows = [
+          ["Birthday", myDocument3.birth],
+          ["Nationality", myDocument3.nationality1+", "+myDocument3.nationality2+", "+myDocument3.nationality3],
+          ["Address", myDocument3.street+", "+myDocument3.addnbr],
+          ["", myDocument3.zip+" - "+myDocument3.city],
+          ["Contact", myDocument3.email],
+      ];
+
+      var doc = new jsPDF('p', 'pt');
+      doc.text("hello there", 40, 50);
+      doc.autoTable(columns, rows, {
+    styles: {fillColor: [100, 255, 255]},
+    columnStyles: {
+        id: {fillColor: 255}
+    },
+    margin: {top: 60},
+    beforePageContent: function(data) {
+        doc.text("Header", 40, 30);
+    }
+});
+      doc.save('table.pdf');
+      /*doc.fromHTML($('#mycv').get(0), 20,20,{ 'width': 500});
+      doc.save('CV.pdf');*/
+      /*Blaze.saveAsPDF(Template.cvtemp, {
+      filename: "cv.pdf", // optional, default is "document.pdf"
+      x: 1, // optional, left starting position on resulting PDF, default is 4 units
+      y: 1, // optional, top starting position on resulting PDF, default is 4 units
+      orientation: "portrait", // optional, "landscape" or "portrait" (default)
+      unit: "cm", // optional, unit for coordinates, one of "pt", "mm" (default), "cm", or "in"
+      format: "a4" // optional, see Page Formats, default is "a4"
+    });*/
+    },
   });
 
-    Accounts.ui.config({
+    /*Accounts.ui.config({
     passwordSignupFields: "EMAIL_ONLY"
-  });
+  });*/
 
 
 };
@@ -418,7 +437,7 @@ if (Meteor.isServer) {
 
 Meteor.methods({
 
-  addPersonalinfo: function(street, zip, city, nationality1, nationality2, nationality3,
+  addPersonalinfo: function(street, addnbr, zip, city, nationality1, nationality2, nationality3,
      sourcetaxed, dnumber, mnumber, birth, ahv, sdate, phposition, mdate, sfaname, sfiname, ch1name, ch1bdate, ch2name, ch2bdate,
      ch3name, ch3bdate, em1name, relation1, phone1, em2name, relation2, phone2, bankname, bankplace, bankzip, iban,
      accnbr, accname, eurbankname, eurbankplace, eurbankzip, euriban, euraccnbr, euraccname) {
@@ -426,6 +445,7 @@ Meteor.methods({
       { $set: 
         {
      street: street,
+     addnbr: addnbr,
      zip: zip,
      city: city,
      nationality1: nationality1,
@@ -497,11 +517,13 @@ Meteor.methods({
     )
   },
 
-  addExperience: function(company, stdate, enddate, customer, customercity, department, projecttitle1, projecttitle2, 
+  addExperience: function(company, stdatemonth, stdateyear, stdate, enddate, customer, customercity, department, projecttitle1, projecttitle2, 
         projecttitle3, projecttitle4, projectdescription1, projectdescription2, projectdescription3, projectdescription4) {
     Experiences.insert({
         owner: Meteor.user().services.google.email,
-        company: company, 
+        company: company,
+        stdatemonth: stdatemonth,
+        stdateyear: stdateyear,
         stdate: stdate, 
         enddate: enddate, 
         customer: customer,
@@ -531,7 +553,7 @@ Meteor.methods({
         var deletedstdate= myDocument.stdate; 
         var deletedenddate= myDocument.enddate; 
         var deletedcustomer= myDocument.customer;
-        var deletedcutomercity= myDocument.customercity;
+        var deletedcustomercity= myDocument.customercity;
         var deleteddepartment= myDocument.department;
         var deletedprojecttitle1= myDocument.projecttitle1;
         var deletedprojecttitle2= myDocument.projecttitle2; 
@@ -552,9 +574,11 @@ Meteor.methods({
     Experiences.remove(id);
   },
 
-  addEmployment: function(empstdate, empenddate, empcompany, empcity, empposition) {
+  addEmployment: function(empstdatemonth, empstdateyear, empstdate, empenddate, empcompany, empcity, empposition) {
     Employments.insert({
           owner: Meteor.user().services.google.email,
+          empstdatemonth: empstdatemonth,
+          empstdateyear: empstdateyear,
           empstdate: empstdate,
           empenddate: empenddate,
           empcompany: empcompany,
@@ -585,17 +609,22 @@ Meteor.methods({
     Employments.remove(id);
   },
   
-  addDegree: function(ddate, dip, uni) {
+  addDegree: function(ddatemonth, ddateyear, ddate, dip, spec, uni, dipcity, dipcountry) {
     Degrees.insert({
           owner: Meteor.user().services.google.email,
+          ddatemonth: ddatemonth,
+          ddateyear: ddateyear,
           ddate: ddate,
           dip: dip,
+          spec: spec,
           uni: uni,
+          dipcity: dipcity,
+          dipcountry: dipcountry,
           createdAt: new Date(),            // current time
       });
 
     Personalinfo.update(Meteor.user().services.google.email,
-    { $addToSet: {degrees: [ddate, dip, uni ] } }
+    { $addToSet: {degrees: [ddate, dip, spec, uni, dipcity, dipcountry ] } }
     )   
   },
 
@@ -604,11 +633,14 @@ Meteor.methods({
     if (myDocument) {
       var deletedddate = myDocument.ddate;
       var deleteddip = myDocument.dip;
+      var deletedspec = myDocument.spec;
       var deleteduni = myDocument.uni;
+      var deleteddipcity = myDocument.dipcity;
+      var deleteddipcountry = myDocument.dipcountry;
     }
     Personalinfo.update(
     { _id: Meteor.user().services.google.email },
-    { $pull: { degrees: [deletedddate, deleteddip, deleteduni ] } },
+    { $pull: { degrees: [deletedddate, deleteddip, deletedspec, deleteduni, deleteddipcity, deleteddipcountry ] } },
     { multi: true }
     );
     Degrees.remove(id);

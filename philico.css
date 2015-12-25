@@ -21,9 +21,32 @@ body {
   align-items: center;
 }
 
-#mainheader a {
-   -webkit-flex: 1; 
+#mainheader p { 
    flex: 1;
+}
+
+#perso {
+  display: flex;
+}
+
+#perso p { 
+   flex: 0.5;
+}
+
+#corecomp {
+  display: flex;
+}
+
+#corecomp p {
+  flex: 1;
+}
+
+#projexp {
+  display: flex;
+}
+
+#projexp p {
+  flex: 1;
 }
 
 .headertitle {
@@ -44,12 +67,18 @@ body {
 
 header {
   background: #d2edf4;
-  padding: 20px 15px 15px 15px;
+  padding: 15px 15px 15px 15px;
+  position: relative;
+}
+
+main {
+  background: #d2edf4;
+  padding: 15px 15px 15px 15px;
   position: relative;
 }
 
 #login-buttons {
-  display: block;
+  display: inline;
 }
 
 h1 {
@@ -67,17 +96,51 @@ form {
 }
 
 .container input {
-  display: block;
+  display: inline;
   margin: 0;
   font-family: sans-serif;
+  font-size: 14px;
   appearance: none;
   box-shadow: none;
   border-radius: none;
+  height: 30px;
+  position: relative;
 }
 
 .container input:focus{
   border: solid 1px #707070;
   box-shadow: 0 0 5px 1px #969696;
+}
+
+.container select {
+  display: inline;
+  margin: 0;
+  font-family: sans-serif;
+  font-size: 14px;
+  appearance: none;
+  box-shadow: none;
+  border-radius: none;
+  height: 30px;
+  position: relative;
+}
+
+#comp {
+  display: inline;
+  height: 180px;
+  width: 90%;
+}
+
+#proj {
+  display: inline;
+  height: 150px;
+}
+
+#month {
+  width: 20%;
+}
+
+#year {
+  width: 72%;
 }
 
 ul {
@@ -112,21 +175,22 @@ li {
     width: 150px;
     clear: both;
   }
-
-
 }
 
 .Paragtitle{
   font-weight: bold;
 }
 
- .cvsectionname {
-    border-bottom: 3px solid #000;
-    padding-bottom: 0em;
-}
-
 td {
-  vertical-align: top;
-  padding-bottom: 0.75em;
+  padding-bottom: 0;
 }
 
+tr {
+    height: 35px;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}

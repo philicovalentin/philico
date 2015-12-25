@@ -27,3 +27,4 @@ service-configuration
 accounts-google
 accounts-ui
 jspdf:core
+jspdf:autotable

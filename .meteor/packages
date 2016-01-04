@@ -20,11 +20,9 @@ autopublish             # Publish all data to the clients (for prototyping)
 insecure                # Allow all DB writes from clients (for prototyping)
 twbs:bootstrap
 bootstrap
-ongoworks:pdf
 cfs:standard-packages
 cfs:gridfs
 service-configuration
 accounts-google
 accounts-ui
-jspdf:core
 jspdf:autotable

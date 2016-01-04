@@ -34,6 +34,7 @@ if (Meteor.isClient) {
         sourcetaxed: "?",
         dnumber: "",
         mnumber: "",
+        signaturetel: "",
         birth: "",
         ahv: "",
         sdate: "",
@@ -65,6 +66,7 @@ if (Meteor.isClient) {
         euriban: "",
         euraccnbr: "",
         euraccname: "",
+        signature:'',
         createdAt: new Date(),
         competencies: new Array(),  
         experiences: new Array(),
@@ -436,6 +438,7 @@ Meteor.methods({
      sourcetaxed: sourcetaxed,
      dnumber: dnumber,
      mnumber: mnumber,
+     signaturetel: "+41 "+ mnumber.slice(0,2)+" "+mnumber.slice(2,5)+" "+mnumber.slice(5,7)+" "+mnumber.slice(7,9),
      birth: birth,
      ahv: ahv,
      sdate: sdate,
@@ -467,6 +470,7 @@ Meteor.methods({
      euriban: euriban,
      euraccnbr: euraccnbr,
      euraccname: euraccname,
+     signature: '<div class="gmail_signature"><div dir="ltr"><div><div dir="ltr"><span><div><div><div style="word-wrap:break-word"><div style="word-wrap:break-word"><b style="font-family:"Helvetica Neue",sans-serif"><span style="color:#004a8d">'+Personalinfo.findOne({ _id: Meteor.user().services.google.email}).finame+' '+Personalinfo.findOne({ _id: Meteor.user().services.google.email}).faname+'<br></span></b><div style="font-family:"Helvetica Neue",sans-serif"><div><div><span style="font-family:"Helvetica Neue"">'+Personalinfo.findOne({ _id: Meteor.user().services.google.email}).phposition+'</span></div><div><br></div><div><div><span style="font-family:"Helvetica Neue"">'+Personalinfo.findOne({ _id: Meteor.user().services.google.email}).signaturetel+'</span></div><div><span style="font-family:"Helvetica Neue""><a href="mailto:'+Meteor.user().services.google.email+'" target="_blank">'+Meteor.user().services.google.email+'</a></span></div></div><div><br></div><div><span style="font-family:"Helvetica Neue"">Philico AG</span></div><div><span style="font-family:"Helvetica Neue"">Sonder 16</span></div><div><span style="font-family:"Helvetica Neue"">CH-9042 Speicher</span></div></div><div><span style="font-family:"Helvetica Neue""><a href="http://www.philico.com" target="_blank">www.philico.com</a></span></div></div></div></div></div></div></span></div></div></div></div>',
      createdAt: new Date(),
      }    
     })

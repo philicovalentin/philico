@@ -91,11 +91,11 @@
         <col width="150">
         <col width="220">
 		  		<tr>
-		  			<td>Domicile phone +41(0)</td>
+		  			<td>Domicile phone 41(0)</td>
 		  			<td><input type="number" pattern="\d*" maxlength="9" name="dnumber" value="{{dnumber}}"></td>
 		  		</tr>
 		  		<tr>
-		  			<td>Mobile phone +41(0)</td>
+		  			<td>Mobile phone 41(0)</td>
 		  			<td><input type="number" maxlength="9" name="mnumber" value="{{mnumber}}"></td>
 		  		</tr>
 		  		<tr>
@@ -607,6 +607,21 @@
     
   <br><br>
 
+  <section class="signature"> 
+    <h1>MY SIGNATURE</h1>
+    <ul>
+      {{#each personalinfo}}
+      <li>
+      <div class="gmail_signature"><div dir="ltr"><div><div dir="ltr"><span><div><div><div style="word-wrap:break-word"><div style="word-wrap:break-word"><b style="font-family:'Helvetica Neue',sans-serif"><span style="color:#004a8d">{{finame}} {{faname}}<br></span></b><div style="font-family:'Helvetica Neue',sans-serif"><div><div><span style="font-family:'Helvetica Neue'">{{phposition}}</span></div><div><br></div><div><div><span style="font-family:'Helvetica Neue'">{{signaturetel}}</span></div><div><span style="font-family:'Helvetica Neue'"><a href="mailto:{{email}}" target="_blank">{{email}}</a></span></div></div><div><br></div><div><span style="font-family:'Helvetica Neue'">Philico AG</span></div><div><span style="font-family:'Helvetica Neue'">Sonder 16</span></div><div><span style="font-family:'Helvetica Neue'">CH-9042 Speicher</span></div></div><div><span style="font-family:'Helvetica Neue'"><a href="http://www.philico.com" target="_blank">www.philico.com</a></span></div></div></div></div></div></div></span></div></div></div></div>
+      </li>
+      <li><p><strong>Signature HTML</strong></p>
+        {{signature}}</li>
+      {{/each}}
+    </ul>
+  </section>
+
+  <br><br>
+
 <!--           CV section             -->
   <section>
   <form class="newcv">   
@@ -631,6 +646,8 @@
   </section>
  	
 </main>
+<br>
+ 
      
 {{/if}}   
   

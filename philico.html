@@ -607,59 +607,29 @@
     
   <br><br>
 
+<!--           CV section             -->
+  <section>
+  <form class="newcv">   
+      <input type="submit" value="My CV (pdf)">
+  </form>
+  </section>
+
+  <br><br>
+
   <section class="admin"> 
   <form class="employeescv">
       {{#if adminrights}}
     <ul>
       {{#each adminpersonalinfo}}
       <span>
-        <input type="submit" value="Generate {{finame}} CV">
+        <input type="submit" value="{{finame}} CV">
       </span>
       {{/each}}
     </ul>
       {{/if}}
   </form>
   </section>
-
-  <br><br>
-
-<!--           CV section             -->
-  <section>
-  <form class="newcv">   
-      <input type="submit" value="Add a cv">
-  </form>
-  </section>
-
-  <br><br>
-  
-  <section id="mycv">
-    {{#each personalinfo}}
-    <p><strong>{{finame}} {{faname}}</strong></p>
-    <p>Curriculum Vitae</p>
-    <br><br><br><br>
-    <p>PERSONAL INFORMATION</p>      
-    <div id="corecomp">
-      <p>
-      <div>
-        <p>Birthday</p>
-        <p>Nationality</p>
-        <p>Address</p>
-        <p>Contact</p>
-      </div>
-      </p>
-      <p>
-      <div>
-        <p><p>{{birth}}</p></p>
-        <p>{{nationality1}}{{#if nationality2}} - {{nationality2}}{{/if}}{{#if nationality3}} - {{nationality3}}{{/if}}{{#if nationality4}} - {{nationality4}}{{/if}}</p>
-        <p>{{street}},{{addnbr}}<br>
-          {{zip}} - {{city}}</p>
-        <p>+41(0) {{mnumber}}<br>
-          {{email}}</p>
-      </div>
-      </p>
-    </div>
-    {{/each}} 
-  </section>  	
+ 	
 </main>
      
 {{/if}}   

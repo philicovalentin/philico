@@ -360,10 +360,12 @@ Template.body.events({
       var columns5 = ["PROJECT EXPERIENCE", ""];
       var rows5;
       var myDocument5 = Experiences.find({ owner: Meteor.user().services.google.email });
-      myDocument5.forEach(function(experiences){
-      rows5 = rows5, [experiences.company,""],[experiences.stdate+" - "+experiences.enddate, experiences.customer+", "+experiences.customercity+" - "+experiences.department]});
+      /*myDocument5.forEach(function(experiences){
+      rows5 = rows5, 
+      [experiences.company,""],
+      [experiences.stdate+" - "+experiences.enddate, experiences.customer+", "+experiences.customercity+" - "+experiences.department]});
       var rows51= [rows5];
-      doc.autoTable(columns5, rows51, {startY: doc.autoTableEndPosY() + 40, theme: 'plain'});
+      doc.autoTable(columns5, rows51, {startY: doc.autoTableEndPosY() + 40, theme: 'plain'});*/
       doc.save('table.pdf');
       /*doc.fromHTML($('#mycv').get(0), 20,20,{ 'width': 500});
       doc.save('CV.pdf');*/

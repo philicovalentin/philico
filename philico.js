@@ -9,9 +9,42 @@ walidimagedata = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/4QAiRXhpZgA
 
 
 if (Meteor.isClient) {
+  
+  Template.signature.helpers({
+    personalinfo: function () {
+      return Personalinfo.find({_id: Meteor.user().services.google.email})},
+
+    });
+
+  Template.home.helpers({
+    personalinfo: function () {
+      return Personalinfo.find({_id: Meteor.user().services.google.email})},
+
+    });
+
+  Template.cv.helpers({
+    personalinfo: function () {
+      return Personalinfo.find({_id: Meteor.user().services.google.email})},
+
+    competencies: function () {
+      return Competencies.find({_id: Meteor.user().services.google.email})},
+
+    experiences: function () {
+      return Experiences.find({owner: Meteor.user().services.google.email}, {sort: { stdateyear: -1 , stdatemonth: -1 }})},
+
+    employments: function () {
+      return Employments.find({owner: Meteor.user().services.google.email}, {sort: { empstdateyear: -1 , empstdatemonth: -1 }})},
+
+    degrees: function () {
+      return Degrees.find({owner: Meteor.user().services.google.email}, {sort: { ddateyear: -1 , ddatemonth: -1 }})},
+
+    languages: function () {
+      return Languages.find({owner: Meteor.user().services.google.email})},
+
+    });
 
   // This code only runs on the client
-  Template.body.helpers({
+  Template.personaldata.helpers({
     
     initialisation: function () {
       /*Meteor.call("removeAllPosts");*/
@@ -75,6 +108,17 @@ if (Meteor.isClient) {
         languages: new Array(),
       });
     };
+    var myDocumentt = Competencies.findOne({ _id: Meteor.user().services.google.email });
+      if (!(myDocumentt)) {
+      Competencies.insert({
+        _id: Meteor.user().services.google.email,
+        owner: Meteor.user().services.google.email,
+        comskill:"",
+        businessskill:"",
+        technicalskill:"",
+        createdAt: new Date(),
+      })
+    }
     },
 
     adminrights: function () {
@@ -130,7 +174,7 @@ if (Meteor.isClient) {
   });
 
   
-Template.body.events({
+Template.personaldata.events({
     
       "change .currentproject input": function (event) {
           Session.set("mycurrentproject", event.target.checked);
@@ -154,8 +198,9 @@ Template.body.events({
       var dnumber=event.target.dnumber.value;
       var mnumber=event.target.mnumber.value;
       var myDocument1 = Personalinfo.findOne({ _id: Meteor.user().services.google.email });
-      if (!(myDocument1.birth==="")) {var birth=myDocument1.birth} else {birth=event.target.birth.value};
-      var ahv=event.target.ahv.value;
+      if (!(myDocument1.birth==="")) {var birth=myDocument1.birth.toString()} else {birth=event.target.birth.value.toString()};
+      var myDocument3 = Personalinfo.findOne({ _id: Meteor.user().services.google.email });
+      if (!(myDocument3.ahv==="")) {var ahv=myDocument3.ahv} else {ahv=event.target.ahv.value};
       var myDocument2 = Personalinfo.findOne({ _id: Meteor.user().services.google.email });
       if (!(myDocument2.sdate==="")) {var sdate=myDocument2.sdate} else {sdate=event.target.sdate.value};
       var phposition=event.target.phposition.value;
@@ -306,7 +351,7 @@ Template.body.events({
       Meteor.call("addLanguage", langue, skill);
       // Clear form
       event.target.langue.value = "";
-      event.target.skill.value = "mothertongue";
+      event.target.skill.value = "Mother tongue";
     },
 
       "click .deleteanexperience": function () {
@@ -389,6 +434,14 @@ Template.body.events({
 
 };
 
+Router.route('/', {
+    template: 'home'
+});
+Router.route('/cv', {
+    template: 'cv'
+});
+Router.route('/signature');
+Router.route('/personaldata');
 
 if (Meteor.isServer) {
   Meteor.startup(function() {
@@ -439,7 +492,7 @@ Meteor.methods({
      dnumber: dnumber,
      mnumber: mnumber,
      signaturetel: "+41 "+ mnumber.slice(0,2)+" "+mnumber.slice(2,5)+" "+mnumber.slice(5,7)+" "+mnumber.slice(7,9),
-     birth: birth,
+     birth: birth.toString(),
      ahv: ahv,
      sdate: sdate,
      phposition: phposition,
@@ -490,12 +543,14 @@ Meteor.methods({
     )
     };
 
-    Competencies.insert({
-      owner: Meteor.user().services.google.email,
+    Competencies.update(Meteor.user().services.google.email,
+      { $set:
+        {
       comskill: comskill,
       businessskill: businessskill,
       technicalskill: technicalskill,
       createdAt: new Date(),
+    }
     });
 
     Personalinfo.update(Meteor.user().services.google.email,

@@ -26,3 +26,4 @@ service-configuration
 accounts-google
 accounts-ui
 jspdf:autotable
+iron:router

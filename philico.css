@@ -50,7 +50,7 @@ body {
 }
 
 .headertitle {
-  font-size: 1.5em;
+  font-size: 14px;
   margin: 0;
   margin-bottom: 10px;
   display: inline-block;
@@ -166,7 +166,7 @@ li {
 }
 
 
-@media (max-width: 600px) {
+@media (max-width: 660px) {
   li {
     padding: 12px 15px;
   }
@@ -179,6 +179,11 @@ li {
 
 .Paragtitle{
   font-weight: bold;
+}
+
+.cv tr {
+  height: 15px;
+  vertical-align: top;
 }
 
 td {
@@ -194,3 +199,21 @@ input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none; 
   margin: 0; 
 }
+
+.cvsectionname { 
+  display:block; 
+  border-bottom: 3px solid #203f60; 
+  font-size: 16px;
+  font-weight: bold;
+  color: #203f60;
+
+}
+
+.cvtitle { 
+  display:block;
+  font-size: 16px;
+  font-weight: bold;
+  color: #203f60;
+}
+
+

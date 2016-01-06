@@ -1,38 +1,53 @@
-<template name="home">
-  <head>
-    <title>Employee Profile</title>
-  </head>
+<head>
+  <title>Employee Profile</title>
+</head>
 
-<body>
-  <div class="container">
+<!--           Home template             -->
+
+<template name="home">
+<div class="container">
   <header>
     <div id="mainheader">
       <p>{{> loginButtons}}</p>
       <a href="http://www.philico.com"><img align="right" src="/img/philico_logo.png" alt="HTML5 Icon"></a>  
     </div>
   </header>
-
-  <br>
-  {{#if currentUser}}
+<br>
+  
+{{#if currentUser}}
   {{initialisation}}
 
 <main>
-<ul class="nav nav-pills">
-  <li role="presentation"><a href="/">Home</a></li>
-  <li role="presentation"><a href="/personaldata">Personal Data</a></li>
-  <li role="presentation"><a href="/signature">Signature</a></li>
-  <li role="presentation"><a href="/CV">CV</a></li>
-</ul>
-{{#each personalinfo}}
-<h1>Welcome {{finame}} {{faname}}</h1>  
-{{/each}}
-</main>
-     
+  <ul class="nav nav-pills">
+    <li role="presentation"><a href="/">Home</a></li>
+    <li role="presentation"><a href="/personaldata">Personal Data</a></li>
+    <li role="presentation"><a href="/signature">Signature</a></li>
+    <li role="presentation"><a href="/CV">{{#each personalinfo}}{{faname}}{{/each}} CV</a></li>
+    {{#if adminrights}}
+    <li role="presentation" class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees CVs<span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        {{#each adminpersonalinfo}}
+        <li><a href="/cvemployee">{{faname}} CV</a></li>
+        {{/each}}
+      </ul>
+    </li>
+    {{/if}}
+  </ul>
+  <br>
+  {{#each personalinfo}}
+  <h1>Welcome {{finame}} {{faname}}</h1>  
+  {{/each}}
+</main>     
 {{/if}}   
-  </div>
-</body>
+
+</div>
 </template>
 
+
+
+<!--           Personal data template             -->
 
 <template name="personaldata">
 <div class="container">
@@ -42,17 +57,29 @@
       <a href="http://www.philico.com"><img align="right" src="/img/philico_logo.png" alt="HTML5 Icon"></a>  
     </div>
   </header>
-
-  <br>
-  {{#if currentUser}}
+<br>
+  
+{{#if currentUser}}
 
 <main>
 <ul class="nav nav-pills">
   <li role="presentation"><a href="/">Home</a></li>
   <li role="presentation"><a href="/personaldata">Personal Data</a></li>
   <li role="presentation"><a href="/signature">Signature</a></li>
-  <li role="presentation"><a href="/CV">CV</a></li>
+  <li role="presentation"><a href="/CV">{{#each personalinfo}}{{faname}}{{/each}} CV</a></li>
+  {{#if adminrights}}
+  <li role="presentation" class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees CVs<span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+      {{#each adminpersonalinfo}}
+      <li><a href="/cvemployee">{{faname}} CV</a></li>
+      {{/each}}
+    </ul>
+  </li>
+  {{/if}}
 </ul>
+<br>
 
    <section class="profile">
     <h1>PERSONAL INFORMATION</h1>
@@ -95,6 +122,10 @@
           <tr>
             <td></td>
             <td><input type="text" name="city" value="{{city}}" placeholder="City"></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><input type="text" name="addcountry" value="{{addcountry}}" placeholder="Country"></td>
           </tr>
           <tr>
             <td>Nationality</td>
@@ -552,7 +583,7 @@
         <td><input type="text" name="dip" required></td>
       </tr>
       <tr>
-        <td>Specialisation</td>
+        <td>Specialisation (opt)</td>
         <td><input type="text" name="spec"></td>
       </tr>
       <tr>
@@ -644,6 +675,9 @@
 </template>
 
 <template name="signature">
+  <head>
+    <title>Signature</title>
+  </head>
 <div class="container">
   <header>
     <div id="mainheader">
@@ -660,8 +694,20 @@
   <li role="presentation"><a href="/">Home</a></li>
   <li role="presentation"><a href="/personaldata">Personal Data</a></li>
   <li role="presentation"><a href="/signature">Signature</a></li>
-  <li role="presentation"><a href="/CV">CV</a></li>
+    <li role="presentation"><a href="/CV">{{#each personalinfo}}{{faname}}{{/each}} CV</a></li>
+  {{#if adminrights}}
+  <li role="presentation" class="dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees CVs<span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+      {{#each adminpersonalinfo}}
+      <li><a href="/cvemployee">{{faname}} CV</a></li>
+      {{/each}}
+    </ul>
+  </li>
+  {{/if}}
 </ul>
+<br>
 
 <section class="signature">
   {{#each personalinfo}} 
@@ -682,6 +728,7 @@
 </template>
 
 <template name="cv">
+  {{#if currentUser}}
   <body>
   <div class="container">
     <main class="cv">
@@ -725,7 +772,7 @@
  </tr>
  <tr>
    <td></td>
-   <td>Switzerland</td>
+   <td>{{addcountry}}</td>
  </tr>
  <tr></tr>
  <tr>
@@ -886,4 +933,250 @@
 </main>
 </div>
 </body>
+
+{{else}}
+<div class="container">
+  <header>
+    <div id="mainheader">
+      <p>{{> loginButtons}}</p>
+      <a href="http://www.philico.com"><img align="right" src="/img/philico_logo.png" alt="HTML5 Icon"></a>  
+    </div>
+  </header>
+</div>
+<br>
+
+{{/if}}
+
+</template>
+
+
+
+
+
+
+
+
+
+<template name="cvemployee">
+  {{#if currentUser}}
+  {{#if adminrights}}
+  <body>
+  <div class="container">
+    <main class="cv">
+      <br>
+      <p><img align="left" src="img/philico_logo.png" height="100" width="120" alt="Philico logo"></p>
+      <br><br><br><br>
+
+{{#each adminpersonalinfo}} 
+<table>
+<col width="220px" />
+<col width="440px" />
+<tr>
+ <td class="cvtitle">{{finameup}} {{fanameup}} <br>
+ Curriculum Vitae</td>
+<td><img align="right" src="img/{{finame}} {{faname}}.jpg" height="142" width="136" alt="{{finame}} {{faname}} picture">
+ </td>
+</tr>
+<tr></tr>
+<tr></tr>
+ <tr>
+   <td colspan="2"><span class="cvsectionname">PERSONAL INFORMATION</span></td>
+ </tr>
+ <tr></tr>
+ <tr>
+   <td>Birthday</td>
+   <td>{{birth}}</td>
+ </tr>
+ <tr></tr>
+ <tr>
+   <td>Nationality</td>
+   <td>{{nationality1}}{{#if nationality2}}, {{nationality2}}{{/if}}{{#if nationality3}}, {{nationality3}}{{/if}}</td>
+ </tr>
+ <tr></tr>
+ <tr>
+   <td>Address</td>
+   <td>{{street}}, {{addnbr}}</td>
+ </tr>
+ <tr>
+   <td></td>
+   <td>{{zip}} {{city}}</td>
+ </tr>
+ <tr>
+   <td></td>
+   <td>{{addcountry}}</td>
+ </tr>
+ <tr></tr>
+ <tr>
+   <td>Contact</td>
+   <td>{{signaturetel}}</td>
+  </tr>
+  <tr>
+    <td></td>
+   <td>{{email}}</td>
+ </tr>
+ <tr></tr>
+ <tr></tr>
+</table>
+{{/each}}
+
+{{#each competencies}}
+<table>
+<col width="220px" />
+<col width="440px" />
+ <tr>
+   <td colspan="2"><span class="cvsectionname">CORE COMPETENCIES</span></td>
+ </tr>
+ <tr></tr>
+ <tr>
+   <td>Communication and Analytical Skills</td>
+   <td>{{comskill}}</td>
+ </tr>
+ <tr></tr>
+ <tr>
+   <td>Professional Experience</td>
+   <td>{{businessskill}}</td>
+ </tr>
+ <tr></tr>
+ <tr>
+   <td>Technical Expertise</td>
+   <td>{{technicalskill}}</td>
+ </tr>
+ <tr></tr>
+ <tr></tr>
+</table>
+{{/each}}
+     
+<table>
+<col width="220px" />
+<col width="440px" />
+ <tr>
+   <td colspan="2"><span class="cvsectionname">PROJECT EXPERIENCE</span></td>
+ </tr>
+ <tr></tr>
+  {{#each experiences}}
+  <tr>
+    <td colspan="2">{{company}}</td>
+  </tr>
+  <tr>
+    <td>{{stdate}} - {{enddate}}</td>
+    <td>{{customer}}, {{customercity}} - {{department}}</td>
+  </tr>
+  <tr>
+    <td></td>  
+    <td>{{projecttitle1}}</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>{{projectdescription1}}</td>
+  </tr>
+  {{#if projecttitle2}}
+  <tr>
+    <td></td>
+    <td>{{projecttitle2}}</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>{{projectdescription2}}</td>
+  </tr>
+  {{/if}}
+  {{#if projecttitle3}}
+  <tr>
+    <td></td>
+    <td>{{projecttitle3}}</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>{{projectdescription3}}</td>
+  </tr>
+  {{/if}}
+  {{#if projecttitle4}}
+  <tr>
+    <td></td>
+    <td>{{projecttitle4}}</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>{{projectdescription4}}</td>
+  </tr>
+  {{/if}}
+  <tr></tr>
+  {{/each}}
+  <tr></tr>
+</table>
+ 
+<table>
+<col width="220px" />
+<col width="440px" />
+ <tr>
+   <td colspan="2"><span class="cvsectionname">EMPLOYMENT HISTORY</span></td>
+ </tr>
+ <tr></tr>
+ {{#each employments}}
+  <tr>
+    <td>{{empstdate}} - {{empenddate}}</td>
+    <td>{{empcompany}}, {{empcity}}</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>{{empposition}}</td>
+  </tr>
+  <tr></tr>
+    {{/each}}
+  <tr></tr>
+</table>
+  
+<table>
+<col width="220px" />
+<col width="440px" />
+<tr>
+   <td colspan="2"><span class="cvsectionname">DEGREES</span></td>
+ </tr>
+ <tr></tr>
+ {{#each degrees}}
+ <tr>
+  <td>{{ddate}}</td>
+  <td>{{uni}}, {{dipcity}} - {{dipcountry}}</td>
+ </tr>
+ <tr>
+  <td></td>
+  <td>{{dip}}{{#if spec}}, {{spec}}{{/if}}</td>
+ </tr>
+ <tr></tr>
+ {{/each}}
+ <tr></tr>
+</table>
+  
+<table>
+<col width="220px" />
+<col width="440px" />
+ <tr>
+   <td colspan="2"><span class="cvsectionname">LANGUAGE SKILLS</span></td>
+ </tr>
+ <tr></tr>
+ {{#each languages}}
+ <tr>
+  <td>{{langue}}</td>
+  <td>{{skill}}</td>
+ </tr>
+ {{/each}}
+ <tr></tr>
+</table>
+</main>
+</div>
+</body>
+
+{{else}}
+<div class="container">
+  <header>
+    <div id="mainheader">
+      <p>{{> loginButtons}}</p>
+      <a href="http://www.philico.com"><img align="right" src="/img/philico_logo.png" alt="HTML5 Icon"></a>  
+    </div>
+  </header>
+</div>
+<br>
+
+{{/if}}
+{{/if}}
+
 </template>

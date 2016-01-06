@@ -27,3 +27,4 @@ accounts-google
 accounts-ui
 jspdf:autotable
 iron:router
+mizzao:bootstrap-3

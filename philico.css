@@ -2,7 +2,7 @@
 body {
   font-family: sans-serif;
   background: #fff;
-  color: #203f60; 
+  color: #666666; 
 
   position: absolute;
   top: 0;
@@ -166,7 +166,7 @@ li {
 }
 
 
-@media (max-width: 800px) {
+@media (max-width: 660px) {
   li {
     padding: 12px 15px;
   }

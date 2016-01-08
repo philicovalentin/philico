@@ -15,21 +15,21 @@
 <br>
   
 {{#if currentUser}}
-  {{initialisation}}
+{{initialisation}}
 
 <main>
   <ul class="nav nav-pills">
     <li role="presentation"><a href="/">Home</a></li>
     <li role="presentation"><a href="/personaldata">Personal Data</a></li>
     <li role="presentation"><a href="/signature">Signature</a></li>
-    <li role="presentation"><a href="/CV">{{#each personalinfo}}{{faname}}{{/each}} CV</a></li>
+    <li role="presentation"><a href="/cv">{{#each personalinfo}}{{faname}}{{/each}} CV</a></li>
     {{#if adminrights}}
     <li role="presentation" class="dropdown">
       <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees CVs<span class="caret"></span>
       </a>
       <ul class="dropdown-menu">
         {{#each adminpersonalinfo}}
-        <li><a href="/cvemployee">{{faname}} CV</a></li>
+        <li><a href="/cv{{_id}}">{{faname}} CV</a></li>
         {{/each}}
       </ul>
     </li>
@@ -60,31 +60,32 @@
 <br>
   
 {{#if currentUser}}
+{{initialisation}}
 
 <main>
 <ul class="nav nav-pills">
   <li role="presentation"><a href="/">Home</a></li>
   <li role="presentation"><a href="/personaldata">Personal Data</a></li>
   <li role="presentation"><a href="/signature">Signature</a></li>
-  <li role="presentation"><a href="/CV">{{#each personalinfo}}{{faname}}{{/each}} CV</a></li>
+  <li role="presentation"><a href="/cv">{{#each personalinfo}}{{faname}}{{/each}} CV</a></li>
   {{#if adminrights}}
   <li role="presentation" class="dropdown">
     <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees CVs<span class="caret"></span>
     </a>
     <ul class="dropdown-menu">
       {{#each adminpersonalinfo}}
-      <li><a href="/cvemployee">{{faname}} CV</a></li>
+      <li><a href="/cv{{_id}}">{{faname}} CV</a></li>
       {{/each}}
     </ul>
   </li>
   {{/if}}
 </ul>
 <br>
-
+  {{#each personalinfo}}
    <section class="profile">
     <h1>PERSONAL INFORMATION</h1>
       <form class="new-profile">
-        {{#each personalinfo}}
+        
         <table>
         <col width="150">
         <col width="220">
@@ -140,6 +141,12 @@
             <td>
               <input type="text" name="nationality3" value="{{nationality3}}"></td>
           </tr>
+        </table>
+        </p>
+        <p>
+        <table>
+        <col width="150">
+        <col width="220">
           <tr>
             <td>Source tax</td>
             <td><select class="options" name="sourcetaxed" value="{{sourcetaxed}}">
@@ -148,12 +155,6 @@
                   <option class="options" value="no">No</option>
                 </select></td>
           </tr>
-        </table>
-        </p>
-        <p>
-        <table>
-        <col width="150">
-        <col width="220">
           <tr>
             <td>Domicile phone 41(0)</td>
             <td><input type="number" pattern="\d*" maxlength="9" name="dnumber" value="{{dnumber}}"></td>
@@ -339,7 +340,7 @@
         </table>
         </p>
       </div>
-      {{/each}}
+      
         <p><input type="submit" value="Submit your personal information"></p> 
     </form>          
   </section>
@@ -352,24 +353,26 @@
   <h1>CORE COMPETENCIES</h1>
     <form class="new-competency">
     <div id="corecomp">
+
       <p>
       <div>
           <p class="Paragtitle">Communication and Analytical Skills</p>
-          <textarea name="comskill" id="comp" value="{{#each competencies}}{{comskill}}{{/each}}"></textarea>
+          <textarea name="comskill" id="comp" value="{{competencies.[0].comskill}}"></textarea>
       </div>
       </p>
       <p>
       <div>
           <p class="Paragtitle">Business Expertise</p>
-          <textarea name="businessskill" id="comp" value="{{#each competencies}}{{businessskill}}{{/each}}"></textarea>
+          <textarea name="businessskill" id="comp" value="{{competencies.[0].businessskill}}"></textarea>
       </div>
       </p>
       <p>
       <div>
           <p class="Paragtitle">Technical Expertise</p>
-          <textarea name="technicalskill" id="comp" value="{{#each competencies}}{{technicalskill}}{{/each}}"></textarea>
+          <textarea name="technicalskill" id="comp" value="{{competencies.[0].technicalskill}}"></textarea>
       </div>
       </p>
+
     </div>
     <p><input type="submit" value="Submit competencies"></p>
     </form>
@@ -455,51 +458,51 @@
     <button id="delete" class="deleteanexperience">&times;</button>
     <table>
       <col width="220">
-      <tr>
-        <td colspan="2">{{company}}</td>
-      </tr>
-      <tr>
-        <td>{{stdate}} - {{enddate}}</td>
-        <td>{{customer}}, {{customercity}} - {{department}}</td>
-      </tr>
-      <tr>
-        <td></td>  
-        <td>{{projecttitle1}}</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>{{projectdescription1}}</td>
-      </tr>
-      {{#if projecttitle2}}
-      <tr>
-        <td></td>
-        <td>{{projecttitle2}}</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>{{projectdescription2}}</td>
-      </tr>
-      {{/if}}
-      {{#if projecttitle3}}
-      <tr>
-        <td></td>
-        <td>{{projecttitle3}}</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>{{projectdescription3}}</td>
-      </tr>
-      {{/if}}
-      {{#if projecttitle4}}
-      <tr>
-        <td></td>
-        <td>{{projecttitle4}}</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>{{projectdescription4}}</td>
-      </tr>
-      {{/if}}
+          <tr>
+            <td colspan="2">{{company}}</td>
+          </tr>
+          <tr>
+            <td>{{stdate}} - {{enddate}}</td>
+            <td>{{customer}}, {{customercity}} - {{department}}</td>
+          </tr>
+          <tr>
+            <td></td>  
+            <td>{{projecttitle1}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{projectdescription1}}</td>
+          </tr>
+          {{#if projecttitle2}}
+          <tr>
+            <td></td>
+            <td>{{projecttitle2}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{projectdescription2}}</td>
+          </tr>
+          {{/if}}
+          {{#if projecttitle3}}
+          <tr>
+            <td></td>
+            <td>{{projecttitle3}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{projectdescription3}}</td>
+          </tr>
+          {{/if}}
+          {{#if projecttitle4}}
+          <tr>
+            <td></td>
+            <td>{{projecttitle4}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{projectdescription4}}</td>
+          </tr>
+          {{/if}}
       </table>
     </li>
     {{/each}}
@@ -669,6 +672,7 @@
   {{/each}}
   </ul>
   </section>
+  {{/each}}
   </main>
   {{/if}}
   </div>
@@ -694,21 +698,20 @@
   <li role="presentation"><a href="/">Home</a></li>
   <li role="presentation"><a href="/personaldata">Personal Data</a></li>
   <li role="presentation"><a href="/signature">Signature</a></li>
-    <li role="presentation"><a href="/CV">{{#each personalinfo}}{{faname}}{{/each}} CV</a></li>
+    <li role="presentation"><a href="/cv">{{#each personalinfo}}{{faname}}{{/each}} CV</a></li>
   {{#if adminrights}}
   <li role="presentation" class="dropdown">
     <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees CVs<span class="caret"></span>
     </a>
     <ul class="dropdown-menu">
       {{#each adminpersonalinfo}}
-      <li><a href="/cvemployee">{{faname}} CV</a></li>
+      <li><a href="/cv{{_id}}">{{faname}} CV</a></li>
       {{/each}}
     </ul>
   </li>
   {{/if}}
 </ul>
 <br>
-
 <section class="signature">
   {{#each personalinfo}} 
     <h1>{{finameup}} {{fanameup}} SIGNATURE</h1>
@@ -721,22 +724,23 @@
     </ul>
   {{/each}}
   </section> 
-</main>
-     
-  {{/if}}   
+</main>     
+{{/if}}   
 </div>
 </template>
+
+
 
 <template name="cv">
   {{#if currentUser}}
-  <body>
-  <div class="container">
-    <main class="cv">
-      <br>
-      <p><img align="left" src="img/philico_logo.png" height="100" width="120" alt="Philico logo"></p>
-      <br><br><br><br>
-
+<body>
 {{#each personalinfo}} 
+<div class="container">
+<main class="cv">
+  <br>
+  <p><img align="left" src="img/philico_logo.png" height="100" width="120" alt="Philico logo"></p>
+  <br><br><br><br>
+
 <table>
 <col width="220px" />
 <col width="440px" />
@@ -764,7 +768,7 @@
  <tr></tr>
  <tr>
    <td>Address</td>
-   <td>{{street}}, {{addnbr}}</td>
+   <td>{{street}}{{#if addnbr}}, {{addnbr}}{{/if}}</td>
  </tr>
  <tr>
    <td></td>
@@ -780,15 +784,14 @@
    <td>{{signaturetel}}</td>
   </tr>
   <tr>
-    <td></td>
+   <td></td>
    <td>{{email}}</td>
  </tr>
  <tr></tr>
  <tr></tr>
 </table>
-{{/each}}
 
-{{#each competencies}}
+
 <table>
 <col width="220px" />
 <col width="440px" />
@@ -798,30 +801,29 @@
  <tr></tr>
  <tr>
    <td>Communication and Analytical Skills</td>
-   <td>{{comskill}}</td>
+   <td>{{competencies.[0].comskill}}</td>
  </tr>
  <tr></tr>
  <tr>
    <td>Professional Experience</td>
-   <td>{{businessskill}}</td>
+   <td>{{competencies.[0].businessskill}}</td>
  </tr>
  <tr></tr>
  <tr>
    <td>Technical Expertise</td>
-   <td>{{technicalskill}}</td>
+   <td>{{competencies.[0].technicalskill}}</td>
  </tr>
  <tr></tr>
  <tr></tr>
 </table>
-{{/each}}
      
 <table>
 <col width="220px" />
 <col width="440px" />
- <tr>
-   <td colspan="2"><span class="cvsectionname">PROJECT EXPERIENCE</span></td>
- </tr>
- <tr></tr>
+  <tr>
+    <td colspan="2"><span class="cvsectionname">PROJECT EXPERIENCE</span></td>
+  </tr>
+  <tr></tr>
   {{#each experiences}}
   <tr>
     <td colspan="2">{{company}}</td>
@@ -932,6 +934,7 @@
 </table>
 </main>
 </div>
+{{/each}}
 </body>
 
 {{else}}
@@ -944,239 +947,5 @@
   </header>
 </div>
 <br>
-
 {{/if}}
-
-</template>
-
-
-
-
-
-
-
-
-
-<template name="cvemployee">
-  {{#if currentUser}}
-  {{#if adminrights}}
-  <body>
-  <div class="container">
-    <main class="cv">
-      <br>
-      <p><img align="left" src="img/philico_logo.png" height="100" width="120" alt="Philico logo"></p>
-      <br><br><br><br>
-
-{{#each adminpersonalinfo}} 
-<table>
-<col width="220px" />
-<col width="440px" />
-<tr>
- <td class="cvtitle">{{finameup}} {{fanameup}} <br>
- Curriculum Vitae</td>
-<td><img align="right" src="img/{{finame}} {{faname}}.jpg" height="142" width="136" alt="{{finame}} {{faname}} picture">
- </td>
-</tr>
-<tr></tr>
-<tr></tr>
- <tr>
-   <td colspan="2"><span class="cvsectionname">PERSONAL INFORMATION</span></td>
- </tr>
- <tr></tr>
- <tr>
-   <td>Birthday</td>
-   <td>{{birth}}</td>
- </tr>
- <tr></tr>
- <tr>
-   <td>Nationality</td>
-   <td>{{nationality1}}{{#if nationality2}}, {{nationality2}}{{/if}}{{#if nationality3}}, {{nationality3}}{{/if}}</td>
- </tr>
- <tr></tr>
- <tr>
-   <td>Address</td>
-   <td>{{street}}, {{addnbr}}</td>
- </tr>
- <tr>
-   <td></td>
-   <td>{{zip}} {{city}}</td>
- </tr>
- <tr>
-   <td></td>
-   <td>{{addcountry}}</td>
- </tr>
- <tr></tr>
- <tr>
-   <td>Contact</td>
-   <td>{{signaturetel}}</td>
-  </tr>
-  <tr>
-    <td></td>
-   <td>{{email}}</td>
- </tr>
- <tr></tr>
- <tr></tr>
-</table>
-{{/each}}
-
-{{#each competencies}}
-<table>
-<col width="220px" />
-<col width="440px" />
- <tr>
-   <td colspan="2"><span class="cvsectionname">CORE COMPETENCIES</span></td>
- </tr>
- <tr></tr>
- <tr>
-   <td>Communication and Analytical Skills</td>
-   <td>{{comskill}}</td>
- </tr>
- <tr></tr>
- <tr>
-   <td>Professional Experience</td>
-   <td>{{businessskill}}</td>
- </tr>
- <tr></tr>
- <tr>
-   <td>Technical Expertise</td>
-   <td>{{technicalskill}}</td>
- </tr>
- <tr></tr>
- <tr></tr>
-</table>
-{{/each}}
-     
-<table>
-<col width="220px" />
-<col width="440px" />
- <tr>
-   <td colspan="2"><span class="cvsectionname">PROJECT EXPERIENCE</span></td>
- </tr>
- <tr></tr>
-  {{#each experiences}}
-  <tr>
-    <td colspan="2">{{company}}</td>
-  </tr>
-  <tr>
-    <td>{{stdate}} - {{enddate}}</td>
-    <td>{{customer}}, {{customercity}} - {{department}}</td>
-  </tr>
-  <tr>
-    <td></td>  
-    <td>{{projecttitle1}}</td>
-  </tr>
-  <tr>
-    <td></td>
-    <td>{{projectdescription1}}</td>
-  </tr>
-  {{#if projecttitle2}}
-  <tr>
-    <td></td>
-    <td>{{projecttitle2}}</td>
-  </tr>
-  <tr>
-    <td></td>
-    <td>{{projectdescription2}}</td>
-  </tr>
-  {{/if}}
-  {{#if projecttitle3}}
-  <tr>
-    <td></td>
-    <td>{{projecttitle3}}</td>
-  </tr>
-  <tr>
-    <td></td>
-    <td>{{projectdescription3}}</td>
-  </tr>
-  {{/if}}
-  {{#if projecttitle4}}
-  <tr>
-    <td></td>
-    <td>{{projecttitle4}}</td>
-  </tr>
-  <tr>
-    <td></td>
-    <td>{{projectdescription4}}</td>
-  </tr>
-  {{/if}}
-  <tr></tr>
-  {{/each}}
-  <tr></tr>
-</table>
- 
-<table>
-<col width="220px" />
-<col width="440px" />
- <tr>
-   <td colspan="2"><span class="cvsectionname">EMPLOYMENT HISTORY</span></td>
- </tr>
- <tr></tr>
- {{#each employments}}
-  <tr>
-    <td>{{empstdate}} - {{empenddate}}</td>
-    <td>{{empcompany}}, {{empcity}}</td>
-  </tr>
-  <tr>
-    <td></td>
-    <td>{{empposition}}</td>
-  </tr>
-  <tr></tr>
-    {{/each}}
-  <tr></tr>
-</table>
-  
-<table>
-<col width="220px" />
-<col width="440px" />
-<tr>
-   <td colspan="2"><span class="cvsectionname">DEGREES</span></td>
- </tr>
- <tr></tr>
- {{#each degrees}}
- <tr>
-  <td>{{ddate}}</td>
-  <td>{{uni}}, {{dipcity}} - {{dipcountry}}</td>
- </tr>
- <tr>
-  <td></td>
-  <td>{{dip}}{{#if spec}}, {{spec}}{{/if}}</td>
- </tr>
- <tr></tr>
- {{/each}}
- <tr></tr>
-</table>
-  
-<table>
-<col width="220px" />
-<col width="440px" />
- <tr>
-   <td colspan="2"><span class="cvsectionname">LANGUAGE SKILLS</span></td>
- </tr>
- <tr></tr>
- {{#each languages}}
- <tr>
-  <td>{{langue}}</td>
-  <td>{{skill}}</td>
- </tr>
- {{/each}}
- <tr></tr>
-</table>
-</main>
-</div>
-</body>
-
-{{else}}
-<div class="container">
-  <header>
-    <div id="mainheader">
-      <p>{{> loginButtons}}</p>
-      <a href="http://www.philico.com"><img align="right" src="/img/philico_logo.png" alt="HTML5 Icon"></a>  
-    </div>
-  </header>
-</div>
-<br>
-
-{{/if}}
-{{/if}}
-
 </template>

@@ -1,0 +1,90 @@
+Competencies = new Mongo.Collection("competencies");
+Experiences = new Mongo.Collection("experiences");
+Employments = new Mongo.Collection("employments");
+Degrees = new Mongo.Collection("degrees");
+Languages = new Mongo.Collection("languages");
+
+
+    /*competencies: function () {
+      return Personalinfo.findOne({_id: Meteor.user().services.google.email}).competencies
+    },
+
+    /*experience: function () {
+      return Personalinfo.findOne({_id: Meteor.user().services.google.email}, {sort: { stdateyear: -1 , stdatemonth: -1 }}).experiences},
+
+    /*employments: function () {
+      return Employments.find({owner: Meteor.user().services.google.email}, {sort: { empstdateyear: -1 , empstdatemonth: -1 }})},
+
+    degrees: function () {
+      return Degrees.find({owner: Meteor.user().services.google.email}, {sort: { ddateyear: -1 , ddatemonth: -1 }})},
+
+    languages: function () {
+      return Languages.find({owner: Meteor.user().services.google.email})},
+*/
+
+
+    /*Competencies.update(Meteor.user().services.google.email,
+      { $set:
+        {
+      comskill: comskill,
+      businessskill: businessskill,
+      technicalskill: technicalskill,
+      createdAt: new Date(),
+    }
+    });*/
+
+    /*Experiences.insert({
+        owner: Meteor.user().services.google.email,
+        company: company,
+        stdatemonth: stdatemonth,
+        stdateyear: stdateyear,
+        stdate: stdate, 
+        enddate: enddate, 
+        customer: customer,
+        customercity: customercity,
+        department: department, 
+        projecttitle1: projecttitle1, 
+        projecttitle2: projecttitle2, 
+        projecttitle3: projecttitle3, 
+        projecttitle4: projecttitle4, 
+        projectdescription1: projectdescription1, 
+        projectdescription2: projectdescription2, 
+        projectdescription3: projectdescription3, 
+        projectdescription4: projectdescription4,
+        createdAt: new Date(),  
+      });*/
+
+<template name="cvemployee{{faname}}">
+{{#if currentUser}}
+{{#if adminrights}}
+<body>
+  <div class="container">
+    <main class="cv">
+      <br>
+      <p><img align="left" src="img/philico_logo.png" height="100" width="120" alt="Philico logo"></p>
+      <br><br><br><br>
+
+      {{#each adminpersonalinfo}}
+      <p>{{finame}}</p>
+      <p>{{#each admincompetencies}} {{#if owner="{{email}}"}} {{comskill}} {{/if}}{{/each}}</p>
+      {{/each}}
+
+    </main>
+  </div>
+</body>
+
+{{else}}
+<div class="container">
+  <header>
+    <div id="mainheader">
+      <p>{{> loginButtons}}</p>
+      <a href="http://www.philico.com"><img align="right" src="/img/philico_logo.png" alt="HTML5 Icon"></a>  
+    </div>
+  </header>
+</div>
+<br>
+
+{{/if}}
+{{/if}}
+
+</template>

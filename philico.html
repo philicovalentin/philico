@@ -2,42 +2,30 @@
   <title>Employee Profile</title>
 </head>
 
+<template name="header">
+    <header>
+    <div id="mainheader">
+      <p>{{> loginButtons}}</p>
+      <a href="http://www.philico.com"><img align="right" src="/images/philico_logo.png" alt="HTML5 Icon"></a>  
+    </div>
+  </header>
+  <br>
+</template>
+
 <!--           Home template             -->
 
 <template name="home">
 <div class="container">
-  <header>
-    <div id="mainheader">
-      <p>{{> loginButtons}}</p>
-      <a href="http://www.philico.com"><img align="right" src="/img/philico_logo.png" alt="HTML5 Icon"></a>  
-    </div>
-  </header>
-<br>
+{{> header}}
   
 {{#if currentUser}}
-{{initialisation}}
 
 <main>
-  <ul class="nav nav-pills">
-    <li role="presentation"><a href="/">Home</a></li>
-    <li role="presentation"><a href="/personaldata">Personal Data</a></li>
-    <li role="presentation"><a href="/signature">Signature</a></li>
-    <li role="presentation"><a href="/cv">{{#each personalinfo}}{{faname}}{{/each}} CV</a></li>
-    {{#if adminrights}}
-    <li role="presentation" class="dropdown">
-      <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees CVs<span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu">
-        {{#each adminpersonalinfo}}
-        <li><a href="/cv{{_id}}">{{faname}} CV</a></li>
-        {{/each}}
-      </ul>
-    </li>
-    {{/if}}
-  </ul>
+  {{> navigation}}
+  {{initialisation}}
   <br>
   {{#each personalinfo}}
-  <h1>Welcome {{finame}} {{faname}}</h1>  
+    <h1>Welcome {{finame}} {{faname}}</h1>
   {{/each}}
 </main>     
 {{/if}}   
@@ -51,35 +39,12 @@
 
 <template name="personaldata">
 <div class="container">
-  <header>
-    <div id="mainheader">
-      <p>{{> loginButtons}}</p>
-      <a href="http://www.philico.com"><img align="right" src="/img/philico_logo.png" alt="HTML5 Icon"></a>  
-    </div>
-  </header>
-<br>
+{{> header}}
   
 {{#if currentUser}}
-{{initialisation}}
 
 <main>
-<ul class="nav nav-pills">
-  <li role="presentation"><a href="/">Home</a></li>
-  <li role="presentation"><a href="/personaldata">Personal Data</a></li>
-  <li role="presentation"><a href="/signature">Signature</a></li>
-  <li role="presentation"><a href="/cv">{{#each personalinfo}}{{faname}}{{/each}} CV</a></li>
-  {{#if adminrights}}
-  <li role="presentation" class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees CVs<span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu">
-      {{#each adminpersonalinfo}}
-      <li><a href="/cv{{_id}}">{{faname}} CV</a></li>
-      {{/each}}
-    </ul>
-  </li>
-  {{/if}}
-</ul>
+{{> navigation}}
 <br>
   {{#each personalinfo}}
    <section class="profile">
@@ -91,15 +56,18 @@
         <col width="220">
           <tr>
             <td>First name</td>
-            <td>{{finame}}</td>
+            {{#if finame}}<td>{{finame}}</td>{{else}}
+            <td><input type="text" name="finame"></td>{{/if}}
           </tr>
           <tr>
             <td>Family name</td>
-            <td>{{faname}}</td>
+            {{#if faname}}<td>{{faname}}</td>{{else}}
+            <td><input type="text" name="faname"></td>{{/if}}
           </tr>
           <tr>
             <td>Email</td>
-            <td>{{email}}</td>
+            {{#if email}}<td>{{email}}</td>{{else}}
+            <td><input type="text" name="email"></td>{{/if}}
           </tr>
         </table>
         <br>
@@ -156,11 +124,11 @@
                 </select></td>
           </tr>
           <tr>
-            <td>Domicile phone 41(0)</td>
+            <td>Domicile phone +41(0)</td>
             <td><input type="number" pattern="\d*" maxlength="9" name="dnumber" value="{{dnumber}}"></td>
           </tr>
           <tr>
-            <td>Mobile phone 41(0)</td>
+            <td>Mobile phone +41(0)</td>
             <td><input type="number" maxlength="9" name="mnumber" value="{{mnumber}}"></td>
           </tr>
           <tr>
@@ -679,38 +647,13 @@
 </template>
 
 <template name="signature">
-  <head>
-    <title>Signature</title>
-  </head>
 <div class="container">
-  <header>
-    <div id="mainheader">
-      <p>{{> loginButtons}}</p>
-      <a href="http://www.philico.com"><img align="right" src="/img/philico_logo.png" alt="HTML5 Icon"></a>  
-    </div>
-  </header>
+  {{> header}}
 
-  <br>
-  {{#if currentUser}}
+{{#if currentUser}}
 
 <main>
-<ul class="nav nav-pills">
-  <li role="presentation"><a href="/">Home</a></li>
-  <li role="presentation"><a href="/personaldata">Personal Data</a></li>
-  <li role="presentation"><a href="/signature">Signature</a></li>
-    <li role="presentation"><a href="/cv">{{#each personalinfo}}{{faname}}{{/each}} CV</a></li>
-  {{#if adminrights}}
-  <li role="presentation" class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees CVs<span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu">
-      {{#each adminpersonalinfo}}
-      <li><a href="/cv{{_id}}">{{faname}} CV</a></li>
-      {{/each}}
-    </ul>
-  </li>
-  {{/if}}
-</ul>
+{{> navigation}}
 <br>
 <section class="signature">
   {{#each personalinfo}} 
@@ -730,15 +673,38 @@
 </template>
 
 
+<template name="navigation">
+  <ul class="nav nav-pills">
+    {{initialisation}}
+    <li role="presentation"><a href="/">Home</a></li>
+    <li role="presentation"><a href="/personaldata">Personal Data</a></li>
+    <li role="presentation"><a href="/signature">Signature</a></li>
+    <li role="presentation">{{#each personalinfo}}<a href="/cv/{{_id}}">{{faname}} CV</a>{{/each}}</li>
+    {{#if adminrights}}
+    <li role="presentation" class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees CVs<span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        {{#each adminpersonalinfo}}
+        <li><a href="/cv/{{_id}}">{{email}} CV</a></li>
+        {{/each}}
+      </ul>
+    </li>
+    {{/if}}
+  </ul>
+</template>
+
+
 
 <template name="cv">
   {{#if currentUser}}
+  {{initialisation}}
 <body>
-{{#each personalinfo}} 
+
 <div class="container">
 <main class="cv">
   <br>
-  <p><img align="left" src="img/philico_logo.png" height="100" width="120" alt="Philico logo"></p>
+  <p><img align="left" src="/images/philico_logo.png" height="100" width="120" alt="Philico logo"></p>
   <br><br><br><br>
 
 <table>
@@ -747,7 +713,7 @@
 <tr>
  <td class="cvtitle">{{finameup}} {{fanameup}} <br>
  Curriculum Vitae</td>
-<td><img align="right" src="img/{{finame}} {{faname}}.jpg" height="142" width="136" alt="{{finame}} {{faname}} picture">
+<td><img align="right" src="/images/{{finame}} {{faname}}.jpg" height="142" width="136" alt="{{finame}} {{faname}} picture">
  </td>
 </tr>
 <tr></tr>
@@ -934,7 +900,7 @@
 </table>
 </main>
 </div>
-{{/each}}
+
 </body>
 
 {{else}}

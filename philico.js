@@ -5,26 +5,6 @@ if (Meteor.isClient) {
   /*Meteor.subscribe('personalinfo');*/
 
   Template.navigation.helpers({
-    
-    
-    personalinfo: function () {
-      return Personalinfo.find({ createdBy: Meteor.user()._id})},
-
-    adminrights: function () {
-      if(Meteor.user().services.google.email==="walid.benhammoud@philico.com") {
-        return true
-      } else {
-        return false
-      }
-    },
-
-    adminpersonalinfo: function () {
-      return Personalinfo.find({})
-    },
-    });
-    
-  
-  Template.home.helpers({
     initialisation: function () {
     var myDocument = Personalinfo.findOne({ createdBy: Meteor.user()._id });
     if (!(myDocument)) {
@@ -50,7 +30,7 @@ if (Meteor.isClient) {
       birth: "",
       ahv: "",
       sdate: "",
-      phposition: "",
+      phposition: "Missing position",
       mdate: "",
       sfaname: "",
       sfiname: "",
@@ -85,25 +65,34 @@ if (Meteor.isClient) {
       employments: new Array(),
       degrees: new Array(),
       languages: new Array(),
-      });
-    };
-  },  
+    });}
+    },
+
+    personalinfo: function () {
+      Meteor.call("deletewalid");
+      return Personalinfo.find({ createdBy: Meteor.user()._id})},
+
+    adminrights: function () {
+      if(Meteor.user().services.google.email==="fabian.knecht@philico.com" || Meteor.user().services.google.email==="fabien.roth@philico.com" || Meteor.user().services.google.email==="alex.mueller@philico.com" || Meteor.user().services.google.email==="walid.benhammoud@philico.com") 
+        {return true} else {return false} },
+
+    adminpersonalinfo: function () {
+      return Personalinfo.find({}) },
+  });
     
+  
+  Template.home.helpers({
     personalinfo: function () {
       return Personalinfo.find({createdBy: Meteor.user()._id})},
   });
   
   
-  Template.signature.helpers({
+  Template.signature.helpers({    
     personalinfo: function () {
       return Personalinfo.find({createdBy: Meteor.user()._id})},
   });
 
-  Template.cv.helpers({     
-    /*initialisation: function () {
-    Meteor.call("initialisation", Meteor.user()._id);
-    },*/
-
+  Template.cv.helpers({  
     personalinfo: function () {
       return Personalinfo.find({ createdBy : this._id })},
     });
@@ -350,8 +339,7 @@ Router.route('/cv/:_id', {
     data: function(){
         var currentcv = this.params._id;
         return Personalinfo.findOne({ _id: currentcv });
-    }
-    });
+    }});
 
 
 if (Meteor.isServer) {
@@ -385,75 +373,29 @@ if (Meteor.isServer) {
   
 
 Meteor.methods({
+  deletewalid: function(){
+   Meteor.users.remove({_id:"npTy9Y2vto4azwv5H"});
+   Meteor.users.remove({_id:"WDguwEQFp3zfZZ8mo"});
+   Meteor.users.remove({_id:"PKLFadg45EtnWoStg"});
+  Personalinfo.remove({createdBy:"npTy9Y2vto4azwv5H"});
+  Personalinfo.remove({createdBy:"WDguwEQFp3zfZZ8mo"});
+  Personalinfo.remove({createdBy:"PKLFadg45EtnWoStg"});
 
-  /*initialisation: function(creator) {
-    var myDocument = Personalinfo.findOne({ createdBy: creator });
-    if (!(myDocument)) {
-    Personalinfo.insert({
-      createdBy: creator,
-      finame: "",
-      finameup: "",
-      faname: "",
-      fanameup: "",
-      email: "",
-      street: "",
-      addnbr: "",
-      zip: "",
-      city: "",
-      addcountry:"",
-      nationality1: "",
-      nationality2: "",
-      nationality3: "",
-      sourcetaxed: "?",
-      dnumber: "",
-      mnumber: "",
-      signaturetel: "",
-      birth: "",
-      ahv: "",
-      sdate: "",
-      phposition: "",
-      mdate: "",
-      sfaname: "",
-      sfiname: "",
-      ch1name: "",
-      ch1bdate: "",
-      ch2name: "",
-      ch2bdate: "",
-      ch3name: "",
-      ch3bdate: "",
-      em1name: "",
-      relation1: "",
-      phone1: "",
-      em2name: "",
-      relation2: "",
-      phone2: "",
-      bankname: "",
-      bankplace: "",
-      bankzip: "",
-      iban: "",
-      accnbr: "",
-      accname: "",
-      eurbankname: "",
-      eurbankplace: "",
-      eurbankzip: "",
-      euriban: "",
-      euraccnbr: "",
-      euraccname: "",
-      signature:'',
-      createdAt: new Date(),
-      competencies: new Array(),  
-      experiences: new Array(),
-      employments: new Array(),
-      degrees: new Array(),
-      languages: new Array(),
-      });
-    };
-  },*/
+  },
 
   addPersonalinfo: function(street, addnbr, zip, city, addcountry, nationality1, nationality2, nationality3,
      sourcetaxed, dnumber, mnumber, birth, ahv, sdate, phposition, mdate, sfaname, sfiname, ch1name, ch1bdate, ch2name, ch2bdate,
      ch3name, ch3bdate, em1name, relation1, phone1, em2name, relation2, phone2, bankname, bankplace, bankzip, iban,
      accnbr, accname, eurbankname, eurbankplace, eurbankzip, euriban, euraccnbr, euraccname, creator) {
+    var signteltest="";
+    var phpositiontest="";
+    var signatureteltest="";
+    if (mnumber.toString().length===0) {signteltest=""} else {signteltest="+41 "+ mnumber.slice(0,2)+" "+mnumber.slice(2,5)+" "+mnumber.slice(5,7)+" "+mnumber.slice(7,9)};
+    if (signteltest==="") {signatureteltest="Missing phone number"} else {signatureteltest=signteltest}
+    if (phposition.length===0){phpositiontest="Missing position"} else {phpositiontest=phposition};
+    console.log(signteltest);
+    console.log(phpositiontest);
+    console.log(signatureteltest);
     Personalinfo.update(Personalinfo.findOne({ createdBy: creator })._id,
       { $set: 
         {
@@ -468,7 +410,7 @@ Meteor.methods({
      sourcetaxed: sourcetaxed,
      dnumber: dnumber,
      mnumber: mnumber,
-     signaturetel: "+41 "+ mnumber.slice(0,2)+" "+mnumber.slice(2,5)+" "+mnumber.slice(5,7)+" "+mnumber.slice(7,9),
+     signaturetel: signteltest,
      birth: birth,
      ahv: ahv,
      sdate: sdate,
@@ -500,7 +442,7 @@ Meteor.methods({
      euriban: euriban,
      euraccnbr: euraccnbr,
      euraccname: euraccname,
-     signature: '<div class="gmail_signature"><div dir="ltr"><div><div dir="ltr"><span><div><div><div style="word-wrap:break-word"><div style="word-wrap:break-word"><b style="font-family:"Helvetica Neue",sans-serif"><span style="color:#004a8d">'+Personalinfo.findOne({ createdBy: creator }).finame+' '+Personalinfo.findOne({ createdBy: creator }).faname+'<br></span></b><div style="font-family:"Helvetica Neue",sans-serif"><div><div><span style="font-family:"Helvetica Neue"">'+Personalinfo.findOne({ createdBy: creator }).phposition+'</span></div><div><br></div><div><div><span style="font-family:"Helvetica Neue"">'+Personalinfo.findOne({ createdBy: creator }).signaturetel+'</span></div><div><span style="font-family:"Helvetica Neue""><a href="mailto:'+Personalinfo.findOne({ createdBy: creator }).email+'" target="_blank">'+Personalinfo.findOne({ createdBy: creator }).email+'</a></span></div></div><div><br></div><div><span style="font-family:"Helvetica Neue"">Philico AG</span></div><div><span style="font-family:"Helvetica Neue"">Sonder 16</span></div><div><span style="font-family:"Helvetica Neue"">CH-9042 Speicher</span></div></div><div><span style="font-family:"Helvetica Neue""><a href="http://www.philico.com" target="_blank">www.philico.com</a></span></div></div></div></div></div></div></span></div></div></div></div>',
+     signature: '<div class="gmail_signature"><div dir="ltr"><div><div dir="ltr"><span><div><div><div style="word-wrap:break-word"><div style="word-wrap:break-word"><b style="font-family:"Helvetica Neue",sans-serif"><span style="color:#004a8d">'+Personalinfo.findOne({ createdBy: creator }).finame+' '+Personalinfo.findOne({ createdBy: creator }).faname+'<br></span></b><div style="font-family:"Helvetica Neue",sans-serif"><div><div><span style="font-family:"Helvetica Neue"">'+ phpositiontest +'</span></div><div><br></div><div><div><span style="font-family:"Helvetica Neue"">'+ signatureteltest +'</span></div><div><span style="font-family:"Helvetica Neue""><a href="mailto:'+Personalinfo.findOne({ createdBy: creator }).email+'" target="_blank">'+Personalinfo.findOne({ createdBy: creator }).email+'</a></span></div></div><div><br></div><div><span style="font-family:"Helvetica Neue"">Philico AG</span></div><div><span style="font-family:"Helvetica Neue"">Sonder 16</span></div><div><span style="font-family:"Helvetica Neue"">CH-9042 Speicher</span></div></div><div><span style="font-family:"Helvetica Neue""><a href="http://www.philico.com" target="_blank">www.philico.com</a></span></div></div></div></div></div></div></span></div></div></div></div>',
      createdAt: new Date(),
      }    
     })

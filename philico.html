@@ -2,35 +2,63 @@
   <title>Employee Profile</title>
 </head>
 
-<template name="header">
-    <header>
-    <div id="mainheader">
-      <p>{{> loginButtons}}</p>
-      <a href="http://www.philico.com"><img align="right" src="/images/philico_logo.png" alt="HTML5 Icon"></a>  
+<template name="navigation">
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="http://www.philico.com"><img src="/images/logo_philico.png" alt="HTML5 Icon"></a>
+      <a class="navbar-brand loginbutton">{{>loginButtons}}</a>
     </div>
-  </header>
-  <br>
+    {{#if currentUser}}
+    {{initialisation}}
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li role="presentation"><a href="/">Home</a></li>
+        <li role="presentation"><a href="/personaldata">Personal Data</a></li>
+        <li role="presentation"><a href="/signature">Signature</a></li>
+        <li role="presentation">{{#each personalinfo}}<a href="/cv/{{_id}}">My CV</a>{{/each}}</li>
+        {{#if adminrights}}
+        <li role="presentation" class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees CVs<span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            {{#each adminpersonalinfo}}
+            <li><a href="/cv/{{_id}}" target="_blank">{{finame}} {{faname}} CV</a></li>
+            {{/each}}
+          </ul>
+        </li>
+        {{/if}}
+      </ul>
+    </div>
+    {{/if}}
+  </div>
+</div>
+</nav>
 </template>
 
 <!--           Home template             -->
 
 <template name="home">
-<div class="container">
-{{> header}}
-  
+{{> navigation}}
 {{#if currentUser}}
-
-<main>
-  {{> navigation}}
-  {{initialisation}}
-  <br>
-  {{#each personalinfo}}
-    <h1>Welcome {{finame}} {{faname}}</h1>
-  {{/each}}
-</main>     
-{{/if}}   
-
+<div class="container">
+<div class="containerpage">
+  <main>
+    <br>
+    {{#each personalinfo}}
+      <h1>Welcome {{finame}} {{faname}}</h1>
+    {{/each}}
+    
+  </main>       
 </div>
+</div>
+{{/if}}
 </template>
 
 
@@ -38,13 +66,12 @@
 <!--           Personal data template             -->
 
 <template name="personaldata">
-<div class="container">
-{{> header}}
-  
+{{> navigation}}
 {{#if currentUser}}
 
+<div class="container">
+<div class="containerpage">
 <main>
-{{> navigation}}
 <br>
   {{#each personalinfo}}
    <section class="profile">
@@ -56,18 +83,15 @@
         <col width="220">
           <tr>
             <td>First name</td>
-            {{#if finame}}<td>{{finame}}</td>{{else}}
-            <td><input type="text" name="finame"></td>{{/if}}
+            <td>{{finame}}</td>
           </tr>
           <tr>
             <td>Family name</td>
-            {{#if faname}}<td>{{faname}}</td>{{else}}
-            <td><input type="text" name="faname"></td>{{/if}}
+            <td>{{faname}}</td>
           </tr>
           <tr>
             <td>Email</td>
-            {{#if email}}<td>{{email}}</td>{{else}}
-            <td><input type="text" name="email"></td>{{/if}}
+            <td>{{email}}</td>
           </tr>
         </table>
         <br>
@@ -82,7 +106,7 @@
           </tr>
           <tr>
             <td></td>
-            <td><input type="number" name="addnbr" value="{{addnbr}}" placeholder="Number"></td>
+            <td><input type="text" name="addnbr" value="{{addnbr}}" placeholder="Number"></td>
           </tr>
           <tr>
             <td></td>
@@ -124,11 +148,11 @@
                 </select></td>
           </tr>
           <tr>
-            <td>Domicile phone +41(0)</td>
+            <td>Domicile phone 41(0)</td>
             <td><input type="number" pattern="\d*" maxlength="9" name="dnumber" value="{{dnumber}}"></td>
           </tr>
           <tr>
-            <td>Mobile phone +41(0)</td>
+            <td>Mobile phone 41(0)</td>
             <td><input type="number" maxlength="9" name="mnumber" value="{{mnumber}}"></td>
           </tr>
           <tr>
@@ -308,8 +332,8 @@
         </table>
         </p>
       </div>
-      
-        <p><input type="submit" value="Submit your personal information"></p> 
+      <br>
+        <p><input class="submit" type="submit" value="Save personal information"></p> 
     </form>          
   </section>
   
@@ -340,9 +364,10 @@
           <textarea name="technicalskill" id="comp" value="{{competencies.[0].technicalskill}}"></textarea>
       </div>
       </p>
-
+      <br>
     </div>
-    <p><input type="submit" value="Submit competencies"></p>
+    <br>
+    <p><input class="submit" type="submit" value="Save competencies"></p>
     </form>
 
   </section>
@@ -358,30 +383,30 @@
       <col width="150">
       <col width="220">
       <tr>
-        <td>Company name</td>
-        <td><input type="text" name="company" required></td>
-      </tr>
-      <tr>
         <td>Start date</td>
-        <td><input type="number" id="month" name="stdatemonth" min="1" max="12" placeholder="MM" required>.<input type="number" maxlength="4" name="stdateyear" id="year" placeholder="YYYY" required></td>
-        <td><label class="currentproject">Current project <input type="checkbox" name="currentprojcheck" checked="{{mycurrentproject}}"></label>
+        <td id="current"><input type="number" id="month" name="stdatemonth" min="1" max="12" placeholder="MM" >.<input type="number" maxlength="4" name="stdateyear" id="year" placeholder="YYYY" ></td>
+        <td><label class="currentproject">Current Experience<input type="checkbox" name="currentprojcheck" checked="{{mycurrentproject}}"></label>
         </td>
       </tr>
       <tr>
         <td>End date</td>
-        <td>{{#if notcurrentproject}}<input type="number" id="month" name="enddatemonth" min="1" max="12" placeholder="MM" required>.<input type="number" maxlength="4" name="enddateyear" id="year" placeholder="YYYY" required>{{/if}}</td>
+        <td>{{#if notcurrentproject}}<input type="number" id="month" name="enddatemonth" min="1" max="12" placeholder="MM" >.<input type="number" maxlength="4" name="enddateyear" id="year" placeholder="YYYY" >{{/if}}</td>
+      </tr>
+      <tr>
+        <td>Company name</td>
+        <td><input type="text" name="company" ></td>
       </tr>
       <tr>
         <td>Client name</td>
-        <td><input type="text" name="customer" required></td>
+        <td><input type="text" name="customer" ></td>
       </tr>
       <tr>
         <td>City</td>
-        <td><input type="text" name="customercity" required></td>
+        <td><input type="text" name="customercity" ></td>
       </tr>
       <tr>
         <td>Department</td>
-        <td><input type="text" name="department" required></td>
+        <td><input type="text" name="department" ></td>
       </tr>
       </table>
       <br>
@@ -389,8 +414,8 @@
       <p>
       <div>
           <p class="Paragtitle">Project 1</p>
-          <input type="text" name="projecttitle1" placeholder="Project title 1" required><br><br>
-          <textarea name="projectdescription1" id="proj" required></textarea>
+          <input type="text" name="projecttitle1" placeholder="Project title 1" ><br><br>
+          <textarea name="projectdescription1" id="proj" ></textarea>
       </div>
       </p>
       <p>
@@ -415,8 +440,9 @@
       </div>
       </p>
     </div>
+    <br>
     <p>
-      <input type="submit" value="Add an experience"></p>
+      <input class="submit" type="submit" value="Add experience"></p>
     </form>
     <br>
 
@@ -489,29 +515,29 @@
       <col width="220">
       <tr>
         <td>Start date</td>
-        <td><input type="number" id="month" name="empstdatemonth" min="1" max="12" placeholder="MM" required>.<input type="number" maxlength="4" name="empstdateyear" id="year" placeholder="YYYY" required></td>
-        <td><label class="currentemployment">Current employment <input type="checkbox" name="currentempcheck" checked="{{mycurrentemployment}}"></label>
+        <td><input type="number" id="month" name="empstdatemonth" min="1" max="12" placeholder="MM" >.<input type="number" maxlength="4" name="empstdateyear" id="year" placeholder="YYYY" ></td>
+        <td><label class="currentemployment">Current employment<input type="checkbox" name="currentempcheck" checked="{{mycurrentemployment}}"></label>
         </td>
       </tr>
       <tr>
         <td>End date</td>
-        <td>{{#if notcurrentemployment}}<input type="number" id="month" name="empenddatemonth" min="1" max="12" placeholder="MM" required>.<input type="number" maxlength="4" name="empenddateyear" id="year" placeholder="YYYY" required>{{/if}}</td>
+        <td>{{#if notcurrentemployment}}<input type="number" id="month" name="empenddatemonth" min="1" max="12" placeholder="MM" >.<input type="number" maxlength="4" name="empenddateyear" id="year" placeholder="YYYY" >{{/if}}</td>
       </tr>
       <tr>
         <td>Company name</td>
-        <td><input type="text" name="empcompany" required></td>
+        <td><input type="text" name="empcompany" ></td>
       </tr>
       <tr>
         <td>City</td>
-        <td><input type="text" name="empcity" required></td>
+        <td><input type="text" name="empcity" ></td>
       </tr>
       <tr>
         <td>Position</td>
-        <td><input type="text" name="empposition" required></td>
+        <td><input type="text" name="empposition" ></td>
       </tr>
       </table>
       <br>
-      <p><input type="submit" value="Add an employment"></p>
+      <p><input class="submit" type="submit" value="Add employment"></p>
     </form>
     <br>
 
@@ -547,11 +573,11 @@
       <col width="220">
       <tr>
         <td>Graduation date</td>
-        <td><input type="number" id="month" name="ddatemonth" min="1" max="12" placeholder="MM" required>.<input type="number" maxlength="4" name="ddateyear" id="year" placeholder="YYYY" required></td>
+        <td><input type="number" id="month" name="ddatemonth" min="1" max="12" placeholder="MM" >.<input type="number" maxlength="4" name="ddateyear" id="year" placeholder="YYYY" ></td>
       </tr>
       <tr>
         <td>Degree/Certification</td>
-        <td><input type="text" name="dip" required></td>
+        <td><input type="text" name="dip" ></td>
       </tr>
       <tr>
         <td>Specialisation (opt)</td>
@@ -559,19 +585,19 @@
       </tr>
       <tr>
         <td>University/Company</td>
-        <td><input type="text" name="uni" required></td>
+        <td><input type="text" name="uni" ></td>
       </tr>
       <tr>
         <td>City</td>
-        <td><input type="text" name="dipcity" required></td>
+        <td><input type="text" name="dipcity" ></td>
       </tr>
       <tr>
         <td>Country</td>
-        <td><input type="text" name="dipcountry" required></td>
+        <td><input type="text" name="dipcountry" ></td>
       </tr>
       </table>
       <br>
-      <p><input type="submit" value="Add a degree"></p>
+      <p><input class="submit" type="submit" value="Add degree"></p>
     </form>
     <br>
 
@@ -608,11 +634,11 @@
         <col width="220">
           <tr>
             <td>Language</td>
-            <td><input type="text" name="langue" required></td>
+            <td><input type="text" name="langue" ></td>
           </tr>
           <tr>
             <td>Skill</td>
-            <td><select class="options" name="skill" required>
+            <td><select class="options" name="skill" >
                   <option class="options" value="Mother tongue">Mother tongue</option>
                   <option class="options" value="Written and spoken fluency">Written and spoken fluency</option>
                   <option class="options" value="Professional">Professional</option>
@@ -621,7 +647,7 @@
           </tr>
         </table>
         <br>
-        <p><input type="submit" value="Add a language"></p>
+        <p><input class="submit" type="submit" value="Add language"></p>
     </form>
     <br>
 
@@ -642,70 +668,57 @@
   </section>
   {{/each}}
   </main>
-  {{/if}}
-  </div>
+</div>
+</div>
+{{/if}}
 </template>
 
 <template name="signature">
-<div class="container">
-  {{> header}}
-
-{{#if currentUser}}
-
-<main>
 {{> navigation}}
+{{#if currentUser}}
+{{initialisation}}
+<div class="container">
+<div class="containerpage">
+<main>
 <br>
 <section class="signature">
   {{#each personalinfo}} 
     <h1>{{finameup}} {{fanameup}} SIGNATURE</h1>
     <ul>
       <li>
-      <div class="gmail_signature"><div dir="ltr"><div><div dir="ltr"><span><div><div><div style="word-wrap:break-word"><div style="word-wrap:break-word"><b style="font-family:'Helvetica Neue',sans-serif"><span style="color:#004a8d">{{finame}} {{faname}}<br></span></b><div style="font-family:'Helvetica Neue',sans-serif"><div><div><span style="font-family:'Helvetica Neue'">{{phposition}}</span></div><div><br></div><div><div><span style="font-family:'Helvetica Neue'">{{signaturetel}}</span></div><div><span style="font-family:'Helvetica Neue'"><a href="mailto:{{email}}" target="_blank">{{email}}</a></span></div></div><div><br></div><div><span style="font-family:'Helvetica Neue'">Philico AG</span></div><div><span style="font-family:'Helvetica Neue'">Sonder 16</span></div><div><span style="font-family:'Helvetica Neue'">CH-9042 Speicher</span></div></div><div><span style="font-family:'Helvetica Neue'"><a href="http://www.philico.com" target="_blank">www.philico.com</a></span></div></div></div></div></div></div></span></div></div></div></div>
+      <div class="gmail_signature"><div dir="ltr"><div><div dir="ltr"><span><div><div><div style="word-wrap:break-word"><div style="word-wrap:break-word"><b style="font-family:'Helvetica Neue',sans-serif"><span style="color:#004a8d">{{finame}} {{faname}}<br></span></b><div style="font-family:'Helvetica Neue',sans-serif"><div><div>{{#if phposition.length}}<span style="font-family:'Helvetica Neue'">{{phposition}}</span>{{else}}<span style="color:red">Missing position</span>{{/if}}</div><div><br></div><div><div>{{#if signaturetel.length}}<span style="font-family:'Helvetica Neue'">{{signaturetel}}</span>{{else}}<span style="color:red">Missing phone number</span>{{/if}}</div><div><span style="font-family:'Helvetica Neue'"><a href="mailto:{{email}}" target="_blank">{{email}}</a></span></div></div><div><br></div><div><span style="font-family:'Helvetica Neue'">Philico AG</span></div><div><span style="font-family:'Helvetica Neue'">Sonder 16</span></div><div><span style="font-family:'Helvetica Neue'">CH-9042 Speicher</span></div></div><div><span style="font-family:'Helvetica Neue'"><a href="http://www.philico.com" target="_blank">www.philico.com</a></span></div></div></div></div></div></div></span></div></div></div></div>
       </li>
       <li><p><strong>Signature HTML</strong></p>
         {{signature}}</li>
     </ul>
   {{/each}}
   </section> 
-</main>     
-{{/if}}   
+</main>      
 </div>
+</div>
+{{/if}}
 </template>
 
-
-<template name="navigation">
-  <ul class="nav nav-pills">
-    {{initialisation}}
-    <li role="presentation"><a href="/">Home</a></li>
-    <li role="presentation"><a href="/personaldata">Personal Data</a></li>
-    <li role="presentation"><a href="/signature">Signature</a></li>
-    <li role="presentation">{{#each personalinfo}}<a href="/cv/{{_id}}">{{faname}} CV</a>{{/each}}</li>
-    {{#if adminrights}}
-    <li role="presentation" class="dropdown">
-      <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees CVs<span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu">
-        {{#each adminpersonalinfo}}
-        <li><a href="/cv/{{_id}}">{{email}} CV</a></li>
-        {{/each}}
-      </ul>
-    </li>
-    {{/if}}
-  </ul>
-</template>
 
 
 
 <template name="cv">
-  {{#if currentUser}}
-  {{initialisation}}
+{{#if currentUser}}
+{{initialisation}}
 <body>
-
-<div class="container">
+<div class="container containercv">
 <main class="cv">
   <br>
-  <p><img align="left" src="/images/philico_logo.png" height="100" width="120" alt="Philico logo"></p>
-  <br><br><br><br>
+  <p>
+    <table>
+      <col width="220px" />
+      <col width="440px" />
+      <tr>
+        <td><img align="left" src="/images/logo_philico.png" alt="Philico logo"></td>
+        <td><img align="right" class="img-circle" src="/images/{{finame}} {{faname}}.jpg" height="142" width="136" alt="{{finame}} {{faname}} picture"></td>
+      </tr>
+    </table>
+  </p>
 
 <table>
 <col width="220px" />
@@ -713,9 +726,13 @@
 <tr>
  <td class="cvtitle">{{finameup}} {{fanameup}} <br>
  Curriculum Vitae</td>
-<td><img align="right" src="/images/{{finame}} {{faname}}.jpg" height="142" width="136" alt="{{finame}} {{faname}} picture">
+<td>
  </td>
 </tr>
+<tr></tr>
+<tr></tr>
+<tr></tr>
+<tr></tr>
 <tr></tr>
 <tr></tr>
  <tr>
@@ -796,7 +813,7 @@
   </tr>
   <tr>
     <td>{{stdate}} - {{enddate}}</td>
-    <td>{{customer}}, {{customercity}} - {{department}}</td>
+    <td>{{#if customer}}{{customer}},{{/if}} {{customercity}}{{#if department}} - {{department}}{{/if}}</td>
   </tr>
   <tr>
     <td></td>  
@@ -900,18 +917,11 @@
 </table>
 </main>
 </div>
-
 </body>
 
 {{else}}
-<div class="container">
-  <header>
-    <div id="mainheader">
-      <p>{{> loginButtons}}</p>
-      <a href="http://www.philico.com"><img align="right" src="/img/philico_logo.png" alt="HTML5 Icon"></a>  
-    </div>
-  </header>
-</div>
-<br>
+<main>
+  {{> navigation}}
+</main>
 {{/if}}
 </template>

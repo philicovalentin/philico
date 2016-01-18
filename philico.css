@@ -1,6 +1,6 @@
-/* CSS declarations go here */
+/* ------------------------ General ----------------- */
 body {
-  font-family: sans-serif;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   background: #fff;
   color: white; 
 
@@ -16,15 +16,65 @@ body {
   font-size: 14px;
 }
 
-#mainheader {
-  display: flex;
-  align-items: center;
+.navbar {
+    margin-bottom: 0;
+    background-color: #fff;
+    z-index: 9999;
+    border: 0;
+    font-size: 12px !important;
+    line-height: 1.42857143 !important;
+    letter-spacing: 0px;
 }
 
-#mainheader p { 
-   flex: 1;
+.navbar li a, .navbar .navbar-brand {
+    color: #203f60 !important;
 }
 
+.navbar-nav li a:hover, .navbar-nav li.active a {
+    color: #fff !important;
+    background-color: #203f60 !important;
+}
+
+.navbar-default .navbar-toggle {
+    border-color: transparent;
+    color: #fff !important;
+}
+
+.navbar-header a img {
+  padding-top: 5px;
+}
+
+.navbar-brand {
+  letter-spacing: 0px;
+  font-size: 12px;
+}
+
+.loginbutton {
+  padding-top: 30px;
+}
+
+#login-buttons {
+  display: inline;
+}
+
+.container {
+  background: #fff;
+  border-radius: 3px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15); 
+}
+
+.containerpage {
+  margin-top:100px;
+}
+
+main {
+  background: #203f60;
+  padding: 15px 15px 15px 15px;
+}
+
+/* --------------------Personal data--------------- */
 #perso {
   display: flex;
 }
@@ -49,69 +99,10 @@ body {
   flex: 1;
 }
 
-.headertitle {
-  font-size: 14px;
-  margin: 0;
-  margin-bottom: 10px;
-  display: inline-block;
-  margin-right: 1em;
-}
-
-.container {
-  background: #fff;
-  border-radius: 3px;
-  padding: 10px;
-  margin-bottom: 10px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15); 
-}
-
-.containerpage {
-  margin-top:100px;
-}
-
-.containercv main{
-  background: white;
-  padding: 15px 15px 15px 15px;
-  position: relative;
-}
-
-.cv {
-  color: black;
-}
-
-.signature li {
-  color: black;
-}
-
-main {
-  background: #203f60;
-  padding: 15px 15px 15px 15px;
-  position: relative;
-}
-
-#login-buttons {
-  display: inline;
-}
-
-h1 {
-  font-size: 1.5em;
-  margin: 0;
-  margin-bottom: 10px;
-  display: inline-block;
-  margin-right: 1em;
-}
-
-form {
-  margin-top: 10px;
-  margin-bottom: -10px;
-  position: relative;
-}
-
 .container input {
   display: inline;
   margin: 0;
   color: #203f60;
-  font-family: sans-serif;
   font-size: 14px;
   appearance: none;
   box-shadow: none;
@@ -145,7 +136,6 @@ td select {
 .container select {
   display: inline;
   margin: 0;
-  font-family: sans-serif;
   font-size: 14px;
   color: black;
   appearance: none;
@@ -155,11 +145,15 @@ td select {
   position: relative;
 }
 
+.checkbox {
+  display: block;
+}
+
 .submit {
   background: grey;
-  width: 20%;
+  width: 220px;
   font-weight: bold;
-  font-color: white;
+  color: white !important ;
 }
 
 #comp {
@@ -186,6 +180,14 @@ ul {
   background: white;
 }
 
+li {
+  position: relative;
+  list-style: none;
+  padding: 10px;
+  color: black;
+  border-bottom: #eee solid 1px;
+}
+
 #delete {
   float: right;
   font-weight: bold;
@@ -195,18 +197,10 @@ ul {
   position: relative;
 }
 
-li {
-  position: relative;
-  list-style: none;
-  padding: 15px;
-  color: #203f60;
-  border-bottom: #eee solid 1px;
-}
 
-
-@media (max-width: 660px) {
+@media () {
   li {
-    padding: 12px 15px;
+    padding: 5px 5px;
   }
 
 .search {
@@ -217,6 +211,14 @@ li {
 
 .Paragtitle{
   font-weight: bold;
+}
+
+/* ------------------- CV ----------------------- */
+.containercv main {
+  background: white;
+  padding: 10px 10px 10px 10px;
+  position: relative;
+  color: black;
 }
 
 .cv tr {
@@ -239,49 +241,18 @@ input[type=number]::-webkit-outer-spin-button {
   border-bottom: 2px solid #203f60;
   font-size: 16px;
   font-weight: bold;
-  color: #203f60;
+  color: #203f60 !important;
+  height: 20px;
+  vertical-align: top;
 }
 
 .cvtitle { 
-  display:block;
   font-size: 16px;
+  color: #203f60 !important;
+}
+
+.cvbluetext {
+  color: #203f60 !important;
+  font-size: 14px;
   font-weight: bold;
-  color: #203f60;
-}
-
-.navbar {
-    margin-bottom: 0;
-    background-color: #fff;
-    z-index: 9999;
-    border: 0;
-    font-size: 12px !important;
-    line-height: 1.42857143 !important;
-    letter-spacing: 0px;
-}
-
-.navbar li a, .navbar .navbar-brand {
-    color: #203f60 !important;
-}
-
-.navbar-nav li a:hover, .navbar-nav li.active a {
-    color: #fff !important;
-    background-color: #203f60 !important;
-}
-
-.navbar-default .navbar-toggle {
-    border-color: transparent;
-    color: #fff !important;
-}
-
-.navbar-header a img {
-  padding-top: 12px;
-}
-
-.navbar-brand {
-  letter-spacing: 0px;
-  font-size: 12px;
-}
-
-.loginbutton {
-  padding-top: 35px;
 }

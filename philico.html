@@ -3,7 +3,7 @@
 </head>
 
 <template name="navigation">
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default navbar-fixed-top nav-justified">
   <div class="container">
     <div class="container-fluid">
     <div class="navbar-header">
@@ -21,8 +21,8 @@
       <ul class="nav navbar-nav navbar-right">
         <li role="presentation"><a href="/">Home</a></li>
         <li role="presentation"><a href="/personaldata">Personal Data</a></li>
-        <li role="presentation"><a href="/signature">Signature</a></li>
-        <li role="presentation">{{#each personalinfo}}<a href="/cv/{{_id}}">My CV</a>{{/each}}</li>
+        <li role="presentation"><a href="/signature"> My Signature</a></li>
+          <li role="presentation">{{#each personalinfo}}<a href="/cv/{{_id}}" target="_blank">My CV</a>{{/each}}</li>
         {{#if adminrights}}
         <li role="presentation" class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees CVs<span class="caret"></span>
@@ -52,7 +52,7 @@
   <main>
     <br>
     {{#each personalinfo}}
-      <h1>Welcome {{finame}} {{faname}}</h1>
+      <h3>Welcome {{finame}} {{faname}}</h3>
     {{/each}}
     
   </main>       
@@ -68,19 +68,19 @@
 <template name="personaldata">
 {{> navigation}}
 {{#if currentUser}}
-
+{{#each personalinfo}}
 <div class="container">
 <div class="containerpage">
 <main>
-<br>
-  {{#each personalinfo}}
+
    <section class="profile">
-    <h1>PERSONAL INFORMATION</h1>
+    <h3>PERSONAL INFORMATION</h3>
       <form class="new-profile">
         
         <table>
         <col width="150">
         <col width="220">
+          <tr></tr>
           <tr>
             <td>First name</td>
             <td>{{finame}}</td>
@@ -342,10 +342,10 @@
 <!--           Core competencies             -->
 
   <section class="competencies">
-  <h1>CORE COMPETENCIES</h1>
+  <h3>CORE COMPETENCIES</h3>
+  <br><br>
     <form class="new-competency">
     <div id="corecomp">
-
       <p>
       <div>
           <p class="Paragtitle">Communication and Analytical Skills</p>
@@ -377,15 +377,16 @@
 <!--        Project experience section        -->
 
   <section class="experiences">
-  <h1>PROJECT EXPERIENCE</h1>
+  <h3>PROJECT EXPERIENCE</h3>
     <form class="new-experience">
       <table>
       <col width="150">
       <col width="220">
+      <tr></tr>
       <tr>
         <td>Start date</td>
         <td id="current"><input type="number" id="month" name="stdatemonth" min="1" max="12" placeholder="MM" >.<input type="number" maxlength="4" name="stdateyear" id="year" placeholder="YYYY" ></td>
-        <td><label class="currentproject">Current Experience<input type="checkbox" name="currentprojcheck" checked="{{mycurrentproject}}"></label>
+        <td class="checkbox">Current Experience<label class="currentproject"><input class="checkbutton" type="checkbox" name="currentprojcheck" checked="{{mycurrentproject}}"></label>
         </td>
       </tr>
       <tr>
@@ -508,15 +509,16 @@
 <!--           Employment history section             -->
 
   <section class="employment">
-  <h1>EMPLOYMENT HISTORY</h1>
+  <h3>EMPLOYMENT HISTORY</h3>
     <form class="new-employment">
       <table>
       <col width="150">
       <col width="220">
+      <tr></tr>
       <tr>
         <td>Start date</td>
         <td><input type="number" id="month" name="empstdatemonth" min="1" max="12" placeholder="MM" >.<input type="number" maxlength="4" name="empstdateyear" id="year" placeholder="YYYY" ></td>
-        <td><label class="currentemployment">Current employment<input type="checkbox" name="currentempcheck" checked="{{mycurrentemployment}}"></label>
+        <td class="checkbox"><label class="currentemployment">Current employment<input class="checkbutton" type="checkbox" name="currentempcheck" checked="{{mycurrentemployment}}"></label>
         </td>
       </tr>
       <tr>
@@ -566,11 +568,12 @@
 <!--           Degree section             -->
 
   <section class="degrees">
-  <h1>DEGREES AND CERTIFICATIONS</h1>
+  <h3>DEGREES AND CERTIFICATIONS</h3>
     <form class="new-degree">
       <table>
       <col width="150">
       <col width="220">
+      <tr></tr>
       <tr>
         <td>Graduation date</td>
         <td><input type="number" id="month" name="ddatemonth" min="1" max="12" placeholder="MM" >.<input type="number" maxlength="4" name="ddateyear" id="year" placeholder="YYYY" ></td>
@@ -580,7 +583,7 @@
         <td><input type="text" name="dip" ></td>
       </tr>
       <tr>
-        <td>Specialisation (opt)</td>
+        <td>Specialisation</td>
         <td><input type="text" name="spec"></td>
       </tr>
       <tr>
@@ -627,24 +630,25 @@
 <!--           Language section             -->
    
   <section class="languages" id="languages">
-  <h1>LANGUAGE SKILLS</h1>
+  <h3>LANGUAGE SKILLS</h3>
     <form class="new-language">
         <table>
         <col width="150">
         <col width="220">
-          <tr>
-            <td>Language</td>
-            <td><input type="text" name="langue" ></td>
-          </tr>
-          <tr>
-            <td>Skill</td>
-            <td><select class="options" name="skill" >
-                  <option class="options" value="Mother tongue">Mother tongue</option>
-                  <option class="options" value="Written and spoken fluency">Written and spoken fluency</option>
-                  <option class="options" value="Professional">Professional</option>
-                  <option class="options" value="Intermediate">Intermediate</option>
-                  <option class="options" value="Beginner">Beginner</option></select></td>
-          </tr>
+        <tr></tr>
+        <tr>
+          <td>Language</td>
+          <td><input type="text" name="langue" ></td>
+        </tr>
+        <tr>
+          <td>Skill</td>
+          <td><select class="options" name="skill" >
+                <option class="options" value="Mother tongue">Mother tongue</option>
+                <option class="options" value="Written and spoken fluency">Written and spoken fluency</option>
+                <option class="options" value="Professional">Professional</option>
+                <option class="options" value="Intermediate">Intermediate</option>
+                <option class="options" value="Beginner">Beginner</option></select></td>
+        </tr>
         </table>
         <br>
         <p><input class="submit" type="submit" value="Add language"></p>
@@ -666,27 +670,27 @@
   {{/each}}
   </ul>
   </section>
-  {{/each}}
+
   </main>
 </div>
 </div>
+{{/each}}
 {{/if}}
 </template>
 
 <template name="signature">
 {{> navigation}}
 {{#if currentUser}}
-{{initialisation}}
 <div class="container">
 <div class="containerpage">
 <main>
 <br>
 <section class="signature">
   {{#each personalinfo}} 
-    <h1>{{finameup}} {{fanameup}} SIGNATURE</h1>
+    <h3>{{finameup}} {{fanameup}} SIGNATURE</h3>
     <ul>
       <li>
-      <div class="gmail_signature"><div dir="ltr"><div><div dir="ltr"><span><div><div><div style="word-wrap:break-word"><div style="word-wrap:break-word"><b style="font-family:'Helvetica Neue',sans-serif"><span style="color:#004a8d">{{finame}} {{faname}}<br></span></b><div style="font-family:'Helvetica Neue',sans-serif"><div><div>{{#if phposition.length}}<span style="font-family:'Helvetica Neue'">{{phposition}}</span>{{else}}<span style="color:red">Missing position</span>{{/if}}</div><div><br></div><div><div>{{#if signaturetel.length}}<span style="font-family:'Helvetica Neue'">{{signaturetel}}</span>{{else}}<span style="color:red">Missing phone number</span>{{/if}}</div><div><span style="font-family:'Helvetica Neue'"><a href="mailto:{{email}}" target="_blank">{{email}}</a></span></div></div><div><br></div><div><span style="font-family:'Helvetica Neue'">Philico AG</span></div><div><span style="font-family:'Helvetica Neue'">Sonder 16</span></div><div><span style="font-family:'Helvetica Neue'">CH-9042 Speicher</span></div></div><div><span style="font-family:'Helvetica Neue'"><a href="http://www.philico.com" target="_blank">www.philico.com</a></span></div></div></div></div></div></div></span></div></div></div></div>
+      <div class="gmail_signature" style="font-family:Helvetica Neue, Helvetica, Arial, sans-serif; font-size:14px"><div dir="ltr"><div><div dir="ltr"><span><div><div><div style="word-wrap:break-word"><div style="word-wrap:break-word"><b ><span style="color:#004a8d">{{finame}} {{faname}}<br></span></b><div ><div><div>{{#if phposition.length}}<span >{{phposition}}</span>{{else}}<span style="color:red">Missing position</span>{{/if}}</div><div><br></div><div><div>{{#if signaturetel.length}}<span >{{signaturetel}}</span>{{else}}<span style="color:red">Missing phone number</span>{{/if}}</div><div><span ><a href="mailto:{{email}}" target="_blank">{{email}}</a></span></div></div><div><br></div><div><span >Philico AG</span></div><div><span >Sonder 16</span></div><div><span >CH-9042 Speicher</span></div></div><div><span ><a href="http://www.philico.com" target="_blank">www.philico.com</a></span></div></div></div></div></div></div></span></div></div></div></div>
       </li>
       <li><p><strong>Signature HTML</strong></p>
         {{signature}}</li>
@@ -704,18 +708,22 @@
 
 <template name="cv">
 {{#if currentUser}}
-{{initialisation}}
 <body>
 <div class="container containercv">
 <main class="cv">
-  <br>
   <p>
     <table>
       <col width="220px" />
       <col width="440px" />
       <tr>
         <td><img align="left" src="/images/logo_philico.png" alt="Philico logo"></td>
-        <td><img align="right" class="img-circle" src="/images/{{finame}} {{faname}}.jpg" height="142" width="136" alt="{{finame}} {{faname}} picture"></td>
+      </tr>
+      <tr></tr>
+      <tr></tr>
+      <tr></tr>
+      <tr class="cvtitle">
+        <td><strong><span class="cvtitle">{{finameup}} {{fanameup}}</span></strong><br><span class="cvtitle">Curriculum Vitae</span></td>
+        <td><img align="right" src="/images/{{finame}} {{faname}}.jpg" height="100" width="250" alt="{{finame}} {{faname}} picture"></td>
       </tr>
     </table>
   </p>
@@ -723,12 +731,6 @@
 <table>
 <col width="220px" />
 <col width="440px" />
-<tr>
- <td class="cvtitle">{{finameup}} {{fanameup}} <br>
- Curriculum Vitae</td>
-<td>
- </td>
-</tr>
 <tr></tr>
 <tr></tr>
 <tr></tr>
@@ -740,17 +742,17 @@
  </tr>
  <tr></tr>
  <tr>
-   <td>Birthday</td>
+   <td><span class="cvbluetext">Birthday</span></td>
    <td>{{birth}}</td>
  </tr>
  <tr></tr>
  <tr>
-   <td>Nationality</td>
+   <td><span class="cvbluetext">Nationality</span></td>
    <td>{{nationality1}}{{#if nationality2}}, {{nationality2}}{{/if}}{{#if nationality3}}, {{nationality3}}{{/if}}</td>
  </tr>
  <tr></tr>
  <tr>
-   <td>Address</td>
+   <td><span class="cvbluetext">Address</span></td>
    <td>{{street}}{{#if addnbr}}, {{addnbr}}{{/if}}</td>
  </tr>
  <tr>
@@ -763,7 +765,7 @@
  </tr>
  <tr></tr>
  <tr>
-   <td>Contact</td>
+   <td><span class="cvbluetext">Contact</span></td>
    <td>{{signaturetel}}</td>
   </tr>
   <tr>
@@ -783,17 +785,17 @@
  </tr>
  <tr></tr>
  <tr>
-   <td>Communication and Analytical Skills</td>
+   <td><span class="cvbluetext">Communication and Analytical Skills</span></td>
    <td>{{competencies.[0].comskill}}</td>
  </tr>
  <tr></tr>
  <tr>
-   <td>Professional Experience</td>
+   <td><span class="cvbluetext">Professional Experience</span></td>
    <td>{{competencies.[0].businessskill}}</td>
  </tr>
  <tr></tr>
  <tr>
-   <td>Technical Expertise</td>
+   <td><span class="cvbluetext">Technical Expertise</span></td>
    <td>{{competencies.[0].technicalskill}}</td>
  </tr>
  <tr></tr>
@@ -809,15 +811,15 @@
   <tr></tr>
   {{#each experiences}}
   <tr>
-    <td colspan="2">{{company}}</td>
+    <td colspan="2"><span class="cvbluetext">{{company}}</span></td>
   </tr>
   <tr>
     <td>{{stdate}} - {{enddate}}</td>
-    <td>{{#if customer}}{{customer}},{{/if}} {{customercity}}{{#if department}} - {{department}}{{/if}}</td>
+    <td><span class="cvbluetext">{{#if customer}}{{customer}},{{/if}} {{customercity}}{{#if department}} - {{department}}{{/if}}</span></td>
   </tr>
   <tr>
     <td></td>  
-    <td>{{projecttitle1}}</td>
+    <td><strong>{{projecttitle1}}</strong></td>
   </tr>
   <tr>
     <td></td>
@@ -826,7 +828,7 @@
   {{#if projecttitle2}}
   <tr>
     <td></td>
-    <td>{{projecttitle2}}</td>
+    <td><strong>{{projecttitle2}}</strong></td>
   </tr>
   <tr>
     <td></td>
@@ -836,7 +838,7 @@
   {{#if projecttitle3}}
   <tr>
     <td></td>
-    <td>{{projecttitle3}}</td>
+    <td><strong>{{projecttitle3}}</strong></td>
   </tr>
   <tr>
     <td></td>
@@ -846,7 +848,7 @@
   {{#if projecttitle4}}
   <tr>
     <td></td>
-    <td>{{projecttitle4}}</td>
+    <td><strong>{{projecttitle4}}</strong></td>
   </tr>
   <tr>
     <td></td>

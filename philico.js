@@ -2,12 +2,12 @@ Personalinfo = new Mongo.Collection("personalinfo");
 
 
 if (Meteor.isClient) {
+  Meteor.subscribe('');
   /*Meteor.subscribe('personalinfo');*/
 
   Template.navigation.helpers({
     initialisation: function () {
-    var myDocument = Personalinfo.findOne({ createdBy: Meteor.user()._id });
-    if (!(myDocument)) {
+    if (!(Personalinfo.findOne({ createdBy: Meteor.userId() }))) {
     Personalinfo.insert({
       createdBy: Meteor.user()._id,
       finame: Meteor.user().services.google.given_name,
@@ -30,7 +30,7 @@ if (Meteor.isClient) {
       birth: "",
       ahv: "",
       sdate: "",
-      phposition: "Missing position",
+      phposition: "",
       mdate: "",
       sfaname: "",
       sfiname: "",
@@ -65,11 +65,12 @@ if (Meteor.isClient) {
       employments: new Array(),
       degrees: new Array(),
       languages: new Array(),
-    });}
+    });
+  console.log('A new collection was created for you')
+  }
     },
 
     personalinfo: function () {
-      Meteor.call("deletewalid");
       return Personalinfo.find({ createdBy: Meteor.user()._id})},
 
     adminrights: function () {
@@ -137,12 +138,6 @@ if (Meteor.isClient) {
     
       "submit .new-profile": function (event) {
       event.preventDefault();
-      /*var myDocument4 = Personalinfo.findOne({ createdBy: Meteor.user()._id });
-      if (!(myDocument4.finame==="")) {var finame=myDocument4.finame} else {finame=event.target.finame.value};
-      var myDocument5 = Personalinfo.findOne({ createdBy: Meteor.user()._id });
-      if (!(myDocument5.faname==="")) {var faname=myDocument5.faname} else {faname=event.target.faname.value};
-      var myDocument6 = Personalinfo.findOne({ createdBy: Meteor.user()._id });
-      if (!(myDocument6.email==="")) {var email=myDocument6.email} else {sdate=event.target.email.value};*/
       var street=event.target.street.value;
       var addnbr=event.target.addnbr.value;
       var zip=event.target.zip.value;
@@ -344,14 +339,9 @@ Router.route('/cv/:_id', {
 
 if (Meteor.isServer) {
 
-  /*Meteor.publish('personalinfo', function(){
-    var currentUser = this.userId;
-    if(Meteor.users.findOne({_id: this.userId}).services.google.email==="walid.benhammoud@philico.com")
-    {return Personalinfo.find({});} else {
-    return Personalinfo.find({createdBy: this.userId });
-    }
-  });*/
-
+  Meteor.publish('personaldata', function() {
+  if (Personalinfo.findOne().email==="walid.benhammoud@philico.com" || Personalinfo.findOne().email==="fabian.knecht@philico.com" || Personalinfo.findOne().email==="alex.mueller@philico.com" || Personalinfo.findOne().email==="fabien.roth@philico.com")
+  {return Personalinfo.find()} else {return Personalinfo.find({owner: this.userId})}});
 
   /*Accounts.config({
     restrictCreationByEmailDomain: 'philico.com'
@@ -373,16 +363,6 @@ if (Meteor.isServer) {
   
 
 Meteor.methods({
-  deletewalid: function(){
-   Meteor.users.remove({_id:"npTy9Y2vto4azwv5H"});
-   Meteor.users.remove({_id:"WDguwEQFp3zfZZ8mo"});
-   Meteor.users.remove({_id:"PKLFadg45EtnWoStg"});
-  Personalinfo.remove({createdBy:"npTy9Y2vto4azwv5H"});
-  Personalinfo.remove({createdBy:"WDguwEQFp3zfZZ8mo"});
-  Personalinfo.remove({createdBy:"PKLFadg45EtnWoStg"});
-
-  },
-
   addPersonalinfo: function(street, addnbr, zip, city, addcountry, nationality1, nationality2, nationality3,
      sourcetaxed, dnumber, mnumber, birth, ahv, sdate, phposition, mdate, sfaname, sfiname, ch1name, ch1bdate, ch2name, ch2bdate,
      ch3name, ch3bdate, em1name, relation1, phone1, em2name, relation2, phone2, bankname, bankplace, bankzip, iban,
@@ -393,9 +373,6 @@ Meteor.methods({
     if (mnumber.toString().length===0) {signteltest=""} else {signteltest="+41 "+ mnumber.slice(0,2)+" "+mnumber.slice(2,5)+" "+mnumber.slice(5,7)+" "+mnumber.slice(7,9)};
     if (signteltest==="") {signatureteltest="Missing phone number"} else {signatureteltest=signteltest}
     if (phposition.length===0){phpositiontest="Missing position"} else {phpositiontest=phposition};
-    console.log(signteltest);
-    console.log(phpositiontest);
-    console.log(signatureteltest);
     Personalinfo.update(Personalinfo.findOne({ createdBy: creator })._id,
       { $set: 
         {
@@ -442,7 +419,7 @@ Meteor.methods({
      euriban: euriban,
      euraccnbr: euraccnbr,
      euraccname: euraccname,
-     signature: '<div class="gmail_signature"><div dir="ltr"><div><div dir="ltr"><span><div><div><div style="word-wrap:break-word"><div style="word-wrap:break-word"><b style="font-family:"Helvetica Neue",sans-serif"><span style="color:#004a8d">'+Personalinfo.findOne({ createdBy: creator }).finame+' '+Personalinfo.findOne({ createdBy: creator }).faname+'<br></span></b><div style="font-family:"Helvetica Neue",sans-serif"><div><div><span style="font-family:"Helvetica Neue"">'+ phpositiontest +'</span></div><div><br></div><div><div><span style="font-family:"Helvetica Neue"">'+ signatureteltest +'</span></div><div><span style="font-family:"Helvetica Neue""><a href="mailto:'+Personalinfo.findOne({ createdBy: creator }).email+'" target="_blank">'+Personalinfo.findOne({ createdBy: creator }).email+'</a></span></div></div><div><br></div><div><span style="font-family:"Helvetica Neue"">Philico AG</span></div><div><span style="font-family:"Helvetica Neue"">Sonder 16</span></div><div><span style="font-family:"Helvetica Neue"">CH-9042 Speicher</span></div></div><div><span style="font-family:"Helvetica Neue""><a href="http://www.philico.com" target="_blank">www.philico.com</a></span></div></div></div></div></div></div></span></div></div></div></div>',
+     signature: '<div class="gmail_signature" style="font-family:Helvetica Neue, Helvetica, Arial, sans-serif; font-size:14px"><div dir="ltr"><div><div dir="ltr"><span><div><div><div style="word-wrap:break-word"><div style="word-wrap:break-word"><b ><span style="color:#004a8d">'+Personalinfo.findOne({ createdBy: creator }).finame+' '+Personalinfo.findOne({ createdBy: creator }).faname+'<br></span></b><div><div><div><span>'+ phpositiontest +'</span></div><div><br></div><div><div><span>'+ signatureteltest +'</span></div><div><span><a href="mailto:'+Personalinfo.findOne({ createdBy: creator }).email+'" target="_blank">'+Personalinfo.findOne({ createdBy: creator }).email+'</a></span></div></div><div><br></div><div><span>Philico AG</span></div><div><span>Sonder 16</span></div><div><span>CH-9042 Speicher</span></div></div><div><span><a href="http://www.philico.com" target="_blank">www.philico.com</a></span></div></div></div></div></div></div></span></div></div></div></div>',
      createdAt: new Date(),
      }    
     })

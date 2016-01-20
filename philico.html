@@ -13,30 +13,46 @@
         <span class="icon-bar"></span>                        
       </button>
       <a class="navbar-brand" href="http://www.philico.com"><img src="/images/logo_philico.png" alt="HTML5 Icon"></a>
-      <a class="navbar-brand loginbutton">{{>loginButtons}}</a>
+      <a class="navbar-brand loginbutton">{{> loginButtons}}</a>
     </div>
-    {{#if currentUser}}
-    {{initialisation}}
     <div class="collapse navbar-collapse" id="myNavbar">
+      {{#if currentUser }}
       <ul class="nav navbar-nav navbar-right">
         <li role="presentation"><a href="/">Home</a></li>
-        <li role="presentation"><a href="/personaldata">Personal Data</a></li>
+        {{#each personalinfo}}
+        <li role="presentation"><a href="/personaldata/{{email}}">Personal Data</a></li>
+        {{/each}}
+        {{#if adminrights}}
+        <li role="presentation" class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees Data<span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            {{#each adminpersonalinfo}}
+            <li><a href="/personaldataemployee/{{email}}" target="_blank">{{email}} Data</a></li>
+            {{/each}}
+          </ul>
+        </li>
+        {{/if}}
         <li role="presentation"><a href="/signature"> My Signature</a></li>
-          <li role="presentation">{{#each personalinfo}}<a href="/cv/{{_id}}" target="_blank">My CV</a>{{/each}}</li>
+        {{#unless adminrights}}
+        {{#each personalinfo}}
+        <li role="presentation"><a href="/cv/{{email}}" target="_blank">My CV</a></li>
+        {{/each}}
+        {{/unless}}
         {{#if adminrights}}
         <li role="presentation" class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees CVs<span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
             {{#each adminpersonalinfo}}
-            <li><a href="/cv/{{_id}}" target="_blank">{{finame}} {{faname}} CV</a></li>
+            <li><a href="/cv/{{email}}" target="_blank">{{email}} CV</a></li>
             {{/each}}
           </ul>
         </li>
         {{/if}}
       </ul>
+      {{/if}}
     </div>
-    {{/if}}
   </div>
 </div>
 </nav>
@@ -46,13 +62,14 @@
 
 <template name="home">
 {{> navigation}}
-{{#if currentUser}}
+{{#if currentUser }}
+{{initialisation}}
 <div class="container">
 <div class="containerpage">
   <main>
     <br>
     {{#each personalinfo}}
-      <h3>Welcome {{finame}} {{faname}}</h3>
+      <h3>Welcome {{fullName}}</h3>
     {{/each}}
     
   </main>       
@@ -68,11 +85,10 @@
 <template name="personaldata">
 {{> navigation}}
 {{#if currentUser}}
-{{#each personalinfo}}
 <div class="container">
 <div class="containerpage">
 <main>
-
+{{initialisation}}
    <section class="profile">
     <h3>PERSONAL INFORMATION</h3>
       <form class="new-profile">
@@ -83,11 +99,11 @@
           <tr></tr>
           <tr>
             <td>First name</td>
-            <td>{{finame}}</td>
+            <td>{{firstName}}</td>
           </tr>
           <tr>
             <td>Family name</td>
-            <td>{{faname}}</td>
+            <td>{{familyName}}</td>
           </tr>
           <tr>
             <td>Email</td>
@@ -102,23 +118,23 @@
         <col width="220">
           <tr>
             <td>Address</td>
-            <td><input type="text" name="street" value="{{street}}" placeholder="Street"></td>
+            <td><input type="text" name="addressStreet" value="{{addressStreet}}" placeholder="Street"></td>
           </tr>
           <tr>
             <td></td>
-            <td><input type="text" name="addnbr" value="{{addnbr}}" placeholder="Number"></td>
+            <td><input type="text" name="addressNumber" value="{{addressNumber}}" placeholder="Number"></td>
           </tr>
           <tr>
             <td></td>
-            <td><input type="number" name="zip" value="{{zip}}" placeholder="ZIP"></td>
+            <td><input type="number" name="addressZip" value="{{addressZip}}" placeholder="ZIP"></td>
           </tr>
           <tr>
             <td></td>
-            <td><input type="text" name="city" value="{{city}}" placeholder="City"></td>
+            <td><input type="text" name="addressCity" value="{{addressCity}}" placeholder="City"></td>
           </tr>
           <tr>
             <td></td>
-            <td><input type="text" name="addcountry" value="{{addcountry}}" placeholder="Country"></td>
+            <td><input type="text" name="addressCountry" value="{{addressCountry}}" placeholder="Country"></td>
           </tr>
           <tr>
             <td>Nationality</td>
@@ -148,31 +164,31 @@
                 </select></td>
           </tr>
           <tr>
-            <td>Domicile phone 41(0)</td>
-            <td><input type="number" pattern="\d*" maxlength="9" name="dnumber" value="{{dnumber}}"></td>
+            <td>Domicile phone +41(0)</td>
+            <td><input type="number" pattern="\d*" maxlength="9" name="domicilePhone" value="{{domicilePhone}}" placeholder="9 digitals(123456789)"></td>
           </tr>
           <tr>
-            <td>Mobile phone 41(0)</td>
-            <td><input type="number" maxlength="9" name="mnumber" value="{{mnumber}}"></td>
+            <td>Mobile phone +41(0)</td>
+            <td><input type="number" maxlength="9" name="mobilePhone" value="{{mobilePhone}}" placeholder="9 digitals(123456789)"></td>
           </tr>
           <tr>
             <td>Date of birth</td>
-            {{#if birth}}<td>{{birth}}</td>{{else}}
-            <td><input type="date" name="birth"></td>{{/if}}
+            {{#if birthDate}}<td>{{birthDate}}</td>{{else}}
+            <td><input type="date" name="birthDate"></td>{{/if}}
           </tr>
           <tr>
             <td>AHV/AVS number</td>
-            {{#if ahv}}<td>{{ahv}}</td>{{else}}
-            <td><input type="number" maxlength="13" name="ahv"></td>{{/if}}
+            {{#if ahvNumber}}<td>{{ahvNumber}}</td>{{else}}
+            <td><input type="number" maxlength="13" name="ahvNumber" placeholder="13 digitals(no points)"></td>{{/if}}
           </tr>
           <tr>
             <td>Start date in Philico</td>
-            {{#if sdate}}<td>{{sdate}}</td>{{else}}
-            <td><input type="date" name="sdate"></td>{{/if}}
+            {{#if startDatephilico}}<td>{{startDatephilico}}</td>{{else}}
+            <td><input type="date" name="startDatephilico"></td>{{/if}}
           </tr>
           <tr>
             <td>Position within Philico</td>
-            <td><input type="text" name="phposition" value="{{phposition}}"></td>
+            <td><input type="text" name="positionPhilico" value="{{positionPhilico}}"></td>
           </tr>
         </table>
         </p>
@@ -190,39 +206,39 @@
           </tr>
           <tr>
             <td>Date of marriage</td>
-            <td><input type="date" name="mdate" value="{{mdate}}"></td>
+            <td><input type="date" name="marriageDate" value="{{marriageDate}}"></td>
           </tr>
           <tr>
             <td>Spouse name</td>
-            <td><input type="text" name="sfaname" value="{{sfaname}}"></td>
+            <td><input type="text" name="spousefamilyName" value="{{spousefamilyName}}" placeholder="Family name"></td>
           </tr>
           <tr>
             <td></td>
-            <td><input type="text" name="sfiname" value="{{sfiname}}"></td>
+            <td><input type="text" name="spousefirstName" value="{{spousefirstName}}" placeholder="First name"></td>
           </tr>
           <tr>
             <td>Child 1 name</td>
-            <td><input type="text" name="ch1name" value="{{ch1name}}"></td>
+            <td><input type="text" name="child1Name" value="{{child1Name}}"></td>
           </tr>
           <tr>
             <td>Child 1 birthdate</td>
-            <td><input type="date" name="ch1bdate" value="{{ch1bdate}}"></td>
+            <td><input type="date" name="child1Birthdate" value="{{child1Birthdate}}"></td>
           </tr>
           <tr>
             <td>Child 2 name</td>
-            <td><input type="text" name="ch2name" value="{{ch2name}}"></td>
+            <td><input type="text" name="child2Name" value="{{child2Name}}"></td>
           </tr>
           <tr>
             <td>Child 2 birthdate</td>
-            <td><input type="date" name="ch2bdate" value="{{ch2bdate}}"></td>
+            <td><input type="date" name="child2Birthdate" value="{{child2Birthdate}}"></td>
           </tr>
           <tr>
             <td>Child 3 name</td>
-            <td><input type="text" name="ch3name" value="{{ch3name}}"></td>
+            <td><input type="text" name="child3Name" value="{{child3Name}}"></td>
           </tr>
           <tr>
             <td>Child 3 birthdate</td>
-            <td><input type="date" name="ch3bdate" value="{{ch3bdate}}"></td>
+            <td><input type="date" name="child3Birthdate" value="{{child3Birthdate}}"></td>
           </tr>
         </table>
         </p>
@@ -236,28 +252,28 @@
           </tr>
           <tr>
             <td>Person 1 name</td>
-            <td><input type="text" name="em1name" value="{{em1name}}"></td>         
+            <td><input type="text" name="emergency1Name" value="{{emergency1Name}}"></td>         
           </tr>
           <tr>
             <td>Person 1 relation</td>
-            <td><input type="text" name="relation1" value="{{relation1}}"></td>           
+            <td><input type="text" name="emergency1Relation" value="{{emergency1Relation}}"></td>           
           </tr>
           <tr>
             <td>Person 1 phone</td>
-            <td><input type="number" name="phone1" value="{{phone1}}"></td> 
+            <td><input type="number" name="emergency1Phone" value="{{emergency1Phone}}"></td> 
           </tr>
           <br><br>
           <tr>
             <td>Person 2 name</td>
-            <td><input type="text" name="em2name" value="{{em2name}}"></td>         
+            <td><input type="text" name="emergency2Name" value="{{emergency2Name}}"></td>         
           </tr>
           <tr>
             <td>Person 2 relation</td>
-            <td><input type="text" name="relation2" value="{{relation2}}"></td>           
+            <td><input type="text" name="emergency2Relation" value="{{emergency2Relation}}"></td>           
           </tr>
           <tr>
             <td>Person 2 phone</td>
-            <td><input type="number" name="phone2" value="{{phone2}}"></td> 
+            <td><input type="number" name="emergency2Phone" value="{{emergency2Phone}}"></td> 
           </tr>
         </table>
         </p>
@@ -274,27 +290,27 @@
           </tr>
           <tr>
             <td>Bank name</td>
-            <td><input type="text" name="bankname" value="{{bankname}}"></td> 
+            <td><input type="text" name="CHbankName" value="{{CHbankName}}"></td> 
           </tr>
           <tr>
-            <td>Bank place</td>
-            <td><input type="text" name="bankplace" value="{{bankplace}}"></td>
+            <td>Bank city</td>
+            <td><input type="text" name="CHbankCity" value="{{CHbankCity}}"></td>
           </tr>
           <tr>
             <td>Bank ZIP</td>
-            <td><input type="number" name="bankzip" value="{{bankzip}}"></td> 
+            <td><input type="number" name="CHbankZip" value="{{CHbankZip}}"></td> 
           </tr>
           <tr>
             <td>Clearing/IBAN</td>
-            <td><input type="text" name="iban" maxlength="21" value="{{iban}}"></td> 
+            <td><input type="text" name="CHbankIban" maxlength="21" value="{{CHbankIban}}"></td> 
           </tr>
           <tr>
             <td>Account number</td>
-            <td><input type="text" name="accnbr" value="{{accnbr}}"></td> 
+            <td><input type="text" name="CHbankAccountnumber" value="{{CHbankAccountnumber}}"></td> 
           </tr>
           <tr>
             <td>In the name of</td>
-            <td><input type="text" name="accname" value="{{accname}}"></td> 
+            <td><input type="text" name="CHbankAccountname" value="{{CHbankAccountname}}"></td> 
           </tr>
         </table>
         </p>
@@ -307,27 +323,27 @@
           </tr>
           <tr>
             <td>Bank name</td>
-            <td><input type="text" name="eurbankname" value="{{eurbankname}}"></td>
+            <td><input type="text" name="EURbankName" value="{{EURbankName}}"></td>
           </tr>
           <tr>
-            <td>Bank place</td>
-            <td><input type="text" name="eurbankplace" value="{{eurbankplace}}"></td>
+            <td>Bank city</td>
+            <td><input type="text" name="EURbankCity" value="{{EURbankCity}}"></td>
           </tr>
           <tr>
             <td>Bank ZIP</td>
-            <td><input type="text" name="eurbankzip" value="{{eurbankzip}}"></td>
+            <td><input type="text" name="EURbankZip" value="{{EURbankZip}}"></td>
           </tr>
           <tr>
             <td>Clearing/IBAN</td>
-            <td><input type="text" name="euriban" maxlength="21" value="{{euriban}}"></td>
+            <td><input type="text" name="EURbankIban" maxlength="21" value="{{EURbankIban}}"></td>
           </tr>
           <tr>
             <td>Account number</td>
-            <td><input type="text" name="euraccnbr" value="{{euraccnbr}}"></td>
+            <td><input type="text" name="EURbankAccountnumber" value="{{EURbankAccountnumber}}"></td>
           </tr>
           <tr>
             <td>In the name of</td>
-            <td><input type="text" name="euraccname" value="{{euraccname}}"></td> 
+            <td><input type="text" name="EURbankAccountname" value="{{EURbankAccountname}}"></td> 
           </tr>
         </table>
         </p>
@@ -349,19 +365,19 @@
       <p>
       <div>
           <p class="Paragtitle">Communication and Analytical Skills</p>
-          <textarea name="comskill" id="comp" value="{{competencies.[0].comskill}}"></textarea>
+          <textarea name="communicationSkills" id="comp" value="{{competencies.[0].communicationSkills}}"></textarea>
       </div>
       </p>
       <p>
       <div>
           <p class="Paragtitle">Business Expertise</p>
-          <textarea name="businessskill" id="comp" value="{{competencies.[0].businessskill}}"></textarea>
+          <textarea name="businessSkills" id="comp" value="{{competencies.[0].businessSkills}}"></textarea>
       </div>
       </p>
       <p>
       <div>
           <p class="Paragtitle">Technical Expertise</p>
-          <textarea name="technicalskill" id="comp" value="{{competencies.[0].technicalskill}}"></textarea>
+          <textarea name="technicalSkills" id="comp" value="{{competencies.[0].technicalSkills}}"></textarea>
       </div>
       </p>
       <br>
@@ -385,29 +401,29 @@
       <tr></tr>
       <tr>
         <td>Start date</td>
-        <td id="current"><input type="number" id="month" name="stdatemonth" min="1" max="12" placeholder="MM" >.<input type="number" maxlength="4" name="stdateyear" id="year" placeholder="YYYY" ></td>
+        <td id="current"><input type="number" id="month" name="projectStartdatemonth" min="1" max="12" placeholder="MM" >.<input type="number" maxlength="4" name="projectStartdateyear" id="year" placeholder="YYYY" ></td>
         <td class="checkbox">Current Experience<label class="currentproject"><input class="checkbutton" type="checkbox" name="currentprojcheck" checked="{{mycurrentproject}}"></label>
         </td>
       </tr>
       <tr>
         <td>End date</td>
-        <td>{{#if notcurrentproject}}<input type="number" id="month" name="enddatemonth" min="1" max="12" placeholder="MM" >.<input type="number" maxlength="4" name="enddateyear" id="year" placeholder="YYYY" >{{/if}}</td>
+        <td>{{#if notcurrentproject}}<input type="number" id="month" name="projectEnddatemonth" min="1" max="12" placeholder="MM" >.<input type="number" maxlength="4" name="projectEnddateyear" id="year" placeholder="YYYY" >{{/if}}</td>
       </tr>
       <tr>
         <td>Company name</td>
-        <td><input type="text" name="company" ></td>
+        <td><input type="text" name="projectCompany" ></td>
       </tr>
       <tr>
         <td>Client name</td>
-        <td><input type="text" name="customer" ></td>
+        <td><input type="text" name="projectClient" ></td>
       </tr>
       <tr>
         <td>City</td>
-        <td><input type="text" name="customercity" ></td>
+        <td><input type="text" name="projectClientcity" ></td>
       </tr>
       <tr>
         <td>Department</td>
-        <td><input type="text" name="department" ></td>
+        <td><input type="text" name="projectClientdepartment" ></td>
       </tr>
       </table>
       <br>
@@ -415,29 +431,29 @@
       <p>
       <div>
           <p class="Paragtitle">Project 1</p>
-          <input type="text" name="projecttitle1" placeholder="Project title 1" ><br><br>
-          <textarea name="projectdescription1" id="proj" ></textarea>
+          <input type="text" name="project1Title" placeholder="Project title 1" ><br><br>
+          <textarea name="project1Description" id="proj" ></textarea>
       </div>
       </p>
       <p>
       <div>
           <p class="Paragtitle">Project 2</p>
-          <input type="text" name="projecttitle2" placeholder="Project title 2"><br><br>
-          <textarea name="projectdescription2" id="proj"></textarea>
+          <input type="text" name="project2Title" placeholder="Project title 2"><br><br>
+          <textarea name="project2Description" id="proj"></textarea>
       </div>
       </p>
       <p>
       <div>
           <p class="Paragtitle">Project 3</p>
-          <input type="text" name="projecttitle3" placeholder="Project title 3"><br><br>
-          <textarea name="projectdescription3" id="proj"></textarea>
+          <input type="text" name="project3Title" placeholder="Project title 3"><br><br>
+          <textarea name="project3Description" id="proj"></textarea>
       </div>
       </p>
       <p>
       <div>
           <p class="Paragtitle">Project 4</p>
-          <input type="text" name="projecttitle4" placeholder="Project title 4"><br><br>
-          <textarea name="projectdescription4" id="proj"></textarea>
+          <input type="text" name="project4Title" placeholder="Project title 4"><br><br>
+          <textarea name="project4Description" id="proj"></textarea>
       </div>
       </p>
     </div>
@@ -454,48 +470,50 @@
     <table>
       <col width="220">
           <tr>
-            <td colspan="2">{{company}}</td>
+            <td colspan="2">{{projectCompany}}</td>
           </tr>
           <tr>
-            <td>{{stdate}} - {{enddate}}</td>
-            <td>{{customer}}, {{customercity}} - {{department}}</td>
+            <td>{{projectStartdate}} - {{projectEnddate}}</td>
+            <td>{{projectClient}}, {{projectClientcity}} - {{projectClientdepartment}}</td>
           </tr>
+          {{#if project1Title}}
           <tr>
             <td></td>  
-            <td>{{projecttitle1}}</td>
+            <td>{{project1Title}}</td>
           </tr>
           <tr>
             <td></td>
-            <td>{{projectdescription1}}</td>
-          </tr>
-          {{#if projecttitle2}}
-          <tr>
-            <td></td>
-            <td>{{projecttitle2}}</td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>{{projectdescription2}}</td>
+            <td>{{project1Description}}</td>
           </tr>
           {{/if}}
-          {{#if projecttitle3}}
+          {{#if project2Title}}
           <tr>
             <td></td>
-            <td>{{projecttitle3}}</td>
+            <td>{{project2Title}}</td>
           </tr>
           <tr>
             <td></td>
-            <td>{{projectdescription3}}</td>
+            <td>{{project2Description}}</td>
           </tr>
           {{/if}}
-          {{#if projecttitle4}}
+          {{#if project3Title}}
           <tr>
             <td></td>
-            <td>{{projecttitle4}}</td>
+            <td>{{project3Title}}</td>
           </tr>
           <tr>
             <td></td>
-            <td>{{projectdescription4}}</td>
+            <td>{{project3Description}}</td>
+          </tr>
+          {{/if}}
+          {{#if project4Title}}
+          <tr>
+            <td></td>
+            <td>{{project4Title}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{project4Description}}</td>
           </tr>
           {{/if}}
       </table>
@@ -517,25 +535,25 @@
       <tr></tr>
       <tr>
         <td>Start date</td>
-        <td><input type="number" id="month" name="empstdatemonth" min="1" max="12" placeholder="MM" >.<input type="number" maxlength="4" name="empstdateyear" id="year" placeholder="YYYY" ></td>
+        <td><input type="number" id="month" name="employmentStartdatemonth" min="1" max="12" placeholder="MM" >.<input type="number" maxlength="4" name="employmentStartdateyear" id="year" placeholder="YYYY" ></td>
         <td class="checkbox"><label class="currentemployment">Current employment<input class="checkbutton" type="checkbox" name="currentempcheck" checked="{{mycurrentemployment}}"></label>
         </td>
       </tr>
       <tr>
         <td>End date</td>
-        <td>{{#if notcurrentemployment}}<input type="number" id="month" name="empenddatemonth" min="1" max="12" placeholder="MM" >.<input type="number" maxlength="4" name="empenddateyear" id="year" placeholder="YYYY" >{{/if}}</td>
+        <td>{{#if notcurrentemployment}}<input type="number" id="month" name="employmentEnddatemonth" min="1" max="12" placeholder="MM" >.<input type="number" maxlength="4" name="employmentEnddateyear" id="year" placeholder="YYYY" >{{/if}}</td>
       </tr>
       <tr>
         <td>Company name</td>
-        <td><input type="text" name="empcompany" ></td>
+        <td><input type="text" name="employmentCompany" ></td>
       </tr>
       <tr>
         <td>City</td>
-        <td><input type="text" name="empcity" ></td>
+        <td><input type="text" name="employmentCity" ></td>
       </tr>
       <tr>
         <td>Position</td>
-        <td><input type="text" name="empposition" ></td>
+        <td><input type="text" name="employmentPosition" ></td>
       </tr>
       </table>
       <br>
@@ -550,12 +568,12 @@
     <table>
       <col width="220">
       <tr>
-        <td>{{empstdate}} - {{empenddate}}</td>
-        <td>{{empcompany}}, {{empcity}}</td>
+        <td>{{employmentStartdate}} - {{employmentEnddate}}</td>
+        <td>{{employmentCompany}}, {{employmentCity}}</td>
       </tr>
       <tr>
         <td></td>
-        <td>{{empposition}}</td>
+        <td>{{employmentPosition}}</td>
       </tr>
       </table>
     </li>
@@ -576,27 +594,27 @@
       <tr></tr>
       <tr>
         <td>Graduation date</td>
-        <td><input type="number" id="month" name="ddatemonth" min="1" max="12" placeholder="MM" >.<input type="number" maxlength="4" name="ddateyear" id="year" placeholder="YYYY" ></td>
+        <td><input type="number" id="month" name="degreeDatemonth" min="1" max="12" placeholder="MM" >.<input type="number" maxlength="4" name="degreeDateyear" id="year" placeholder="YYYY" ></td>
       </tr>
       <tr>
         <td>Degree/Certification</td>
-        <td><input type="text" name="dip" ></td>
+        <td><input type="text" name="degree" ></td>
       </tr>
       <tr>
         <td>Specialisation</td>
-        <td><input type="text" name="spec"></td>
+        <td><input type="text" name="degreeSpecialisation"></td>
       </tr>
       <tr>
         <td>University/Company</td>
-        <td><input type="text" name="uni" ></td>
+        <td><input type="text" name="degreeUniversity" ></td>
       </tr>
       <tr>
         <td>City</td>
-        <td><input type="text" name="dipcity" ></td>
+        <td><input type="text" name="degreeCity" ></td>
       </tr>
       <tr>
         <td>Country</td>
-        <td><input type="text" name="dipcountry" ></td>
+        <td><input type="text" name="degreeCountry" ></td>
       </tr>
       </table>
       <br>
@@ -611,12 +629,12 @@
       <table>
       <col width="220">
         <tr>
-          <td>{{ddate}}</td>
-          <td>{{uni}}, {{dipcity}} - {{dipcountry}}</td>
+          <td>{{degreeDate}}</td>
+          <td>{{degreeUniversity}}, {{degreeCity}} - {{degreeCountry}}</td>
         </tr>
         <tr>
           <td></td>
-          <td>{{dip}}{{#if spec}}, {{spec}}{{/if}}</td>
+          <td>{{degree}}{{#if degreeSpecialisation}}, {{degreeSpecialisation}}{{/if}}</td>
         </tr>
         
       </table>
@@ -638,11 +656,11 @@
         <tr></tr>
         <tr>
           <td>Language</td>
-          <td><input type="text" name="langue" ></td>
+          <td><input type="text" name="languageItem" ></td>
         </tr>
         <tr>
           <td>Skill</td>
-          <td><select class="options" name="skill" >
+          <td><select class="options" name="languageSkill" >
                 <option class="options" value="Mother tongue">Mother tongue</option>
                 <option class="options" value="Written and spoken fluency">Written and spoken fluency</option>
                 <option class="options" value="Professional">Professional</option>
@@ -662,38 +680,37 @@
       <table>
       <col width="220">
         <tr>
-          <td>{{langue}}</td>
-          <td>{{skill}}</td>
+          <td>{{languageItem}}</td>
+          <td>{{languageSkill}}</td>
         </tr>
       </table>
     </li>
   {{/each}}
   </ul>
   </section>
-
-  </main>
+</main>
 </div>
 </div>
-{{/each}}
 {{/if}}
 </template>
 
 <template name="signature">
 {{> navigation}}
 {{#if currentUser}}
+{{initialisation}}
 <div class="container">
 <div class="containerpage">
 <main>
 <br>
 <section class="signature">
   {{#each personalinfo}} 
-    <h3>{{finameup}} {{fanameup}} SIGNATURE</h3>
+    <h3>{{firstNameup}} {{familyNameup}} SIGNATURE</h3>
     <ul>
       <li>
-      <div class="gmail_signature" style="font-family:Helvetica Neue, Helvetica, Arial, sans-serif; font-size:14px"><div dir="ltr"><div><div dir="ltr"><span><div><div><div style="word-wrap:break-word"><div style="word-wrap:break-word"><b ><span style="color:#004a8d">{{finame}} {{faname}}<br></span></b><div ><div><div>{{#if phposition.length}}<span >{{phposition}}</span>{{else}}<span style="color:red">Missing position</span>{{/if}}</div><div><br></div><div><div>{{#if signaturetel.length}}<span >{{signaturetel}}</span>{{else}}<span style="color:red">Missing phone number</span>{{/if}}</div><div><span ><a href="mailto:{{email}}" target="_blank">{{email}}</a></span></div></div><div><br></div><div><span >Philico AG</span></div><div><span >Sonder 16</span></div><div><span >CH-9042 Speicher</span></div></div><div><span ><a href="http://www.philico.com" target="_blank">www.philico.com</a></span></div></div></div></div></div></div></span></div></div></div></div>
+      <div class="gmail_signature" style="font-family:Helvetica Neue, Helvetica, Arial, sans-serif; font-size:14px"><div dir="ltr"><div><div dir="ltr"><span><div><div><div style="word-wrap:break-word"><div style="word-wrap:break-word"><b ><span style="color:#004a8d">{{firstName}} {{familyName}}<br></span></b><div ><div><div>{{#if positionPhilico.length}}<span >{{positionPhilico}}</span>{{else}}<span style="color:red">Missing position</span>{{/if}}</div><div><br></div><div><div>{{#if signatureTel.length}}<span>{{signatureTel}}</span>{{else}}<span style="color:red">Missing phone number</span>{{/if}}</div><div><span ><a href="mailto:{{email}}" target="_blank">{{email}}</a></span></div></div><div><br></div><div><span >Philico AG</span></div><div><span >Sonder 16</span></div><div><span >CH-9042 Speicher</span></div></div><div><span ><a href="http://www.philico.com" target="_blank">www.philico.com</a></span></div></div></div></div></div></div></span></div></div></div></div>
       </li>
       <li><p><strong>Signature HTML</strong></p>
-        {{signature}}</li>
+        {{emailSignature}}</li>
     </ul>
   {{/each}}
   </section> 
@@ -708,6 +725,7 @@
 
 <template name="cv">
 {{#if currentUser}}
+{{initialisation}}
 <body>
 <div class="container containercv">
 <main class="cv">
@@ -722,8 +740,8 @@
       <tr></tr>
       <tr></tr>
       <tr class="cvtitle">
-        <td><strong><span class="cvtitle">{{finameup}} {{fanameup}}</span></strong><br><span class="cvtitle">Curriculum Vitae</span></td>
-        <td><img align="right" src="/images/{{finame}} {{faname}}.jpg" height="100" width="250" alt="{{finame}} {{faname}} picture"></td>
+        <td><strong><span class="cvtitle">{{firstNameup}} {{familyNameup}}</span></strong><br><span class="cvtitle">Curriculum Vitae</span></td>
+        <td><img align="right" src="/images/{{firstName}} {{familyName}}.jpg" height="100" width="250" alt="{{firstName}} {{familyName}} picture"></td>
       </tr>
     </table>
   </p>
@@ -743,7 +761,7 @@
  <tr></tr>
  <tr>
    <td><span class="cvbluetext">Birthday</span></td>
-   <td>{{birth}}</td>
+   <td>{{birthDate}}</td>
  </tr>
  <tr></tr>
  <tr>
@@ -753,20 +771,20 @@
  <tr></tr>
  <tr>
    <td><span class="cvbluetext">Address</span></td>
-   <td>{{street}}{{#if addnbr}}, {{addnbr}}{{/if}}</td>
+   <td>{{addressStreet}}{{#if addressNumber}}, {{addressNumber}}{{/if}}</td>
  </tr>
  <tr>
    <td></td>
-   <td>{{zip}} {{city}}</td>
+   <td>{{addressZip}} {{addressCity}}</td>
  </tr>
  <tr>
    <td></td>
-   <td>{{addcountry}}</td>
+   <td>{{addressCountry}}</td>
  </tr>
  <tr></tr>
  <tr>
    <td><span class="cvbluetext">Contact</span></td>
-   <td>{{signaturetel}}</td>
+   <td>{{signatureTel}}</td>
   </tr>
   <tr>
    <td></td>
@@ -786,17 +804,17 @@
  <tr></tr>
  <tr>
    <td><span class="cvbluetext">Communication and Analytical Skills</span></td>
-   <td>{{competencies.[0].comskill}}</td>
+   <td>{{competencies.[0].communicationSkills}}</td>
  </tr>
  <tr></tr>
  <tr>
    <td><span class="cvbluetext">Professional Experience</span></td>
-   <td>{{competencies.[0].businessskill}}</td>
+   <td>{{competencies.[0].businessSkills}}</td>
  </tr>
  <tr></tr>
  <tr>
    <td><span class="cvbluetext">Technical Expertise</span></td>
-   <td>{{competencies.[0].technicalskill}}</td>
+   <td>{{competencies.[0].technicalSkills}}</td>
  </tr>
  <tr></tr>
  <tr></tr>
@@ -811,48 +829,50 @@
   <tr></tr>
   {{#each experiences}}
   <tr>
-    <td colspan="2"><span class="cvbluetext">{{company}}</span></td>
+    <td colspan="2"><span class="cvbluetext">{{projectCompany}}</span></td>
   </tr>
   <tr>
-    <td>{{stdate}} - {{enddate}}</td>
-    <td><span class="cvbluetext">{{#if customer}}{{customer}},{{/if}} {{customercity}}{{#if department}} - {{department}}{{/if}}</span></td>
+    <td>{{projectStartdate}} - {{projectEnddate}}</td>
+    <td><span class="cvbluetext">{{#if projectClient}}{{projectClient}},{{/if}} {{projectClientcity}}{{#if projectClientdepartment}} - {{projectClientdepartment}}{{/if}}</span></td>
   </tr>
+  {{#if project1Title}}
   <tr>
     <td></td>  
-    <td><strong>{{projecttitle1}}</strong></td>
+    <td><strong>{{project1Title}}</strong></td>
   </tr>
   <tr>
     <td></td>
-    <td>{{projectdescription1}}</td>
-  </tr>
-  {{#if projecttitle2}}
-  <tr>
-    <td></td>
-    <td><strong>{{projecttitle2}}</strong></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td>{{projectdescription2}}</td>
+    <td>{{project1Description}}</td>
   </tr>
   {{/if}}
-  {{#if projecttitle3}}
+  {{#if project2Title}}
   <tr>
     <td></td>
-    <td><strong>{{projecttitle3}}</strong></td>
+    <td><strong>{{project2Title}}</strong></td>
   </tr>
   <tr>
     <td></td>
-    <td>{{projectdescription3}}</td>
+    <td>{{project2Description}}</td>
   </tr>
   {{/if}}
-  {{#if projecttitle4}}
+  {{#if project3Title}}
   <tr>
     <td></td>
-    <td><strong>{{projecttitle4}}</strong></td>
+    <td><strong>{{project3Title}}</strong></td>
   </tr>
   <tr>
     <td></td>
-    <td>{{projectdescription4}}</td>
+    <td>{{project3Description}}</td>
+  </tr>
+  {{/if}}
+  {{#if project4Title}}
+  <tr>
+    <td></td>
+    <td><strong>{{project4Title}}</strong></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>{{project4Description}}</td>
   </tr>
   {{/if}}
   <tr></tr>
@@ -869,12 +889,12 @@
  <tr></tr>
  {{#each employments}}
   <tr>
-    <td>{{empstdate}} - {{empenddate}}</td>
-    <td>{{empcompany}}, {{empcity}}</td>
+    <td>{{employmentStartdate}} - {{employmentEnddate}}</td>
+    <td>{{employmentCompany}}, {{employmentCity}}</td>
   </tr>
   <tr>
     <td></td>
-    <td>{{empposition}}</td>
+    <td>{{employmentPosition}}</td>
   </tr>
   <tr></tr>
     {{/each}}
@@ -890,12 +910,12 @@
  <tr></tr>
  {{#each degrees}}
  <tr>
-  <td>{{ddate}}</td>
-  <td>{{uni}}, {{dipcity}} - {{dipcountry}}</td>
+  <td>{{degreeDate}}</td>
+  <td>{{degreeUniversity}}, {{degreeCity}} - {{degreeCountry}}</td>
  </tr>
  <tr>
   <td></td>
-  <td>{{dip}}{{#if spec}}, {{spec}}{{/if}}</td>
+  <td>{{degree}}{{#if degreeSpecialisation}}, {{degreeSpecialisation}}{{/if}}</td>
  </tr>
  <tr></tr>
  {{/each}}
@@ -911,8 +931,8 @@
  <tr></tr>
  {{#each languages}}
  <tr>
-  <td>{{langue}}</td>
-  <td>{{skill}}</td>
+  <td>{{languageItem}}</td>
+  <td>{{languageSkill}}</td>
  </tr>
  {{/each}}
  <tr></tr>
@@ -925,5 +945,458 @@
 <main>
   {{> navigation}}
 </main>
+{{/if}}
+</template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<template name="personaldataemployee">
+{{> navigation}}
+{{#if currentUser}}
+<div class="container">
+<div class="containerpage">
+<main>
+{{initialisation}}
+   <section class="profile">
+    <h3>PERSONAL INFORMATION</h3>        
+        <table>
+        <col width="150">
+        <col width="220">
+          <tr></tr>
+          <tr>
+            <td>First name</td>
+            <td>{{firstName}}</td>
+          </tr>
+          <tr>
+            <td>Family name</td>
+            <td>{{familyName}}</td>
+          </tr>
+          <tr>
+            <td>Email</td>
+            <td>{{email}}</td>
+          </tr>
+        </table>
+        <br>
+      <div id="perso">
+        <p>
+        <table>
+        <col width="150">
+        <col width="220">
+          <tr>
+            <td>Address</td>
+            <td>{{addressStreet}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{addressNumber}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{addressZip}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{addressCity}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{addressCountry}}</td>
+          </tr>
+          <tr>
+            <td>Nationality</td>
+            <td>{{nationality1}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{nationality2}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{nationality3}}</td>
+          </tr>
+        </table>
+        </p>
+        <p>
+        <table>
+        <col width="150">
+        <col width="220">
+          <tr>
+            <td>Source tax</td>
+            <td>{{sourcetaxed}}</td>
+          </tr>
+          <tr>
+            <td>Domicile phone +41(0)</td>
+            <td>{{domicilePhone}}</td>
+          </tr>
+          <tr>
+            <td>Mobile phone +41(0)</td>
+            <td>{{mobilePhone}}</td>
+          </tr>
+          <tr>
+            <td>Date of birth</td>
+            <td>{{birthDate}}</td>
+          </tr>
+          <tr>
+            <td>AHV/AVS number</td>
+            <td>{{ahvNumber}}</td>
+          </tr>
+          <tr>
+            <td>Start date in Philico</td>
+            <td>{{startDatephilico}}</td>
+          </tr>
+          <tr>
+            <td>Position within Philico</td>
+            <td>{{positionPhilico}}</td>
+          </tr>
+        </table>
+        </p>
+      </div>
+      <br>
+
+      <div id="perso">
+        <p>
+        <table>
+        <col width="150">
+        <col width="220">
+          <tr>
+            <td><strong>Family information</strong></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Date of marriage</td>
+            <td>{{marriageDate}}</td>
+          </tr>
+          <tr>
+            <td>Spouse name</td>
+            <td>{{spousefamilyName}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{spousefirstName}}</td>
+          </tr>
+          <tr>
+            <td>Child 1 name</td>
+            <td>{{child1Name}}</td>
+          </tr>
+          <tr>
+            <td>Child 1 birthdate</td>
+            <td>{{child1Birthdate}}</td>
+          </tr>
+          <tr>
+            <td>Child 2 name</td>
+            <td>{{child2Name}}</td>
+          </tr>
+          <tr>
+            <td>Child 2 birthdate</td>
+            <td>{{child2Birthdate}}</td>
+          </tr>
+          <tr>
+            <td>Child 3 name</td>
+            <td>{{child3Name}}</td>
+          </tr>
+          <tr>
+            <td>Child 3 birthdate</td>
+            <td>{{child3Birthdate}}</td>
+          </tr>
+        </table>
+        </p>
+        <p>
+        <table>
+        <col width="150">
+        <col width="220">
+          <tr>
+            <td><strong>Emergency contact</strong></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Person 1 name</td>
+            <td>{{emergency1Name}}</td>         
+          </tr>
+          <tr>
+            <td>Person 1 relation</td>
+            <td>{{emergency1Relation}}</td>           
+          </tr>
+          <tr>
+            <td>Person 1 phone</td>
+            <td>{{emergency1Phone}}</td> 
+          </tr>
+          <br><br>
+          <tr>
+            <td>Person 2 name</td>
+            <td>{{emergency2Name}}</td>         
+          </tr>
+          <tr>
+            <td>Person 2 relation</td>
+            <td>{{emergency2Relation}}</td>           
+          </tr>
+          <tr>
+            <td>Person 2 phone</td>
+            <td>{{emergency2Phone}}</td> 
+          </tr>
+        </table>
+        </p>
+      </div>
+      <br>
+
+      <div id="perso">
+        <p>
+        <table>
+        <col width="150">
+        <col width="220">
+          <tr>
+            <td colspan="2"><strong>Bank account for salary payments (CHF)</strong></td>
+          </tr>
+          <tr>
+            <td>Bank name</td>
+            <td>{{CHbankName}}</td> 
+          </tr>
+          <tr>
+            <td>Bank city</td>
+            <td>{{CHbankCity}}</td>
+          </tr>
+          <tr>
+            <td>Bank ZIP</td>
+            <td>{{CHbankZip}}</td> 
+          </tr>
+          <tr>
+            <td>Clearing/IBAN</td>
+            <td>{{CHbankIban}}</td> 
+          </tr>
+          <tr>
+            <td>Account number</td>
+            <td>{{CHbankAccountnumber}}</td> 
+          </tr>
+          <tr>
+            <td>In the name of</td>
+            <td>{{CHbankAccountname}}</td> 
+          </tr>
+        </table>
+        </p>
+        <p>
+        <table>
+        <col width="150">
+        <col width="220">
+          <tr>
+            <td colspan="2"><strong>Bank account for salary payments (EUR)</strong></td>
+          </tr>
+          <tr>
+            <td>Bank name</td>
+            <td>{{EURbankName}}</td>
+          </tr>
+          <tr>
+            <td>Bank city</td>
+            <td>{{EURbankCity}}</td>
+          </tr>
+          <tr>
+            <td>Bank ZIP</td>
+            <td>{{EURbankZip}}</td>
+          </tr>
+          <tr>
+            <td>Clearing/IBAN</td>
+            <td>{{EURbankIban}}</td>
+          </tr>
+          <tr>
+            <td>Account number</td>
+            <td>{{EURbankAccountnumber}}</td>
+          </tr>
+          <tr>
+            <td>In the name of</td>
+            <td>{{EURbankAccountname}}</td> 
+          </tr>
+        </table>
+        </p>
+      </div>
+      <br>
+  </section>
+  
+  <br><br>
+
+<!--           Core competencies             -->
+
+  <section class="competencies">
+  <h3>CORE COMPETENCIES</h3>
+  <br><br>
+    <div id="corecomp">
+      <p>
+      <div>
+          <p class="Paragtitle">Communication and Analytical Skills</p>
+          <p>{{competencies.[0].communicationSkills}}</p>
+      </div>
+      </p>
+      <p>
+      <div>
+          <p class="Paragtitle">Business Expertise</p>
+          <p>{{competencies.[0].businessSkills}}</p>
+      </div>
+      </p>
+      <p>
+      <div>
+          <p class="Paragtitle">Technical Expertise</p>
+          <p>{{competencies.[0].technicalSkills}}</p>
+      </div>
+      </p>
+      <br>
+    </div>
+    <br>
+
+  </section>
+  
+  <br><br>
+
+<!--        Project experience section        -->
+
+  <section class="experiences">
+  <h3>PROJECT EXPERIENCE</h3>
+  <ul>
+    {{#each experiences}}
+    <li>
+    <button id="delete" class="deleteanexperience">&times;</button>
+    <table>
+      <col width="220">
+          <tr>
+            <td colspan="2">{{projectCompany}}</td>
+          </tr>
+          <tr>
+            <td>{{projectStartdate}} - {{projectEnddate}}</td>
+            <td>{{projectClient}}, {{projectClientcity}} - {{projectClientdepartment}}</td>
+          </tr>
+          {{#if project1Title}}
+          <tr>
+            <td></td>  
+            <td>{{project1Title}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{project1Description}}</td>
+          </tr>
+          {{/if}}
+          {{#if project2Title}}
+          <tr>
+            <td></td>
+            <td>{{project2Title}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{project2Description}}</td>
+          </tr>
+          {{/if}}
+          {{#if project3Title}}
+          <tr>
+            <td></td>
+            <td>{{project3Title}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{project3Description}}</td>
+          </tr>
+          {{/if}}
+          {{#if project4Title}}
+          <tr>
+            <td></td>
+            <td>{{project4Title}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{project4Description}}</td>
+          </tr>
+          {{/if}}
+      </table>
+    </li>
+    {{/each}}
+  </ul>
+  </section>    
+
+  
+  <br><br>
+
+<!--           Employment history section             -->
+
+  <section class="employment">
+  <h3>EMPLOYMENT HISTORY</h3>
+  <ul>
+    {{#each employments}}
+    <li>
+    <button id="delete" class="deleteanemployment">&times;</button>
+    <table>
+      <col width="220">
+      <tr>
+        <td>{{employmentStartdate}} - {{employmentEnddate}}</td>
+        <td>{{employmentCompany}}, {{employmentCity}}</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>{{employmentPosition}}</td>
+      </tr>
+      </table>
+    </li>
+    {{/each}}
+  </ul>
+  </section>
+      
+  <br><br>
+
+<!--           Degree section             -->
+
+  <section class="degrees">
+  <h3>DEGREES AND CERTIFICATIONS</h3>
+  <ul>
+  {{#each degrees}}
+    <li>
+      <button id="delete" class="deleteadegree">&times;</button>
+      <table>
+      <col width="220">
+        <tr>
+          <td>{{degreeDate}}</td>
+          <td>{{degreeUniversity}}, {{degreeCity}} - {{degreeCountry}}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>{{degree}}{{#if degreeSpecialisation}}, {{degreeSpecialisation}}{{/if}}</td>
+        </tr>
+        
+      </table>
+    </li>
+  {{/each}}
+  </ul>
+  </section>
+      
+  <br><br>
+
+<!--           Language section             -->
+   
+  <section class="languages" id="languages">
+  <h3>LANGUAGE SKILLS</h3>
+  <ul>
+  {{#each languages}}
+    <li>
+      <button id="delete" class="deletealanguage">&times;</button>
+      <table>
+      <col width="220">
+        <tr>
+          <td>{{languageItem}}</td>
+          <td>{{languageSkill}}</td>
+        </tr>
+      </table>
+    </li>
+  {{/each}}
+  </ul>
+  </section>
+</main>
+</div>
+</div>
 {{/if}}
 </template>

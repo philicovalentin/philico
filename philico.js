@@ -13,7 +13,7 @@ if (Meteor.isClient) {
     adminrights: function () {
     if(Meteor.user({_id:this.userId})){
     user=Meteor.user({_id:this.userId});  
-    if(user._id==="walid.benhammoud@philico.com") {
+    if(user._id==="walid.benhammoud@philico.com" || user._id==="fabian.knecht@philico.com" || user._id==="alex.mueller@philico.com" || user._id==="fabien.roth@philico.com") {
         return true
       } else {
         return false
@@ -22,6 +22,10 @@ if (Meteor.isClient) {
 
     adminpersonalinfo: function () {
       return Personalinfo.find({}) },
+
+    employees: function () {
+      return Personalinfo.find().count();
+    },
   });
     
   Template.home.helpers({
@@ -60,7 +64,6 @@ if (Meteor.isClient) {
       Meteor.call("init", user._id, user.profile.firstName, user.profile.lastName, user.emails[0].address);
       }}
       },
-
 
     personalinfo: function () {
       return Personalinfo.find({ createdBy : this._id })},
@@ -330,14 +333,14 @@ Router.route('/cv/:email', {
 if (Meteor.isServer) {
   Meteor.publish('personalinfo', function() {
     idAdmin=this.userId;
-    if (idAdmin==="walid.benhammoud@philico.com")
+    if (idAdmin==="walid.benhammoud@philico.com" || idAdmin==="fabian.knecht@philico.com" || idAdmin==="alex.mueller@philico.com" || idAdmin==="fabien.roth@philico.com")
       {return Personalinfo.find();} else {return Personalinfo.find({createdBy:idAdmin});}
   });
   
-  /*Accounts.config({
+  Accounts.config({
     restrictCreationByEmailDomain: 'philico.com'
   });
-*/
+
 
   ServiceConfiguration.configurations.remove({
     service: "google"
@@ -355,7 +358,7 @@ if (Meteor.isServer) {
   //If the google service exists 
   if ((service = user.services) !== undefined ? service.google : undefined) { 
   user._id = user.services.google.email;
-  user.emails = [ { address: user.services.google.email, verified: (user.services.google.email==="walid.benhammoud@philico.com") } ]; 
+  user.emails = [ { address: user.services.google.email, verified: (user.services.google.email==="walid.benhammoud@philico.com") || (user.services.google.email==="fabian.knecht@philico.com") || (user.services.google.email==="fabien.roth@philico.com") || (user.services.google.email==="alex.mueller@philico.com")} ]; 
   user.profile.firstName = user.services.google.given_name; 
   user.profile.lastName = user.services.google.family_name;
   }
@@ -437,8 +440,8 @@ Meteor.methods({
     var positionPhilicotest="";
     var signatureteltest="";
     if (mobilePhone.toString().length===0) {signteltest=""} else {signteltest="+41 "+ mobilePhone.slice(0,2)+" "+mobilePhone.slice(2,5)+" "+mobilePhone.slice(5,7)+" "+mobilePhone.slice(7,9)};
-    if (signteltest==="") {signatureteltest="Missing phone number"} else {signatureteltest=signteltest}
-    if (positionPhilico.length===0){positionPhilicotest="Missing position"} else {positionPhilicotest=positionPhilico};
+    if (signteltest==="") {signatureteltest="<span style='color:red'>Missing phone number</span>"} else {signatureteltest="<span>"+signteltest+"</span>"}
+    if (positionPhilico.length===0){positionPhilicotest="<span style='color:red'>Missing position</span>"} else {positionPhilicotest="<span>"+positionPhilico+"</span>"};
     Personalinfo.update(Personalinfo.findOne({ createdBy: creator })._id,
       { $set: 
         {
@@ -485,7 +488,7 @@ Meteor.methods({
      EURbankIban: EURbankIban,
      EURbankAccountnumber: EURbankAccountnumber,
      EURbankAccountname: EURbankAccountname,
-     emailSignature: '<div class="gmail_signature" style="font-family:Helvetica Neue, Helvetica, Arial, sans-serif; font-size:14px"><div dir="ltr"><div><div dir="ltr"><span><div><div><div style="word-wrap:break-word"><div style="word-wrap:break-word"><b ><span style="color:#004a8d">'+Personalinfo.findOne({ createdBy: creator }).firstName+' '+Personalinfo.findOne({ createdBy: creator }).familyName+'<br></span></b><div><div><div><span>'+ positionPhilicotest +'</span></div><div><br></div><div><div><span>'+ signatureteltest +'</span></div><div><span><a href="mailto:'+Personalinfo.findOne({ createdBy: creator }).email+'" target="_blank">'+Personalinfo.findOne({ createdBy: creator }).email+'</a></span></div></div><div><br></div><div><span>Philico AG</span></div><div><span>Sonder 16</span></div><div><span>CH-9042 Speicher</span></div></div><div><span><a href="http://www.philico.com" target="_blank">www.philico.com</a></span></div></div></div></div></div></div></span></div></div></div></div>',
+     emailSignature: '<div class="gmail_signature" style="font-family:Helvetica Neue, Helvetica, Arial, sans-serif; font-size:14px"><div dir="ltr"><div><div dir="ltr"><span><div><div><div style="word-wrap:break-word"><div style="word-wrap:break-word"><b ><span style="color:#004a8d">'+Personalinfo.findOne({ createdBy: creator }).firstName+' '+Personalinfo.findOne({ createdBy: creator }).familyName+'<br></span></b><div><div><div>'+ positionPhilicotest +'</div><div><br></div><div><div>'+ signatureteltest +'</div><div><span><a href="mailto:'+Personalinfo.findOne({ createdBy: creator }).email+'" target="_blank">'+Personalinfo.findOne({ createdBy: creator }).email+'</a></span></div></div><div><br></div><div><span>Philico AG</span></div><div><span>Sonder 16</span></div><div><span>CH-9042 Speicher</span></div></div><div><span><a href="http://www.philico.com" target="_blank">www.philico.com</a></span></div></div></div></div></div></div></span></div></div></div></div>',
      createdAt: new Date(),
      }    
     })
@@ -504,7 +507,10 @@ Meteor.methods({
         $each: [{
           communicationSkills: communicationSkills,
           businessSkills: businessSkills,
-          technicalSkills: technicalSkills}]}
+          technicalSkills: technicalSkills,
+          communicationSkillsHTML: communicationSkills.replace(/\r?\n/g, '<br />'),
+          businessSkillsHTML: businessSkills.replace(/\r?\n/g, '<br />'),
+          technicalSkillsHTML: technicalSkills.replace(/\r?\n/g, '<br />')}]}
       } 
     })
   },
@@ -530,7 +536,11 @@ Meteor.methods({
         project1Description: project1Description, 
         project2Description: project2Description, 
         project3Description: project3Description, 
-        project4Description: project4Description}],
+        project4Description: project4Description,
+        project1DescriptionHTML: project1Description.replace(/\r?\n/g, '<br />'), 
+        project2DescriptionHTML: project2Description.replace(/\r?\n/g, '<br />'), 
+        project3DescriptionHTML: project3Description.replace(/\r?\n/g, '<br />'), 
+        project4DescriptionHTML: project4Description.replace(/\r?\n/g, '<br />')}],
         $sort: { projectStartdateyear: -1 , projectStartdatemonth: -1 },
         $slice: -50
         } 

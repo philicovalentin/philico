@@ -1,5 +1,6 @@
 <head>
-  <title>Employee Profile</title>
+  <link rel="shortcut icon" src="/images/favicon.png" type="image/x-icon">
+  <title>Philico Profile</title>
 </head>
 
 <template name="navigation">
@@ -20,15 +21,16 @@
       <ul class="nav navbar-nav navbar-right">
         <li role="presentation"><a href="/">Home</a></li>
         {{#each personalinfo}}
-        <li role="presentation"><a href="/personaldata/{{email}}">Personal Data</a></li>
+        <li role="presentation"><a href="/personaldata/{{email}}">My Personal Data</a></li>
         {{/each}}
         {{#if adminrights}}
         <li role="presentation" class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees Data<span class="caret"></span>
+
+          <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees Data <span class="badge">{{employees}}</span><span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
             {{#each adminpersonalinfo}}
-            <li><a href="/personaldataemployee/{{email}}" target="_blank">{{email}} Data</a></li>
+            <li><a href="/personaldataemployee/{{email}}">{{fullName}}</a></li>
             {{/each}}
           </ul>
         </li>
@@ -41,11 +43,11 @@
         {{/unless}}
         {{#if adminrights}}
         <li role="presentation" class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees CVs<span class="caret"></span>
+          <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees CVs <span class="badge">{{employees}}</span><span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
             {{#each adminpersonalinfo}}
-            <li><a href="/cv/{{email}}" target="_blank">{{email}} CV</a></li>
+            <li><a href="/cv/{{email}}" target="_blank">{{fullName}}</a></li>
             {{/each}}
           </ul>
         </li>
@@ -71,7 +73,6 @@
     {{#each personalinfo}}
       <h3>Welcome {{fullName}}</h3>
     {{/each}}
-    
   </main>       
 </div>
 </div>
@@ -165,11 +166,11 @@
           </tr>
           <tr>
             <td>Domicile phone +41(0)</td>
-            <td><input type="number" pattern="\d*" maxlength="9" name="domicilePhone" value="{{domicilePhone}}" placeholder="9 digitals(123456789)"></td>
+            <td><input type="number" pattern="\d*" maxlength="9" name="domicilePhone" value="{{domicilePhone}}" placeholder="9 digits(123456789)"></td>
           </tr>
           <tr>
             <td>Mobile phone +41(0)</td>
-            <td><input type="number" maxlength="9" name="mobilePhone" value="{{mobilePhone}}" placeholder="9 digitals(123456789)"></td>
+            <td><input type="number" maxlength="9" name="mobilePhone" value="{{mobilePhone}}" placeholder="9 digits(123456789)"></td>
           </tr>
           <tr>
             <td>Date of birth</td>
@@ -179,7 +180,7 @@
           <tr>
             <td>AHV/AVS number</td>
             {{#if ahvNumber}}<td>{{ahvNumber}}</td>{{else}}
-            <td><input type="number" maxlength="13" name="ahvNumber" placeholder="13 digitals(no points)"></td>{{/if}}
+            <td><input type="number" maxlength="13" name="ahvNumber" placeholder="13 digits(no points)"></td>{{/if}}
           </tr>
           <tr>
             <td>Start date in Philico</td>
@@ -483,7 +484,7 @@
           </tr>
           <tr>
             <td></td>
-            <td>{{project1Description}}</td>
+            <td>{{{project1DescriptionHTML}}}</td>
           </tr>
           {{/if}}
           {{#if project2Title}}
@@ -493,7 +494,7 @@
           </tr>
           <tr>
             <td></td>
-            <td>{{project2Description}}</td>
+            <td>{{{project2DescriptionHTML}}}</td>
           </tr>
           {{/if}}
           {{#if project3Title}}
@@ -503,7 +504,7 @@
           </tr>
           <tr>
             <td></td>
-            <td>{{project3Description}}</td>
+            <td>{{{project3DescriptionHTML}}}</td>
           </tr>
           {{/if}}
           {{#if project4Title}}
@@ -513,7 +514,7 @@
           </tr>
           <tr>
             <td></td>
-            <td>{{project4Description}}</td>
+            <td>{{{project4DescriptionHTML}}}</td>
           </tr>
           {{/if}}
       </table>
@@ -707,7 +708,7 @@
     <h3>{{firstNameup}} {{familyNameup}} SIGNATURE</h3>
     <ul>
       <li>
-      <div class="gmail_signature" style="font-family:Helvetica Neue, Helvetica, Arial, sans-serif; font-size:14px"><div dir="ltr"><div><div dir="ltr"><span><div><div><div style="word-wrap:break-word"><div style="word-wrap:break-word"><b ><span style="color:#004a8d">{{firstName}} {{familyName}}<br></span></b><div ><div><div>{{#if positionPhilico.length}}<span >{{positionPhilico}}</span>{{else}}<span style="color:red">Missing position</span>{{/if}}</div><div><br></div><div><div>{{#if signatureTel.length}}<span>{{signatureTel}}</span>{{else}}<span style="color:red">Missing phone number</span>{{/if}}</div><div><span ><a href="mailto:{{email}}" target="_blank">{{email}}</a></span></div></div><div><br></div><div><span >Philico AG</span></div><div><span >Sonder 16</span></div><div><span >CH-9042 Speicher</span></div></div><div><span ><a href="http://www.philico.com" target="_blank">www.philico.com</a></span></div></div></div></div></div></div></span></div></div></div></div>
+      {{{emailSignature}}}
       </li>
       <li><p><strong>Signature HTML</strong></p>
         {{emailSignature}}</li>
@@ -741,7 +742,7 @@
       <tr></tr>
       <tr class="cvtitle">
         <td><strong><span class="cvtitle">{{firstNameup}} {{familyNameup}}</span></strong><br><span class="cvtitle">Curriculum Vitae</span></td>
-        <td><img align="right" src="/images/{{firstName}} {{familyName}}.jpg" height="100" width="250" alt="{{firstName}} {{familyName}} picture"></td>
+        {{#if nophoto}}<td><img align="right" src="/images/{{firstName}} {{familyName}}.jpg" height="100" width="250" alt="{{firstName}} {{familyName}} picture"></td>{{/if}}
       </tr>
     </table>
   </p>
@@ -804,17 +805,17 @@
  <tr></tr>
  <tr>
    <td><span class="cvbluetext">Communication and Analytical Skills</span></td>
-   <td>{{competencies.[0].communicationSkills}}</td>
+   <td>{{{competencies.[0].communicationSkillsHTML}}}</td>
  </tr>
  <tr></tr>
  <tr>
    <td><span class="cvbluetext">Professional Experience</span></td>
-   <td>{{competencies.[0].businessSkills}}</td>
+   <td>{{{competencies.[0].businessSkillsHTML}}}</td>
  </tr>
  <tr></tr>
  <tr>
    <td><span class="cvbluetext">Technical Expertise</span></td>
-   <td>{{competencies.[0].technicalSkills}}</td>
+   <td>{{{competencies.[0].technicalSkillsHTML}}}</td>
  </tr>
  <tr></tr>
  <tr></tr>
@@ -842,7 +843,7 @@
   </tr>
   <tr>
     <td></td>
-    <td>{{project1Description}}</td>
+    <td>{{{project1DescriptionHTML}}}</td>
   </tr>
   {{/if}}
   {{#if project2Title}}
@@ -852,7 +853,7 @@
   </tr>
   <tr>
     <td></td>
-    <td>{{project2Description}}</td>
+    <td>{{{project2DescriptionHTML}}}</td>
   </tr>
   {{/if}}
   {{#if project3Title}}
@@ -862,7 +863,7 @@
   </tr>
   <tr>
     <td></td>
-    <td>{{project3Description}}</td>
+    <td>{{{project3DescriptionHTML}}}</td>
   </tr>
   {{/if}}
   {{#if project4Title}}
@@ -872,7 +873,7 @@
   </tr>
   <tr>
     <td></td>
-    <td>{{project4Description}}</td>
+    <td>{{{project4DescriptionHTML}}}</td>
   </tr>
   {{/if}}
   <tr></tr>
@@ -1234,19 +1235,19 @@
       <p>
       <div>
           <p class="Paragtitle">Communication and Analytical Skills</p>
-          <p>{{competencies.[0].communicationSkills}}</p>
+          <p>{{{competencies.[0].communicationSkillsHTML}}}</p>
       </div>
       </p>
       <p>
       <div>
           <p class="Paragtitle">Business Expertise</p>
-          <p>{{competencies.[0].businessSkills}}</p>
+          <p>{{{competencies.[0].businessSkillsHTML}}}</p>
       </div>
       </p>
       <p>
       <div>
           <p class="Paragtitle">Technical Expertise</p>
-          <p>{{competencies.[0].technicalSkills}}</p>
+          <p>{{{competencies.[0].technicalSkillsHTML}}}</p>
       </div>
       </p>
       <br>
@@ -1264,7 +1265,6 @@
   <ul>
     {{#each experiences}}
     <li>
-    <button id="delete" class="deleteanexperience">&times;</button>
     <table>
       <col width="220">
           <tr>
@@ -1281,7 +1281,7 @@
           </tr>
           <tr>
             <td></td>
-            <td>{{project1Description}}</td>
+            <td>{{{project1DescriptionHTML}}}</td>
           </tr>
           {{/if}}
           {{#if project2Title}}
@@ -1291,7 +1291,7 @@
           </tr>
           <tr>
             <td></td>
-            <td>{{project2Description}}</td>
+            <td>{{{project2DescriptionHTML}}}</td>
           </tr>
           {{/if}}
           {{#if project3Title}}
@@ -1301,7 +1301,7 @@
           </tr>
           <tr>
             <td></td>
-            <td>{{project3Description}}</td>
+            <td>{{{project3DescriptionHTML}}}</td>
           </tr>
           {{/if}}
           {{#if project4Title}}
@@ -1311,7 +1311,7 @@
           </tr>
           <tr>
             <td></td>
-            <td>{{project4Description}}</td>
+            <td>{{{project4DescriptionHTML}}}</td>
           </tr>
           {{/if}}
       </table>
@@ -1330,7 +1330,6 @@
   <ul>
     {{#each employments}}
     <li>
-    <button id="delete" class="deleteanemployment">&times;</button>
     <table>
       <col width="220">
       <tr>
@@ -1356,7 +1355,6 @@
   <ul>
   {{#each degrees}}
     <li>
-      <button id="delete" class="deleteadegree">&times;</button>
       <table>
       <col width="220">
         <tr>
@@ -1383,7 +1381,6 @@
   <ul>
   {{#each languages}}
     <li>
-      <button id="delete" class="deletealanguage">&times;</button>
       <table>
       <col width="220">
         <tr>
@@ -1395,6 +1392,9 @@
   {{/each}}
   </ul>
   </section>
+  
+  <br><br>
+
 </main>
 </div>
 </div>

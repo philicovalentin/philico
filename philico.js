@@ -411,9 +411,9 @@ if (Meteor.isServer) {
       {return Personalinfo.find();} else {return Personalinfo.find({createdBy:idAdmin});}
   });
   
-  /*Accounts.config({
+  Accounts.config({
     restrictCreationByEmailDomain: 'philico.com'
-  });*/
+  });
 
 
   ServiceConfiguration.configurations.remove({

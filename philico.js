@@ -1,5 +1,6 @@
 Personalinfo = new Mongo.Collection("personalinfo");
 
+
 if (Meteor.isClient) {
   Meteor.subscribe('personalinfo');
 
@@ -27,18 +28,57 @@ if (Meteor.isClient) {
       return Personalinfo.find().count();
     },
   });
+
+  Template.home.events({
+      "change .newemployee input": function (event) {
+          Session.set("newemployee", event.target.checked);
+      },
+
+      "submit .new-employee": function (event) {
+      event.preventDefault();
+      var firstName=event.target.firstName.value;
+      var familyName=event.target.familyName.value;
+      var email=event.target.email.value;
+      var subcontractor=event.target.subcontractor.value;
+      Meteor.call("init", email, firstName, familyName, email, subcontractor);
+      alert("A new employee has been created successfully !!!");
+    }
+  });
     
   Template.home.helpers({
     initialisation: function () {
       if(Meteor.user({_id:this.userId})){
       user=Meteor.user({_id:this.userId});
       if (Personalinfo.find({createdBy:user._id}).count()==0) {
-      Meteor.call("init", user._id, user.profile.firstName, user.profile.lastName, user.emails[0].address);
+      Meteor.call("init", user._id, user.profile.firstName, user.profile.lastName, user.emails[0].address, "");
       }}
       },
 
     personalinfo: function () {
       return Personalinfo.find({createdBy: Meteor.user()._id})},
+
+    addnewemployeecheck: function () {
+      if (Session.get("newemployee")) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
+    newemployee: function () {
+      return Session.get("newemployee");
+    },
+
+    adminrights: function () {
+    if(Meteor.user({_id:this.userId})){
+    user=Meteor.user({_id:this.userId});  
+    if(user._id==="walid.benhammoud@philico.com" || user._id==="fabian.knecht@philico.com" || user._id==="alex.mueller@philico.com" || user._id==="fabien.roth@philico.com") {
+        return true
+      } else {
+        return false
+      }}
+    },
+
   });
   
   
@@ -47,7 +87,7 @@ if (Meteor.isClient) {
       if(Meteor.user({_id:this.userId})){
       user=Meteor.user({_id:this.userId});
       if (Personalinfo.find({createdBy:user._id}).count()==0) {
-      Meteor.call("init", user._id, user.profile.firstName, user.profile.lastName, user.emails[0].address);
+      Meteor.call("init", user._id, user.profile.firstName, user.profile.lastName, user.emails[0].address, "");
       }}
       },
 
@@ -61,7 +101,7 @@ if (Meteor.isClient) {
       if(Meteor.user({_id:this.userId})){
       user=Meteor.user({_id:this.userId});
       if (Personalinfo.find({createdBy:user._id}).count()==0) {
-      Meteor.call("init", user._id, user.profile.firstName, user.profile.lastName, user.emails[0].address);
+      Meteor.call("init", user._id, user.profile.firstName, user.profile.lastName, user.emails[0].address, "");
       }}
       },
 
@@ -75,13 +115,13 @@ if (Meteor.isClient) {
       if(Meteor.user({_id:this.userId})){
       user=Meteor.user({_id:this.userId});
       if (Personalinfo.find({createdBy:user._id}).count()==0) {
-      Meteor.call("init", user._id, user.profile.firstName, user.profile.lastName, user.emails[0].address);
+      Meteor.call("init", user._id, user.profile.firstName, user.profile.lastName, user.emails[0].address, "");
       }}
       },
 
 
     personalinfo: function () {
-      return Personalinfo.find({createdBy: Meteor.user()._id})},
+      return Personalinfo.find({createdBy: this._id})},
 
     notcurrentproject: function () {
       if (Session.get("mycurrentproject")) {
@@ -103,9 +143,34 @@ if (Meteor.isClient) {
     },
     mycurrentemployment: function () {
       return Session.get("mycurrentemployment");
-    }
+    },
+    sourcetaxedIsunknown: function () {
+      if (Personalinfo.findOne({ createdBy: this.email })){
+      var myDocument1 = Personalinfo.findOne({ createdBy: this.email });
+      return myDocument1.sourcetaxed==="?"}
+    },
+    sourcetaxedIsyes: function () {
+      if (Personalinfo.findOne({ createdBy: this.email })){
+      var myDocument1 = Personalinfo.findOne({ createdBy: this.email });
+      return myDocument1.sourcetaxed==="Yes"}
+    },
+    sourcetaxedIsno: function () {
+      if (Personalinfo.findOne({ createdBy: this.email })){
+      var myDocument1 = Personalinfo.findOne({ createdBy: this.email });
+      return myDocument1.sourcetaxed==="No"}
+    },
   });
 
+  Template.personaldataemployee.events({
+    "submit .displayDetails": function (event) {
+      event.preventDefault();
+      var displayPhoto=event.target.displayPhoto.value;
+      var displayAddress=event.target.displayAddress.value;
+      var displayContact=event.target.displayContact.value;
+      Meteor.call("showDetails", this.email, displayPhoto, displayAddress, displayContact);
+      alert("Your preferences have been submitted successfully !!!");
+    },
+  });
   
   Template.personaldata.events({
       "change .currentproject input": function (event) {
@@ -118,23 +183,39 @@ if (Meteor.isClient) {
     
       "submit .new-profile": function (event) {
       event.preventDefault();
+      var firstName=event.target.firstName.value;
+      var familyName=event.target.familyName.value;
+      var email=event.target.email.value;
       var addressStreet=event.target.addressStreet.value;
       var addressNumber=event.target.addressNumber.value;
       var addressZip=event.target.addressZip.value;
       var addressCity=event.target.addressCity.value;
       var addressCountry=event.target.addressCountry.value;
-      var nationality1=event.target.nationality1.value;
-      var nationality2=event.target.nationality2.value;
-      var nationality3=event.target.nationality3.value;
+      var myDocument1 = Personalinfo.findOne({ createdBy: this.email });
+      
+      if (myDocument1.nationality1==="" && event.target.nationality1.value==="") {nationality1=""} else {
+      if (myDocument1.nationality1!=="" && event.target.nationality1.value==="") {nationality1=myDocument1.nationality1} else {
+      if (event.target.nationality1.value==="delete") {nationality1=""} else {
+      if (myDocument1.nationality1!==event.target.nationality1.value && event.target.nationality1.value!=="delete" && event.target.nationality1.value!=="") {nationality1=event.target.nationality1.value.charAt(0).toUpperCase() + event.target.nationality1.value.slice(1).toLowerCase()}}}};
+      
+      if (myDocument1.nationality2==="" && event.target.nationality2.value==="") {nationality2=""} else {
+      if (myDocument1.nationality2!=="" && event.target.nationality2.value==="") {nationality2=myDocument1.nationality2} else {
+      if (event.target.nationality2.value==="delete") {nationality2=""} else {
+      if (myDocument1.nationality2!==event.target.nationality2.value && event.target.nationality2.value!=="delete" && event.target.nationality2.value!=="") {nationality2=event.target.nationality2.value.charAt(0).toUpperCase() + event.target.nationality2.value.slice(1).toLowerCase()}}}};
+      
+      if (myDocument1.nationality3==="" && event.target.nationality3.value==="") {nationality3=""} else {
+      if (myDocument1.nationality3!=="" && event.target.nationality3.value==="") {nationality3=myDocument1.nationality3} else {
+      if (event.target.nationality3.value==="delete") {nationality3=""} else {
+      if (myDocument1.nationality3!==event.target.nationality3.value && event.target.nationality3.value!=="delete" && event.target.nationality3.value!=="") {nationality3=event.target.nationality3.value.charAt(0).toUpperCase() + event.target.nationality3.value.slice(1).toLowerCase()}}}};
+      
       var sourcetaxed=event.target.sourcetaxed.value;
+      var domicilecountryCode=event.target.domicilecountryCode.value;
       var domicilePhone=event.target.domicilePhone.value;
+      var mobilecountryCode=event.target.mobilecountryCode.value;
       var mobilePhone=event.target.mobilePhone.value;
-      var myDocument1 = Personalinfo.findOne({ createdBy: Meteor.user()._id });
-      if (!(myDocument1.birthDate==="")) {var birthDate=myDocument1.birthDate} else {birthDate=event.target.birthDate.value};
-      var myDocument3 = Personalinfo.findOne({ createdBy: Meteor.user()._id });
-      if (!(myDocument3.ahvNumber==="")) {var ahvNumber=myDocument3.ahvNumber} else {ahvNumber=event.target.ahvNumber.value};
-      var myDocument2 = Personalinfo.findOne({ createdBy: Meteor.user()._id });
-      if (!(myDocument2.startDatephilico==="")) {var startDatephilico=myDocument2.startDatephilico} else {startDatephilico=event.target.startDatephilico.value};
+      var birthDate=event.target.birthDate.value;
+      var ahvNumber=event.target.ahvNumber.value;
+      var startDatephilico=event.target.startDatephilico.value;
       var positionPhilico=event.target.positionPhilico.value;
       var marriageDate=event.target.marriageDate.value;
       var spousefamilyName=event.target.spousefamilyName.value;
@@ -145,10 +226,12 @@ if (Meteor.isClient) {
       var child2Birthdate=event.target.child2Birthdate.value;
       var child3Name=event.target.child3Name.value;
       var child3Birthdate=event.target.child3Birthdate.value;
-      var emergency1Name=event.target.emergency1Name.value;
+      var emergency1firstName=event.target.emergency1firstName.value;
+      var emergency1familyName=event.target.emergency1familyName.value;
       var emergency1Relation=event.target.emergency1Relation.value;
       var emergency1Phone=event.target.emergency1Phone.value;
-      var emergency2Name=event.target.emergency2Name.value;
+      var emergency2firstName=event.target.emergency2firstName.value;
+      var emergency2familyName=event.target.emergency2familyName.value;
       var emergency2Relation=event.target.emergency2Relation.value;
       var emergency2Phone=event.target.emergency2Phone.value;
       var CHbankName=event.target.CHbankName.value;
@@ -164,9 +247,9 @@ if (Meteor.isClient) {
       var EURbankAccountnumber=event.target.EURbankAccountnumber.value;
       var EURbankAccountname=event.target.EURbankAccountname.value;
       
-      Meteor.call("addPersonalinfo", addressStreet, addressNumber, addressZip, addressCity, addressCountry, nationality1, nationality2, nationality3,
-       sourcetaxed, domicilePhone, mobilePhone, birthDate, ahvNumber, startDatephilico, positionPhilico, marriageDate, spousefamilyName, spousefirstName, child1Name, child1Birthdate, 
-       child2Name, child2Birthdate, child3Name, child3Birthdate, emergency1Name, emergency1Relation, emergency1Phone, emergency2Name, emergency2Relation, emergency2Phone, CHbankName, 
+      Meteor.call("addPersonalinfo", firstName, familyName, email, addressStreet, addressNumber, addressZip, addressCity, addressCountry, nationality1, nationality2, nationality3,
+       sourcetaxed, domicilecountryCode, domicilePhone, mobilecountryCode, mobilePhone, birthDate, ahvNumber, startDatephilico, positionPhilico, marriageDate, spousefamilyName, spousefirstName, child1Name, child1Birthdate, 
+       child2Name, child2Birthdate, child3Name, child3Birthdate, emergency1firstName, emergency1familyName, emergency1Relation, emergency1Phone, emergency2firstName, emergency2familyName, emergency2Relation, emergency2Phone, CHbankName, 
        CHbankCity, CHbankZip, CHbankIban, CHbankAccountnumber, CHbankAccountname, EURbankName, EURbankCity, EURbankZip, EURbankIban, EURbankAccountnumber, EURbankAccountname, Meteor.user()._id);
 
       alert("Your personal information has been submitted successfully !!!");
@@ -178,7 +261,7 @@ if (Meteor.isClient) {
       var businessSkills = event.target.businessSkills.value;
       var technicalSkills = event.target.technicalSkills.value;
 
-      Meteor.call("addCompetency", communicationSkills, businessSkills, technicalSkills, Meteor.user()._id);
+      Meteor.call("addCompetency", communicationSkills, businessSkills, technicalSkills, this.email);
 
       alert("Your core competencies have been submitted successfully !!!");
     },
@@ -194,18 +277,13 @@ if (Meteor.isClient) {
         var projectEnddate = event.target.projectEnddatemonth.value +"."+ event.target.projectEnddateyear.value};
       var projectClient = event.target.projectClient.value;
       var projectClientcity = event.target.projectClientcity.value;
+      var projectClientcountry = event.target.projectClientcountry.value;
       var projectClientdepartment = event.target.projectClientdepartment.value;
-      var project1Title = event.target.project1Title.value;
-      var project2Title = event.target.project2Title.value;
-      var project3Title = event.target.project3Title.value;
-      var project4Title = event.target.project4Title.value;
-      var project1Description = event.target.project1Description.value;
-      var project2Description = event.target.project2Description.value;
-      var project3Description = event.target.project3Description.value;
-      var project4Description = event.target.project4Description.value;
+      var projectTitle = event.target.projectTitle.value;
+      var projectDescription = event.target.projectDescription.value;
       
-      Meteor.call('addExperience', projectCompany, projectStartdatemonth, projectStartdateyear, projectStartdate, projectEnddate, projectClient, projectClientcity, projectClientdepartment, project1Title, project2Title, 
-        project3Title, project4Title, project1Description, project2Description, project3Description, project4Description, Meteor.user()._id)
+      Meteor.call('addExperience', projectCompany, projectStartdatemonth, projectStartdateyear, projectStartdate, projectEnddate, projectClient, projectClientcity, projectClientcountry, projectClientdepartment, projectTitle, 
+        projectDescription, this.email)
       // Clear form
       event.target.projectCompany.value="";
       event.target.projectStartdatemonth.value="";
@@ -215,15 +293,10 @@ if (Meteor.isClient) {
         event.target.projectEnddateyear.value=""};
       event.target.projectClient.value="";
       event.target.projectClientcity.value="";
+      event.target.projectClientcountry.value="";
       event.target.projectClientdepartment.value="";
-      event.target.project1Title.value="";
-      event.target.project2Title.value="";
-      event.target.project3Title.value="";
-      event.target.project4Title.value="";
-      event.target.project1Description.value="";
-      event.target.project2Description.value="";
-      event.target.project3Description.value="";
-      event.target.project4Description.value="";
+      event.target.projectTitle.value="";
+      event.target.projectDescription.value="";
     },
 
     "submit .new-employment": function (event) {
@@ -236,9 +309,10 @@ if (Meteor.isClient) {
         var employmentEnddate = event.target.employmentEnddatemonth.value +"."+ event.target.employmentEnddateyear.value};
       var employmentCompany = event.target.employmentCompany.value;
       var employmentCity = event.target.employmentCity.value;
+      var employmentCountry = event.target.employmentCountry.value;
       var employmentPosition = event.target.employmentPosition.value;
       
-      Meteor.call('addEmployment', employmentStartdatemonth, employmentStartdateyear, employmentStartdate, employmentEnddate, employmentCompany, employmentCity, employmentPosition, Meteor.user()._id )
+      Meteor.call('addEmployment', employmentStartdatemonth, employmentStartdateyear, employmentStartdate, employmentEnddate, employmentCompany, employmentCity, employmentCountry, employmentPosition, this.email )
       // Clear form
       event.target.employmentStartdatemonth.value="";
       event.target.employmentStartdateyear.value="";
@@ -247,6 +321,7 @@ if (Meteor.isClient) {
         event.target.employmentEnddateyear.value=""};
       event.target.employmentCompany.value="";
       event.target.employmentCity.value="";
+      event.target.employmentCountry.value;
       event.target.employmentPosition.value="";
     },
 
@@ -261,7 +336,7 @@ if (Meteor.isClient) {
       var degreeCity = event.target.degreeCity.value;
       var degreeCountry = event.target.degreeCountry.value;
       
-      Meteor.call('addDegree', degreeDatemonth, degreeDateyear, degreeDate, degree, degreeSpecialisation, degreeUniversity, degreeCity, degreeCountry, Meteor.user()._id)
+      Meteor.call('addDegree', degreeDatemonth, degreeDateyear, degreeDate, degree, degreeSpecialisation, degreeUniversity, degreeCity, degreeCountry, this.email)
       // Clear form
       event.target.degreeDatemonth.value = "";
       event.target.degreeDateyear.value = "";
@@ -276,7 +351,7 @@ if (Meteor.isClient) {
       event.preventDefault();
       var languageItem = event.target.languageItem.value;
       var languageSkill= event.target.languageSkill.value;
-      Meteor.call("addLanguage", languageItem, languageSkill, Meteor.user()._id);
+      Meteor.call("addLanguage", languageItem, languageSkill, this.email);
       // Clear form
       event.target.languageItem.value = "";
       event.target.languageSkill.value = "Mother tongue";
@@ -299,25 +374,24 @@ if (Meteor.isClient) {
     },
 
   });
-
 };
 
 Router.route('/', {
     template: 'home'
     });
 
-Router.route('/personaldata/:email', {
-    template: 'personaldata',
+Router.route('/personaldataemployee/:email', {
+    template: 'personaldataemployee',
     data: function(){
         var currentpersonal = this.params.email;
         return Personalinfo.findOne({ email: currentpersonal });
     }});
 
-Router.route('/personaldataemployee/:email', {
-    template: 'personaldataemployee',
+Router.route('/personaldata/:email', {
+    template: 'personaldata',
     data: function(){
-        var currentpersonalemployee = this.params.email;
-        return Personalinfo.findOne({ email: currentpersonalemployee });
+        var currentpersonal = this.params.email;
+        return Personalinfo.findOne({ email: currentpersonal });
     }});
 
 Router.route('/signature');
@@ -337,9 +411,9 @@ if (Meteor.isServer) {
       {return Personalinfo.find();} else {return Personalinfo.find({createdBy:idAdmin});}
   });
   
-  Accounts.config({
+  /*Accounts.config({
     restrictCreationByEmailDomain: 'philico.com'
-  });
+  });*/
 
 
   ServiceConfiguration.configurations.remove({
@@ -353,7 +427,7 @@ if (Meteor.isServer) {
     secret: "E61FAWeNc8YSjSPt_XFtIPP5"
   });
 
-   Accounts.onCreateUser(function(options, user) {
+  Accounts.onCreateUser(function(options, user) {
   var attachData, email, picture, profileImageUrl, profilePicture, url, service, allEmails, firstEmail; profileImageUrl = undefined; user.profile = user.profile || {}; 
   //If the google service exists 
   if ((service = user.services) !== undefined ? service.google : undefined) { 
@@ -368,9 +442,31 @@ if (Meteor.isServer) {
   
 
 Meteor.methods({
-  init: function(theId, given_name, family_name, email) {
+  showDetails: function(theemail, displayornotphoto, displayornotaddress, displayornotcontact) {
+    if (displayornotphoto==="yes") {resultphoto=true} else {resultphoto=false};
+    if (displayornotaddress==="yes") {resultaddress=true} else {resultaddress=false};
+    if (displayornotcontact==="yes") {resultcontact=true} else {resultcontact=false};
+    Personalinfo.update(Personalinfo.findOne({ createdBy: theemail })._id,
+      { $set: 
+        { displayPhoto: resultphoto,
+          displayPhotovar: displayornotphoto,
+          displayAddress: resultaddress,
+          displayAddressvar: displayornotaddress,
+          displayContact: resultcontact,
+          displayContactvar: displayornotcontact}
+      })
+  },
+
+  init: function(theId, given_name, family_name, email, subcontractor) {
     if (Personalinfo.find({createdBy:theId}).count()==0) {
     Personalinfo.insert({
+      displayPhoto:true,
+      displayPhotovar:"yes",
+      displayAddress:true,
+      displayAddressvar:"yes",
+      displayContact:true,
+      displayContactvar:"yes",
+      subcontractor: subcontractor,
       createdBy: theId,
       firstName: given_name,
       firstNameup: given_name.toUpperCase(),
@@ -378,88 +474,48 @@ Meteor.methods({
       familyNameup: family_name.toUpperCase(),
       fullName: given_name+' '+family_name,
       email: email,
-      addressStreet: "",
-      addressNumber: "",
-      addressZip: "",
-      addressCity: "",
-      addressCountry:"",
-      nationality1: "",
-      nationality2: "",
-      nationality3: "",
       sourcetaxed: "?",
-      domicilePhone: "",
-      mobilePhone: "",
-      signatureTel: "",
-      birthDate: "",
-      ahvNumber: "",
-      startDatephilico: "",
-      positionPhilico: "",
-      marriageDate: "",
-      spousefamilyName: "",
-      spousefirstName: "",
-      child1Name: "",
-      child1Birthdate: "",
-      child2Name: "",
-      child2Birthdate: "",
-      child3Name: "",
-      child3Birthdate: "",
-      emergency1Name: "",
-      emergency1Relation: "",
-      emergency1Phone: "",
-      emergency2Name: "",
-      emergency2Relation: "",
-      emergency2Phone: "",
-      CHbankName: "",
-      CHbankCity: "",
-      CHbankZip: "",
-      CHbankIban: "",
-      CHbankAccountnumber: "",
-      CHbankAccountname: "",
-      EURbankName: "",
-      EURbankCity: "",
-      EURbankZip: "",
-      EURbankIban: "",
-      EURbankAccountnumber: "",
-      EURbankAccountname: "",
-      emailSignature:'',
-      createdAt: new Date(),
-      competencies: new Array(),  
-      experiences: new Array(),
-      employments: new Array(),
-      degrees: new Array(),
-      languages: new Array(),
       });
   };
   },
   
-  addPersonalinfo: function(addressStreet, addressNumber, addressZip, addressCity, addressCountry, nationality1, nationality2, nationality3,
-     sourcetaxed, domicilePhone, mobilePhone, birthDate, ahvNumber, startDatephilico, positionPhilico, marriageDate, spousefamilyName, spousefirstName, child1Name, child1Birthdate, child2Name, child2Birthdate,
-     child3Name, child3Birthdate, emergency1Name, emergency1Relation, emergency1Phone, emergency2Name, emergency2Relation, emergency2Phone, CHbankName, CHbankCity, CHbankZip, CHbankIban,
+  addPersonalinfo: function(firstName, familyName, email, addressStreet, addressNumber, addressZip, addressCity, addressCountry, nationality1, nationality2, nationality3,
+     sourcetaxed, domicilecountryCode, domicilePhone, mobilecountryCode, mobilePhone, birthDate, ahvNumber, startDatephilico, positionPhilico, marriageDate, spousefamilyName, spousefirstName, child1Name, child1Birthdate, child2Name, child2Birthdate,
+     child3Name, child3Birthdate, emergency1firstName, emergency1familyName, emergency1Relation, emergency1Phone, emergency2firstName, emergency2familyName, emergency2Relation, emergency2Phone, CHbankName, CHbankCity, CHbankZip, CHbankIban,
      CHbankAccountnumber, CHbankAccountname, EURbankName, EURbankCity, EURbankZip, EURbankIban, EURbankAccountnumber, EURbankAccountname, creator) {
-    var signteltest="";
-    var positionPhilicotest="";
     var signatureteltest="";
-    if (mobilePhone.toString().length===0) {signteltest=""} else {signteltest="+41 "+ mobilePhone.slice(0,2)+" "+mobilePhone.slice(2,5)+" "+mobilePhone.slice(5,7)+" "+mobilePhone.slice(7,9)};
-    if (signteltest==="") {signatureteltest="<span style='color:red'>Missing phone number</span>"} else {signatureteltest="<span>"+signteltest+"</span>"}
+    if (mobilePhone.toString().length===0) {signteltest=""} else {signteltest="+" + mobilecountryCode + mobilePhone};
+    if (signteltest==="") {signatureteltest="<span style='color:red'>Missing phone number</span>"} else {signatureteltest="<span>"+signteltest+"</span>"};
+    var positionPhilicotest="";
     if (positionPhilico.length===0){positionPhilicotest="<span style='color:red'>Missing position</span>"} else {positionPhilicotest="<span>"+positionPhilico+"</span>"};
-    Personalinfo.update(Personalinfo.findOne({ createdBy: creator })._id,
+    Personalinfo.update(Personalinfo.findOne({ createdBy: email })._id,
       { $set: 
         {
+     firstName: firstName,
+     firstNameup: firstName.toUpperCase(),
+     familyName: familyName,
+     familyNameup: familyName.toUpperCase(),
+     fullName: firstName+' '+familyName,
+     email: email,
      addressStreet: addressStreet,
      addressNumber: addressNumber,
      addressZip: addressZip,
-     addressCity: addressCity,
-     addressCountry: addressCountry,
+     addressCity: addressCity.charAt(0).toUpperCase() + addressCity.slice(1).toLowerCase(),
+     addressCountry: addressCountry.charAt(0).toUpperCase() + addressCountry.slice(1).toLowerCase(),
      nationality1: nationality1,
      nationality2: nationality2,
      nationality3: nationality3,
      sourcetaxed: sourcetaxed,
+     domicilecountryCode: "+"+domicilecountryCode,
      domicilePhone: domicilePhone,
+     mobilecountryCode: "+"+mobilecountryCode,
      mobilePhone: mobilePhone,
      signatureTel: signteltest,
      birthDate: birthDate,
+     birthDatedisplayed: moment(birthDate).format("MMMM Do, YYYY"), 
      ahvNumber: ahvNumber,
      startDatephilico: startDatephilico,
+     startDatephilicodisplayed: moment(startDatephilico).format("MMMM Do, YYYY"),
      positionPhilico: positionPhilico,
      marriageDate: marriageDate,
      spousefamilyName: spousefamilyName,
@@ -470,10 +526,12 @@ Meteor.methods({
      child2Birthdate: child2Birthdate,
      child3Name: child3Name,
      child3Birthdate: child3Birthdate,
-     emergency1Name: emergency1Name,
+     emergency1firstName: emergency1firstName,
+     emergency1familyName: emergency1familyName,
      emergency1Relation: emergency1Relation,
      emergency1Phone: emergency1Phone,
-     emergency2Name: emergency2Name,
+     emergency2firstName: emergency2firstName,
+     emergency2familyName: emergency2familyName,
      emergency2Relation: emergency2Relation,
      emergency2Phone: emergency2Phone,
      CHbankName: CHbankName,
@@ -488,7 +546,7 @@ Meteor.methods({
      EURbankIban: EURbankIban,
      EURbankAccountnumber: EURbankAccountnumber,
      EURbankAccountname: EURbankAccountname,
-     emailSignature: '<div class="gmail_signature" style="font-family:Helvetica Neue, Helvetica, Arial, sans-serif; font-size:14px"><div dir="ltr"><div><div dir="ltr"><span><div><div><div style="word-wrap:break-word"><div style="word-wrap:break-word"><b ><span style="color:#004a8d">'+Personalinfo.findOne({ createdBy: creator }).firstName+' '+Personalinfo.findOne({ createdBy: creator }).familyName+'<br></span></b><div><div><div>'+ positionPhilicotest +'</div><div><br></div><div><div>'+ signatureteltest +'</div><div><span><a href="mailto:'+Personalinfo.findOne({ createdBy: creator }).email+'" target="_blank">'+Personalinfo.findOne({ createdBy: creator }).email+'</a></span></div></div><div><br></div><div><span>Philico AG</span></div><div><span>Sonder 16</span></div><div><span>CH-9042 Speicher</span></div></div><div><span><a href="http://www.philico.com" target="_blank">www.philico.com</a></span></div></div></div></div></div></div></span></div></div></div></div>',
+     emailSignature: '<div class="gmail_signature" style="font-family:Helvetica Neue, Helvetica, Arial, sans-serif; font-size:14px"><div><b><span style="color:#004a8d">'+Personalinfo.findOne({ createdBy: creator }).firstName+' '+Personalinfo.findOne({ createdBy: creator }).familyName+'<br></span></b></div><div>'+ positionPhilicotest +'</div><br><div><a href="tel:' + '+' + mobilecountryCode + mobilePhone + '" target="_blank">' + signteltest +'</a></div><div><a href="mailto:'+Personalinfo.findOne({ createdBy: creator }).email+'" target="_blank">'+Personalinfo.findOne({ createdBy: creator }).email+'</a></div><br><div><span>Philico AG</span></div><div><span>Sonder 16</span></div><div><span>CH-9042 Speicher</span></div><div><span><a href="http://www.philico.com" target="_blank">www.philico.com</a></span></div></div>',
      createdAt: new Date(),
      }    
     })
@@ -515,7 +573,7 @@ Meteor.methods({
     })
   },
 
-  addExperience: function(projectCompany, projectStartdatemonth, projectStartdateyear, projectStartdate, projectEnddate, projectClient, projectClientcity, projectClientdepartment, project1Title, project2Title, project3Title, project4Title, project1Description, project2Description, project3Description, project4Description, creator) {
+  addExperience: function(projectCompany, projectStartdatemonth, projectStartdateyear, projectStartdate, projectEnddate, projectClient, projectClientcity, projectClientcountry, projectClientdepartment, projectTitle, projectDescription, creator) {
     Personalinfo.update(Personalinfo.findOne({ createdBy: creator })._id,
     { $push: {
       experiences: {
@@ -528,19 +586,11 @@ Meteor.methods({
         projectEnddate: projectEnddate, 
         projectClient: projectClient,
         projectClientcity: projectClientcity,
+        projectClientcountry: projectClientcountry,
         projectClientdepartment: projectClientdepartment, 
-        project1Title: project1Title, 
-        project2Title: project2Title, 
-        project3Title: project3Title, 
-        project4Title: project4Title, 
-        project1Description: project1Description, 
-        project2Description: project2Description, 
-        project3Description: project3Description, 
-        project4Description: project4Description,
-        project1DescriptionHTML: project1Description.replace(/\r?\n/g, '<br />'), 
-        project2DescriptionHTML: project2Description.replace(/\r?\n/g, '<br />'), 
-        project3DescriptionHTML: project3Description.replace(/\r?\n/g, '<br />'), 
-        project4DescriptionHTML: project4Description.replace(/\r?\n/g, '<br />')}],
+        projectTitle: projectTitle,  
+        projectDescription: projectDescription, 
+        projectDescriptionHTML: projectDescription.replace(/\r?\n/g, '<br />')}],
         $sort: { projectStartdateyear: -1 , projectStartdatemonth: -1 },
         $slice: -50
         } 
@@ -551,13 +601,13 @@ Meteor.methods({
 
   deleteExperience: function(id) {
     Personalinfo.update(
-    { _id: Personalinfo.findOne({ createdBy: Meteor.user()._id })._id },
+    { },
     { $pull: { experiences: { _id : id } } },
     { multi: true }
     );
   },
 
-  addEmployment: function(employmentStartdatemonth, employmentStartdateyear, employmentStartdate, employmentEnddate, employmentCompany, employmentCity, employmentPosition, creator) {
+  addEmployment: function(employmentStartdatemonth, employmentStartdateyear, employmentStartdate, employmentEnddate, employmentCompany, employmentCity, employmentCountry, employmentPosition, creator) {
     Personalinfo.update(Personalinfo.findOne({ createdBy: creator })._id,
     { $push: {
       employments: {
@@ -569,7 +619,9 @@ Meteor.methods({
         employmentEnddate: employmentEnddate,
         employmentCompany: employmentCompany,
         employmentCity: employmentCity,
-        employmentPosition: employmentPosition}],
+        employmentCountry, employmentCountry,
+        employmentPosition: employmentPosition,
+        employmentPositionHTML: employmentPosition.replace(/\r?\n/g, '<br />')}],
         $sort: { employmentStartdateyear: -1, employmentStartdatemonth: -1},
         $slice: -50
        } 
@@ -579,7 +631,7 @@ Meteor.methods({
 
   deleteEmployment: function(id) {
     Personalinfo.update(
-    { _id: Personalinfo.findOne({ createdBy: Meteor.user()._id })._id },
+    { },
     { $pull: { employments: { _id : id } } },
     { multi: true }
     );
@@ -608,7 +660,7 @@ Meteor.methods({
 
   deleteDegree: function(id) {
     Personalinfo.update(
-    { _id: Personalinfo.findOne({ createdBy: Meteor.user()._id })._id },
+    { },
     { $pull: { degrees: { _id : id } } },
     { multi: true }
     );
@@ -629,7 +681,7 @@ Meteor.methods({
 
   deleteLanguage: function(id) {
     Personalinfo.update( 
-    { _id: Personalinfo.findOne({ createdBy: Meteor.user()._id })._id },
+    { },
     { $pull: { languages: { _id : id} } },
     { multi: true }
     );

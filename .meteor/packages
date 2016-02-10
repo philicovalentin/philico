@@ -23,4 +23,4 @@ service-configuration
 accounts-google
 accounts-ui
 iron:router
-
+mrt:moment

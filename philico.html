@@ -47,7 +47,8 @@
           </ul>
         </li>
         {{/if}}
-        <li role="presentation"><a href="/signature"> My Signature</a></li>
+        <li role="presentation"><a href="/signature">My Signature</a></li>
+        <li role="presentation"><a href="/projectassessment"> Project Assessment</a></li>
         {{#unless adminrights}}
         {{#each personalinfo}}
         <li role="presentation"><a href="/cv/{{email}}" target="_blank">My CV</a></li>
@@ -125,6 +126,7 @@
 
 
 
+
 <!--           Personal data template             -->
 
 <template name="personaldata">
@@ -134,6 +136,7 @@
 <div class="containerpage">
 <main>
 {{initialisation}}
+<br>
    <section class="profile">
     <h3>PERSONAL INFORMATION</h3>
       <form class="new-profile">
@@ -826,6 +829,7 @@
   </p>
 
 <table>
+<col width="20px" />
 <col width="220px" />
 <col width="440px" />
 <tr></tr>
@@ -833,92 +837,106 @@
 <tr></tr>
 <tr></tr>
  <tr>
-   <td colspan="2"><span class="cvsectionname">PERSONAL INFORMATION</span></td>
+   <td colspan="3"><span class="cvsectionname">PERSONAL INFORMATION</span></td>
  </tr>
  <tr></tr>
  <tr>
+  <td></td>
    <td><span class="cvbluetext">Birthday</span></td>
    <td>{{birthDatedisplayed}}</td>
  </tr>
+  <tr></tr>
  <tr>
+  <td></td>
    <td><span class="cvbluetext">Nationality</span></td>
    <td>{{nationality1}}{{#if nationality2}}, {{nationality2}}{{/if}}{{#if nationality3}}, {{nationality3}}{{/if}}</td>
  </tr>
- <tr></tr>
  {{#if displayAddress}}
+  <tr></tr>
  <tr>
+  <td></td>
    <td><span class="cvbluetext">Address</span></td>
    <td>{{addressStreet}}{{#if addressNumber}}, {{addressNumber}}{{/if}}</td>
  </tr>
  <tr>
+  <td></td>
    <td></td>
    <td>{{addressZip}} {{addressCity}}</td>
  </tr>
  <tr>
+  <td></td>
    <td></td>
    <td>{{addressCountry}}</td>
  </tr>
  {{/if}}
- <tr></tr>
- {{#if displaycontact}}
+ {{#if displayContact}}
+  <tr></tr>
  <tr>
+  <td></td>
    <td><span class="cvbluetext">Contact</span></td>
    <td>{{signatureTel}}</td>
   </tr>
   <tr>
+    <td></td>
    <td></td>
    <td>{{email}}</td>
  </tr>
- <tr></tr>
  {{/if}}
  <tr></tr>
 </table>
 
 
 <table>
+<col width="20px" />
 <col width="220px" />
 <col width="440px" />
  <tr>
-   <td colspan="2"><span class="cvsectionname">CORE COMPETENCIES</span></td>
+   <td colspan="3"><span class="cvsectionname">CORE COMPETENCIES</span></td>
  </tr>
  <tr></tr>
  <tr>
-   <td><span class="cvbluetext">Communication and <br>Analytical Skills</span></td>
+  <td></td>
+   <td><span class="cvbluetext">Communication and Analytical Skills</span></td>
    <td>{{{competencies.[0].communicationSkillsHTML}}}</td>
  </tr>
  <tr></tr>
  <tr>
+  <td></td>
    <td><span class="cvbluetext">Professional Experience</span></td>
    <td>{{{competencies.[0].businessSkillsHTML}}}</td>
  </tr>
  <tr></tr>
  <tr>
+  <td></td>
    <td><span class="cvbluetext">Technical Expertise</span></td>
    <td>{{{competencies.[0].technicalSkillsHTML}}}</td>
  </tr>
  <tr></tr>
- <tr></tr>
 </table>
      
 <table>
+<col width="20px" />
 <col width="220px" />
 <col width="440px" />
   <tr>
-    <td colspan="2"><span class="cvsectionname">PROJECT EXPERIENCE</span></td>
+    <td colspan="3"><span class="cvsectionname">PROJECT EXPERIENCE</span></td>
   </tr>
   <tr></tr>
   {{#each experiences}}
   {{#if projectCompany}}
     <tr>
+      <td></td>
       <td colspan="2"><span class="cvbluetext">{{projectCompany}}</span></td>
     </tr>
     {{/if}}
     <tr>
+      <td></td>
       <td>{{projectStartdate}} - {{projectEnddate}}</td>
       <td><span class="cvbluetext">{{#if projectClient}}{{projectClient}}{{#if projectClientcity}}, {{/if}}{{/if}}{{#if projectClientcity}}{{projectClientcity}} - {{projectClientcountry}}{{/if}}{{#if projectClientdepartment}} - {{projectClientdepartment}}{{/if}}</span></td>
     </tr>
     {{#if projectTitle}}
     <tr>
+      <td></td>
       <td></td>  
       <td><strong>{{projectTitle}}</strong></td>
     </tr>
@@ -926,72 +944,77 @@
     {{#if projectDescriptionHTML}}
     <tr>
       <td></td>
+      <td></td>
       <td>{{{projectDescriptionHTML}}}</td>
     </tr>
     {{/if}}
   <tr></tr>
   {{/each}}
-  <tr></tr>
 </table>
  
 <table>
+<col width="20px" />
 <col width="220px" />
 <col width="440px" />
  <tr>
-   <td colspan="2"><span class="cvsectionname">EMPLOYMENT HISTORY</span></td>
+   <td colspan="3"><span class="cvsectionname">EMPLOYMENT HISTORY</span></td>
  </tr>
  <tr></tr>
  {{#each employments}}
   <tr>
+    <td></td>
     <td>{{employmentStartdate}} - {{employmentEnddate}}</td>
     <td><span class="cvbluetext">{{employmentCompany}}{{#if employmentCity}}, {{employmentCity}} - {{employmentCountry}}{{/if}}</span></td>
   </tr>
   <tr>
     <td></td>
+    <td></td>
     <td>{{{employmentPositionHTML}}}</td>
   </tr>
   <tr></tr>
     {{/each}}
-  <tr></tr>
 </table>
   
 <table>
+<col width="20px" />
 <col width="220px" />
 <col width="440px" />
 <tr>
-   <td colspan="2"><span class="cvsectionname">DEGREES</span></td>
+   <td colspan="3"><span class="cvsectionname">DEGREES</span></td>
  </tr>
  <tr></tr>
  {{#each degrees}}
  <tr>
+  <td></td>
   <td>{{degreeDate}}</td>
   <td>{{degreeUniversity}}{{#if degreeCity}}, {{degreeCity}}{{/if}}{{#if degreeCountry}} - {{degreeCountry}}{{/if}}</td>
  </tr>
  {{#if degree}}
  <tr>
   <td></td>
+  <td></td>
   <td>{{degree}}{{#if degreeSpecialisation}}, {{degreeSpecialisation}}{{/if}}</td>
  </tr>
  {{/if}}
  <tr></tr>
  {{/each}}
- <tr></tr>
 </table>
   
 <table>
+<col width="20px" />
 <col width="220px" />
 <col width="440px" />
  <tr>
-   <td colspan="2"><span class="cvsectionname">LANGUAGE SKILLS</span></td>
+   <td colspan="3"><span class="cvsectionname">LANGUAGE SKILLS</span></td>
  </tr>
  <tr></tr>
  {{#each languages}}
  <tr>
+  <td></td>
   <td>{{languageItem}}</td>
   <td>{{languageSkill}}</td>
  </tr>
  {{/each}}
- <tr></tr>
 </table>
 </main>
 </div>

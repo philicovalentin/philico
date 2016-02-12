@@ -395,6 +395,7 @@ Router.route('/personaldata/:email', {
     }});
 
 Router.route('/signature');
+Router.route('/projectassessment');
 
 Router.route('/cv/:email', {
     template: 'cv',

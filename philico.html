@@ -124,7 +124,71 @@
 {{/if}}
 </template>
 
-
+<!--           Project assessment template     -->
+<template name="projectassessment">
+{{> navigation}}
+{{#if currentUser}}
+<div class="container containerwidth">
+<div class="containerpage">
+<main>
+{{initialisation}}
+<br>
+  <section class="profile">
+    <h3>PROJECT ASSESSMENT</h3>
+      <form class="new-profile">
+        <table>
+        <col width="300">
+        <col width="300">
+        <col width="300">
+        <col width="300">
+        <tr>
+          <td>Name</td>
+          <td>{{fullname}}</td>
+          <td>Position</td>
+          <td>Consultant</td>
+        </tr>
+        <tr>
+          <td>Coach</td>
+          <td>coachname</td>
+          <td>Project Name</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Objectives set on</td>
+          <td></td>
+          <td>Objectives set with</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Position difficulty(1/2/3)</td>
+          <td></td>
+          <td>Man-days spent on the project</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Assessment from</td>
+          <td></td>
+          <td>Assessment to</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Assessment date</td>
+          <td></td>
+          <td>Assessment by</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Assessment type(interim/Final)</td>
+          <td></td>
+        </tr>
+      </table>
+    </form>
+  </section>
+</main>
+</div>
+</div>
+{{/if}}
+</template>
 
 
 <!--           Personal data template             -->
@@ -349,7 +413,7 @@
             <td>Person 1 phone</td>
             <td><input type="number" name="emergency1Phone" value="{{emergency1Phone}}"></td> 
           </tr>
-          <br><br>
+          <tr></tr>
           <tr>
             <td>Person 2 first name</td>
             <td><input type="text" name="emergency2firstName" value="{{emergency2firstName}}"></td>         

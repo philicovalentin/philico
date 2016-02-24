@@ -1,8 +1,44 @@
 Personalinfo = new Mongo.Collection("personalinfo");
+var imageStore = new FS.Store.GridFS("images");
+
+Images = new FS.Collection("images", {
+ stores: [imageStore]
+});
+
+Images.deny({
+ insert: function(){
+ return false;
+ },
+ update: function(){
+ return false;
+ },
+ remove: function(){
+ return false;
+ },
+ download: function(){
+ return false;
+ }
+ });
+
+Images.allow({
+ insert: function(){
+ return true;
+ },
+ update: function(){
+ return true;
+ },
+ remove: function(){
+ return true;
+ },
+ download: function(){
+ return true;
+ }
+});
 
 
 if (Meteor.isClient) {
   Meteor.subscribe('personalinfo');
+  Meteor.subscribe('images');
 
   Template.navigation.helpers({
     personalinfo: function () {
@@ -30,6 +66,17 @@ if (Meteor.isClient) {
   });
 
   Template.home.events({
+      'click #clickme': function () {
+        window.open('/cv/walidosbh@gmail.com', "_self");
+        console.log("1");
+        window.focus();
+        console.log("1.5");
+        setTimeout(function(){ window.print(); }, 7000);
+        console.log("2");
+        window.onfocus=function(){ window.open('/', "_self");};
+        console.log("3");
+      },
+
       "change .newemployee input": function (event) {
           Session.set("newemployee", event.target.checked);
       },
@@ -83,43 +130,16 @@ if (Meteor.isClient) {
   
   
   Template.signature.helpers({
-    initialisation: function () {
-      if(Meteor.user({_id:this.userId})){
-      user=Meteor.user({_id:this.userId});
-      if (Personalinfo.find({createdBy:user._id}).count()==0) {
-      Meteor.call("init", user._id, user.profile.firstName, user.profile.lastName, user.emails[0].address, "");
-      }}
-      },
-
-
     personalinfo: function () {
       return Personalinfo.find({createdBy:Meteor.user()._id})},
   });
 
   Template.cv.helpers({
-    initialisation: function () {
-      if(Meteor.user({_id:this.userId})){
-      user=Meteor.user({_id:this.userId});
-      if (Personalinfo.find({createdBy:user._id}).count()==0) {
-      Meteor.call("init", user._id, user.profile.firstName, user.profile.lastName, user.emails[0].address, "");
-      }}
-      },
-
     personalinfo: function () {
       return Personalinfo.find({ createdBy : this._id })},
     });
 
-
   Template.personaldata.helpers({
-    initialisation: function () {
-      if(Meteor.user({_id:this.userId})){
-      user=Meteor.user({_id:this.userId});
-      if (Personalinfo.find({createdBy:user._id}).count()==0) {
-      Meteor.call("init", user._id, user.profile.firstName, user.profile.lastName, user.emails[0].address, "");
-      }}
-      },
-
-
     personalinfo: function () {
       return Personalinfo.find({createdBy: this._id})},
 
@@ -170,6 +190,11 @@ if (Meteor.isClient) {
       Meteor.call("showDetails", this.email, displayPhoto, displayAddress, displayContact);
       alert("Your preferences have been submitted successfully !!!");
     },
+
+    'click #clickme': function () {
+        event.preventDefault();
+        Router.go('/personaldata/'+this.email);
+      },
   });
   
   Template.personaldata.events({
@@ -209,9 +234,13 @@ if (Meteor.isClient) {
       if (myDocument1.nationality3!==event.target.nationality3.value && event.target.nationality3.value!=="delete" && event.target.nationality3.value!=="") {nationality3=event.target.nationality3.value.charAt(0).toUpperCase() + event.target.nationality3.value.slice(1).toLowerCase()}}}};
       
       var sourcetaxed=event.target.sourcetaxed.value;
-      var domicilecountryCode=event.target.domicilecountryCode.value;
+      if (!myDocument1.domicilePhone || event.target.domicilePhone.value!==myDocument1.domicilePhone || (event.target.domicilecountryCode.value!==myDocument1.domicilecountryCode.substring(1) && event.target.domicilePhone.value!==myDocument1.domicilePhone)) {
+        var domicilecountryCode=event.target.domicilecountryCode.value} else {
+          var domicilecountryCode=myDocument1.domicilecountryCode.substring(1)};
       var domicilePhone=event.target.domicilePhone.value;
-      var mobilecountryCode=event.target.mobilecountryCode.value;
+      if (!myDocument1.mobilePhone || event.target.mobilePhone.value!==myDocument1.mobilePhone || (event.target.mobilecountryCode.value!==myDocument1.mobilecountryCode.substring(1) && event.target.mobilePhone.value!==myDocument1.mobilePhone)) {
+        var mobilecountryCode=event.target.mobilecountryCode.value} else {
+          var mobilecountryCode=myDocument1.mobilecountryCode.substring(1)};
       var mobilePhone=event.target.mobilePhone.value;
       var birthDate=event.target.birthDate.value;
       var ahvNumber=event.target.ahvNumber.value;
@@ -254,6 +283,33 @@ if (Meteor.isClient) {
 
       alert("Your personal information has been submitted successfully !!!");
      },
+
+      'change .myFileInput': function(event, template) {
+        event.preventDefault();
+        var email=this.email;
+        if (this.image){
+        var imageId=this.image.slice(18,this.image.length)}
+        FS.Utility.eachFile(event, function(file) {
+          var extension=file.name.substr(file.name.length - 4);
+          if (extension!==".png" && extension!==".jpg" && extension!==".gif" && extension!==".tif") {
+           alert("File must be '.jpg', '.png', '.gif', '.tif'. Verify your file !!!")}
+          else{
+          Images.insert(file, function (err, fileObj) {
+            if (err) {
+              alert("Error !!!")
+            } else {
+               // handle success depending what you need to do
+              if (imageId){
+              Images.remove({_id: imageId});
+            };
+              location.reload();
+              Meteor.call("addimage", email, {"image": "/cfs/files/images/" + fileObj._id}, fileObj._id);
+              alert("Your photo has been submitted successfully !!!")  
+            }
+          })
+        }
+       })
+      },
 
       "submit .new-competency": function (event) {
       event.preventDefault();
@@ -374,11 +430,105 @@ if (Meteor.isClient) {
     },
 
   });
+
+  Template.projectassessment.helpers({
+    personalinfo: function () {
+      return Personalinfo.find({createdBy: this._id})}
+    });
+
+  Template.projectassessment.events({
+    "submit .new-assessment": function (event) {
+      event.preventDefault();
+      var positionPhilico= event.target.positionPhilico.value;
+      var coachName = event.target.coachName.value;
+      var projectName = event.target.projectName.value;
+      var objectivesDate = event.target.objectivesDate.value;
+      var objectivesWith = event.target.objectivesWith.value;
+      var positionDifficulty = event.target.positionDifficulty.value;
+      var manDays = event.target.manDays.value;
+      var assessmentFrom = event.target.assessmentFrom.value;
+      var assessmentTo = event.target.assessmentTo.value;
+      var assessmentDate = event.target.assessmentDate.value;
+      var assessmentBy = event.target.assessmentBy.value;
+      var assessmentType = event.target.assessmentType.value;
+      var pcpClient = event.target.pcpClient.value;
+      var pcpEducation = event.target.pcpEducation.value;
+      var pcpInternal = event.target.pcpInternal.value;
+      var projectDescription = event.target.projectDescription.value;
+      var projectIndividualRole = event.target.projectIndividualRole.value;
+      var projectObjectives = event.target.projectObjectives.value;
+      var overallSelfEvaluation = event.target.overallSelfEvaluation.value;
+      var overallCoachstrengths = event.target.overallCoachstrengths.value;
+      var overallCoachweaknesses = event.target.overallCoachweaknesses.value;
+      var overallPerformanceRating = event.target.overallPerformanceRating.value;
+      var consultingSelfEvaluation = event.target.consultingSelfEvaluation.value;
+      var consultingCoachstrengths = event.target.consultingCoachstrengths.value;
+      var consultingCoachweaknesses = event.target.consultingCoachweaknesses.value;
+      var consultingclientcentricityrating = event.target.consultingclientcentricityrating.value;
+      var consultingnegotiationrating = event.target.consultingnegotiationrating.value;
+      var consultingmethodologyrating = event.target.consultingmethodologyrating.value;
+      var consultinganalyticalrating = event.target.consultinganalyticalrating.value;
+      var consultingmanagementrating = event.target.consultingmanagementrating.value;
+      var technicalSelfEvaluation = event.target.technicalSelfEvaluation.value;
+      var technicalCoachstrengths = event.target.technicalCoachstrengths.value;
+      var technicalCoachweaknesses = event.target.technicalCoachweaknesses.value;
+      var technicalbroadavaloqrating = event.target.technicalbroadavaloqrating.value;
+      var technicaldeepavaloqrating = event.target.technicaldeepavaloqrating.value;
+      var technicalskillsrating = event.target.technicalskillsrating.value;
+      var technicalobjectmodellingrating = event.target.technicalobjectmodellingrating.value;
+      var functionalSelfEvaluation = event.target.functionalSelfEvaluation.value;
+      var functionalCoachstrengths = event.target.functionalCoachstrengths.value;
+      var functionalCoachweaknesses = event.target.functionalCoachweaknesses.value;
+      var functionalbroadbankingrating = event.target.functionalbroadbankingrating.value;
+      var functionalspecificbankingrating = event.target.functionalspecificbankingrating.value;
+      var functionalexperiencerating = event.target.functionalexperiencerating.value;
+      var functionalmarketrating = event.target.functionalmarketrating.value;
+      var softSelfEvaluation = event.target.softSelfEvaluation.value;
+      var softCoachstrengths = event.target.softCoachstrengths.value;
+      var softCoachweaknesses = event.target.softCoachweaknesses.value;
+      var softsocialrating = event.target.softsocialrating.value;
+      var softleadershiprating = event.target.softleadershiprating.value;
+      var softseniorityrating = event.target.softseniorityrating.value;
+      var softpressurerating = event.target.softpressurerating.value;
+      var finalRating = event.target.finalRating.value;
+
+      Meteor.call('addInterimAssessment', positionPhilico, coachName, projectName, objectivesDate, objectivesWith, positionDifficulty, manDays, assessmentFrom,
+      assessmentTo, assessmentDate, assessmentBy, assessmentType, pcpClient, pcpEducation, pcpInternal, projectDescription, projectIndividualRole,
+      projectObjectives, overallSelfEvaluation, overallCoachstrengths, overallCoachweaknesses, overallPerformanceRating, consultingSelfEvaluation, 
+      consultingCoachstrengths, consultingCoachweaknesses, consultingclientcentricityrating, consultingnegotiationrating, consultingmethodologyrating, 
+      consultinganalyticalrating, consultingmanagementrating, technicalSelfEvaluation, technicalCoachstrengths, technicalCoachweaknesses, 
+      technicalbroadavaloqrating, technicaldeepavaloqrating, technicalskillsrating, technicalobjectmodellingrating, functionalSelfEvaluation, 
+      functionalCoachstrengths, functionalCoachweaknesses, functionalbroadbankingrating, functionalspecificbankingrating, 
+      functionalexperiencerating, functionalmarketrating, softSelfEvaluation, softCoachstrengths, softCoachweaknesses, softsocialrating, 
+      softleadershiprating, softseniorityrating, softpressurerating, finalRating, this.email);
+      alert("Your assessment has been submitted successfully !!!");
+    },
+
+    "submit .new-version": function (event) {
+      event.preventDefault();
+      Meteor.call('addNewVersion', this.email);
+    },
+  })
+
+
 };
 
 Router.route('/', {
-    template: 'home'
-    });
+    template: 'home'});
+
+Router.onBeforeAction(function () {
+  // all properties available in the route function
+  // are also available here such as this.params
+  if (!Meteor.userId()) {
+    // if the user is not logged in, render the Login template
+    Router.go('/'); 
+    this.next();
+  } else {
+    // otherwise don't hold up the rest of hooks or our route/action function
+    // from running
+    this.next();
+  }
+});
 
 Router.route('/personaldataemployee/:email', {
     template: 'personaldataemployee',
@@ -392,10 +542,16 @@ Router.route('/personaldata/:email', {
     data: function(){
         var currentpersonal = this.params.email;
         return Personalinfo.findOne({ email: currentpersonal });
-    }});
+    }
+ });
 
 Router.route('/signature');
-Router.route('/projectassessment');
+Router.route('/projectassessment/:email', {
+    template: 'projectassessment',
+    data: function(){
+        var currentpersonal = this.params.email;
+        return Personalinfo.findOne({ email: currentpersonal });
+    }});
 
 Router.route('/cv/:email', {
     template: 'cv',
@@ -412,10 +568,15 @@ if (Meteor.isServer) {
       {return Personalinfo.find();} else {return Personalinfo.find({createdBy:idAdmin});}
   });
   
-  Accounts.config({
-    restrictCreationByEmailDomain: 'philico.com'
+  Meteor.publish("images", function() { 
+    idAdmin=this.userId;
+    if (idAdmin==="walid.benhammoud@philico.com" || idAdmin==="fabian.knecht@philico.com" || idAdmin==="alex.mueller@philico.com" || idAdmin==="fabien.roth@philico.com")
+      {return Images.find({})} else {return Images.find({owner:idAdmin})}
   });
-
+  
+  /*Accounts.config({
+    restrictCreationByEmailDomain: 'philico.com'
+  });*/
 
   ServiceConfiguration.configurations.remove({
     service: "google"
@@ -436,6 +597,7 @@ if (Meteor.isServer) {
   user.emails = [ { address: user.services.google.email, verified: (user.services.google.email==="walid.benhammoud@philico.com") || (user.services.google.email==="fabian.knecht@philico.com") || (user.services.google.email==="fabien.roth@philico.com") || (user.services.google.email==="alex.mueller@philico.com")} ]; 
   user.profile.firstName = user.services.google.given_name; 
   user.profile.lastName = user.services.google.family_name;
+  user.profile.profile_picture = user.services.google.picture;
   }
   return user; });
 
@@ -443,6 +605,17 @@ if (Meteor.isServer) {
   
 
 Meteor.methods({
+  addimage: function (theemail, imagesURL, id) {
+    Personalinfo.update(
+      { _id: Personalinfo.findOne({ createdBy: theemail })._id},
+      { $set: imagesURL})
+    Images.update(
+      { _id: id},
+      { $set: 
+        { owner: theemail } 
+      })
+  },
+
   showDetails: function(theemail, displayornotphoto, displayornotaddress, displayornotcontact) {
     if (displayornotphoto==="yes") {resultphoto=true} else {resultphoto=false};
     if (displayornotaddress==="yes") {resultaddress=true} else {resultaddress=false};
@@ -476,6 +649,65 @@ Meteor.methods({
       fullName: given_name+' '+family_name,
       email: email,
       sourcetaxed: "?",
+      emailSignature: '<div class="gmail_signature" style="font-family:Helvetica Neue, Helvetica, Arial, sans-serif; font-size:14px"><div><b><span style="color:#004a8d">'+given_name+' '+family_name+'<br></span></b></div><div><span style="color:red">Missing phone number</span></div><br><div><a href="tel:+" target="_blank"><span style="color:red">Missing position</span></a></div><div><a href="mailto:'+email+'" target="_blank">'+email+'</a></div><br><div><span>Philico AG</span></div><div><span>Sonder 16</span></div><div><span>CH-9042 Speicher</span></div><div><span><a href="http://www.philico.com" target="_blank">www.philico.com</a></span></div></div>',
+      assessment: [{
+          _id: (new Date()).getTime(),
+          fullName: given_name+' '+family_name,
+          positionPhilico: null,
+          coachName : null,
+          projectName : null,
+          objectivesDate : null,
+          objectivesWith : null,
+          positionDifficulty : null,
+          manDays : null,
+          assessmentFrom : null,
+          assessmentTo : null,
+          assessmentDate : null,
+          assessmentBy : null,
+          assessmentType : null,
+          pcpClient : null,
+          pcpEducation : null,
+          pcpInternal : null,
+          projectDescription : null,
+          projectIndividualRole : null,
+          projectObjectives : null,
+          overallSelfEvaluation : null,
+          overallCoachstrengths : null,
+          overallCoachweaknesses : null,
+          overallPerformanceRating : null,
+          consultingSelfEvaluation : null,
+          consultingCoachstrengths : null,
+          consultingCoachweaknesses : null,
+          consultingclientcentricityrating : null,
+          consultingnegotiationrating : null,
+          consultingmethodologyrating : null,
+          consultinganalyticalrating : null,
+          consultingmanagementrating : null,
+          technicalSelfEvaluation : null,
+          technicalCoachstrengths : null,
+          technicalCoachweaknesses : null,
+          technicalbroadavaloqrating : null,
+          technicaldeepavaloqrating : null,
+          technicalskillsrating : null,
+          technicalobjectmodellingrating : null,
+          functionalSelfEvaluation : null,
+          functionalCoachstrengths : null,
+          functionalCoachweaknesses : null,
+          functionalbroadbankingrating : null,
+          functionalspecificbankingrating : null,
+          functionalexperiencerating : null,
+          functionalmarketrating : null,
+          softSelfEvaluation : null,
+          softCoachstrengths : null,
+          softCoachweaknesses : null,
+          softsocialrating : null,
+          softleadershiprating : null,
+          softseniorityrating : null,
+          softpressurerating : null,
+          finalRating : null,
+          createdAt: new Date(),
+        }],
+      assessmentfinals: new Array(),
       });
   };
   },
@@ -485,10 +717,10 @@ Meteor.methods({
      child3Name, child3Birthdate, emergency1firstName, emergency1familyName, emergency1Relation, emergency1Phone, emergency2firstName, emergency2familyName, emergency2Relation, emergency2Phone, CHbankName, CHbankCity, CHbankZip, CHbankIban,
      CHbankAccountnumber, CHbankAccountname, EURbankName, EURbankCity, EURbankZip, EURbankIban, EURbankAccountnumber, EURbankAccountname, creator) {
     var signatureteltest="";
-    if (mobilePhone.toString().length===0) {signteltest=""} else {signteltest="+" + mobilecountryCode + mobilePhone};
-    if (signteltest==="") {signatureteltest="<span style='color:red'>Missing phone number</span>"} else {signatureteltest="<span>"+signteltest+"</span>"};
+    if (mobilePhone.toString().length===0) {signteltest=""} else {signteltest="+" + mobilecountryCode + " " + mobilePhone};
+    if (signteltest==="") {signatureteltest='<span style="color:red">Missing phone number</span>'} else {signatureteltest="<span>"+signteltest+"</span>"};
     var positionPhilicotest="";
-    if (positionPhilico.length===0){positionPhilicotest="<span style='color:red'>Missing position</span>"} else {positionPhilicotest="<span>"+positionPhilico+"</span>"};
+    if (positionPhilico.length===0){positionPhilicotest='<span style="color:red">Missing position</span>'} else {positionPhilicotest="<span>"+positionPhilico+"</span>"};
     Personalinfo.update(Personalinfo.findOne({ createdBy: email })._id,
       { $set: 
         {
@@ -511,7 +743,7 @@ Meteor.methods({
      domicilePhone: domicilePhone,
      mobilecountryCode: "+"+mobilecountryCode,
      mobilePhone: mobilePhone,
-     signatureTel: signteltest,
+     signatureTel: signatureteltest,
      birthDate: birthDate,
      birthDatedisplayed: moment(birthDate).format("MMMM Do, YYYY"), 
      ahvNumber: ahvNumber,
@@ -547,7 +779,7 @@ Meteor.methods({
      EURbankIban: EURbankIban,
      EURbankAccountnumber: EURbankAccountnumber,
      EURbankAccountname: EURbankAccountname,
-     emailSignature: '<div class="gmail_signature" style="font-family:Helvetica Neue, Helvetica, Arial, sans-serif; font-size:14px"><div><b><span style="color:#004a8d">'+Personalinfo.findOne({ createdBy: creator }).firstName+' '+Personalinfo.findOne({ createdBy: creator }).familyName+'<br></span></b></div><div>'+ positionPhilicotest +'</div><br><div><a href="tel:' + '+' + mobilecountryCode + mobilePhone + '" target="_blank">' + signteltest +'</a></div><div><a href="mailto:'+Personalinfo.findOne({ createdBy: creator }).email+'" target="_blank">'+Personalinfo.findOne({ createdBy: creator }).email+'</a></div><br><div><span>Philico AG</span></div><div><span>Sonder 16</span></div><div><span>CH-9042 Speicher</span></div><div><span><a href="http://www.philico.com" target="_blank">www.philico.com</a></span></div></div>',
+     emailSignature: '<div class="gmail_signature" style="font-family:Helvetica Neue, Helvetica, Arial, sans-serif; font-size:14px"><div><b><span style="color:#004a8d">'+Personalinfo.findOne({ createdBy: creator }).firstName+' '+Personalinfo.findOne({ createdBy: creator }).familyName+'<br></span></b></div><div>'+ positionPhilicotest +'</div><br><div><a href="tel:' + '+' + mobilecountryCode + mobilePhone + '" target="_blank">' + signatureteltest +'</a></div><div><a href="mailto:'+Personalinfo.findOne({ createdBy: creator }).email+'" target="_blank">'+Personalinfo.findOne({ createdBy: creator }).email+'</a></div><br><div><span>Philico AG</span></div><div><span>Sonder 16</span></div><div><span>CH-9042 Speicher</span></div><div><span><a href="http://www.philico.com" target="_blank">www.philico.com</a></span></div></div>',
      createdAt: new Date(),
      }    
     })
@@ -686,5 +918,159 @@ Meteor.methods({
     { $pull: { languages: { _id : id} } },
     { multi: true }
     );
+  },
+
+  addInterimAssessment: function(coachName, projectName, objectivesDate, objectivesWith, positionDifficulty, manDays, assessmentFrom,
+      assessmentTo, assessmentDate, assessmentBy, assessmentType, pcpClient, pcpEducation, pcpInternal, projectDescription, projectIndividualRole,
+      projectObjectives, overallSelfEvaluation, overallCoachstrengths, overallCoachweaknesses, overallPerformanceRating, consultingSelfEvaluation, 
+      consultingCoachstrengths, consultingCoachweaknesses, consultingclientcentricityrating, consultingnegotiationrating, consultingmethodologyrating, 
+      consultinganalyticalrating, consultingmanagementrating, technicalSelfEvaluation, technicalCoachstrengths, technicalCoachweaknesses, 
+      technicalbroadavaloqrating, technicaldeepavaloqrating, technicalskillsrating, technicalobjectmodellingrating, functionalSelfEvaluation, 
+      functionalCoachstrengths, functionalCoachweaknesses, functionalbroadbankingrating, functionalspecificbankingrating, 
+      functionalexperiencerating, functionalmarketrating, softSelfEvaluation, softCoachstrengths, softCoachweaknesses, softsocialrating, 
+      softleadershiprating, softseniorityrating, softpressurerating, finalRating, email) {
+
+  Personalinfo.update(
+    {_id: Personalinfo.findOne({ createdBy: email })._id },
+    { $pull: { assessment: {} } },
+    { multi: true }
+    );
+
+  Personalinfo.update(Personalinfo.findOne({ createdBy: email })._id,
+    { $push: {
+      assessment: {
+        $each: [{
+          _id: (new Date()).getTime(),
+          fullName: Personalinfo.findOne({ createdBy: email }).fullName,
+          positionPhilico: positionPhilico,
+          coachName : coachName,
+          projectName : projectName,
+          objectivesDate : objectivesDate,
+          objectivesWith : objectivesWith,
+          positionDifficulty : positionDifficulty,
+          manDays : manDays,
+          assessmentFrom : assessmentFrom,
+          assessmentTo : assessmentTo,
+          assessmentDate : assessmentDate,
+          assessmentBy : assessmentBy,
+          assessmentType : assessmentType,
+          pcpClient : pcpClient.replace(/\r?\n/g, '<br />'),
+          pcpEducation : pcpEducation.replace(/\r?\n/g, '<br />'),
+          pcpInternal : pcpInternal.replace(/\r?\n/g, '<br />'),
+          projectDescription : projectDescription.replace(/\r?\n/g, '<br />'),
+          projectIndividualRole : projectIndividualRole.replace(/\r?\n/g, '<br />'),
+          projectObjectives : projectObjectives.replace(/\r?\n/g, '<br />'),
+          overallSelfEvaluation : overallSelfEvaluation.replace(/\r?\n/g, '<br />'),
+          overallCoachstrengths : overallCoachstrengths.replace(/\r?\n/g, '<br />'),
+          overallCoachweaknesses : overallCoachweaknesses.replace(/\r?\n/g, '<br />'),
+          overallPerformanceRating : overallPerformanceRating,
+          consultingSelfEvaluation : consultingSelfEvaluation.replace(/\r?\n/g, '<br />'),
+          consultingCoachstrengths : consultingCoachstrengths.replace(/\r?\n/g, '<br />'),
+          consultingCoachweaknesses : consultingCoachweaknesses.replace(/\r?\n/g, '<br />'),
+          consultingclientcentricityrating : consultingclientcentricityrating,
+          consultingnegotiationrating : consultingnegotiationrating,
+          consultingmethodologyrating : consultingmethodologyrating,
+          consultinganalyticalrating : consultinganalyticalrating,
+          consultingmanagementrating : consultingmanagementrating,
+          technicalSelfEvaluation : technicalSelfEvaluation.replace(/\r?\n/g, '<br />'),
+          technicalCoachstrengths : technicalCoachstrengths.replace(/\r?\n/g, '<br />'),
+          technicalCoachweaknesses : technicalCoachweaknesses.replace(/\r?\n/g, '<br />'),
+          technicalbroadavaloqrating : technicalbroadavaloqrating,
+          technicaldeepavaloqrating : technicaldeepavaloqrating,
+          technicalskillsrating : technicalskillsrating,
+          technicalobjectmodellingrating : technicalobjectmodellingrating,
+          functionalSelfEvaluation : functionalSelfEvaluation.replace(/\r?\n/g, '<br />'),
+          functionalCoachstrengths : functionalCoachstrengths.replace(/\r?\n/g, '<br />'),
+          functionalCoachweaknesses : functionalCoachweaknesses.replace(/\r?\n/g, '<br />'),
+          functionalbroadbankingrating : functionalbroadbankingrating,
+          functionalspecificbankingrating : functionalspecificbankingrating,
+          functionalexperiencerating : functionalexperiencerating,
+          functionalmarketrating : functionalmarketrating,
+          softSelfEvaluation : softSelfEvaluation.replace(/\r?\n/g, '<br />'),
+          softCoachstrengths : softCoachstrengths.replace(/\r?\n/g, '<br />'),
+          softCoachweaknesses : softCoachweaknesses.replace(/\r?\n/g, '<br />'),
+          softsocialrating : softsocialrating,
+          softleadershiprating : softleadershiprating,
+          softseniorityrating : softseniorityrating,
+          softpressurerating : softpressurerating,
+          finalRating : finalRating,
+          createdAt: new Date(),
+        }],
+    }
+    } 
+    })
+  },
+
+  addNewVersion: function (email) {
+  Personalinfo.update(
+    {_id: Personalinfo.findOne({ createdBy: email })._id },
+    { $pull: { assessmentfinals: {} } },
+    { multi: true }
+    );
+
+    Personalinfo.update(Personalinfo.findOne({ createdBy: email })._id,
+    { $push: {
+      assessmentfinals: {
+        $each: [{
+          _id: (new Date()).getTime(),
+          createdAt: new Date(),
+          fullName: Personalinfo.findOne({ createdBy: email }).assessment[0].fullName,
+          positionPhilico: Personalinfo.findOne({ createdBy: email }).assessment[0].positionPhilico,
+          coachName : Personalinfo.findOne({ createdBy: email }).assessment[0].coachName,
+          projectName : Personalinfo.findOne({ createdBy: email }).assessment[0].projectName,
+          objectivesDate : Personalinfo.findOne({ createdBy: email }).assessment[0].objectivesDate,
+          objectivesWith : Personalinfo.findOne({ createdBy: email }).assessment[0].objectivesWith,
+          positionDifficulty : Personalinfo.findOne({ createdBy: email }).assessment[0].positionDifficulty,
+          manDays : Personalinfo.findOne({ createdBy: email }).assessment[0].manDays,
+          assessmentFrom : Personalinfo.findOne({ createdBy: email }).assessment[0].assessmentFrom,
+          assessmentTo : Personalinfo.findOne({ createdBy: email }).assessment[0].assessmentTo,
+          assessmentDate : Personalinfo.findOne({ createdBy: email }).assessment[0].assessmentDate,
+          assessmentBy : Personalinfo.findOne({ createdBy: email }).assessment[0].assessmentBy,
+          assessmentType : Personalinfo.findOne({ createdBy: email }).assessment[0].assessmentType,
+          pcpClient : Personalinfo.findOne({ createdBy: email }).assessment[0].pcpClient,
+          pcpEducation : Personalinfo.findOne({ createdBy: email }).assessment[0].pcpEducation,
+          pcpInternal : Personalinfo.findOne({ createdBy: email }).assessment[0].pcpInternal,
+          projectDescription : Personalinfo.findOne({ createdBy: email }).assessment[0].projectDescription,
+          projectIndividualRole : Personalinfo.findOne({ createdBy: email }).assessment[0].projectIndividualRole,
+          projectObjectives : Personalinfo.findOne({ createdBy: email }).assessment[0].projectObjectives,
+          overallSelfEvaluation : Personalinfo.findOne({ createdBy: email }).assessment[0].overallSelfEvaluation,
+          overallCoachstrengths : Personalinfo.findOne({ createdBy: email }).assessment[0].overallCoachstrengths,
+          overallCoachweaknesses : Personalinfo.findOne({ createdBy: email }).assessment[0].overallCoachweaknesses,
+          overallPerformanceRating : Personalinfo.findOne({ createdBy: email }).assessment[0].overallPerformanceRating,
+          consultingSelfEvaluation : Personalinfo.findOne({ createdBy: email }).assessment[0].consultingSelfEvaluation,
+          consultingCoachstrengths : Personalinfo.findOne({ createdBy: email }).assessment[0].consultingCoachstrengths,
+          consultingCoachweaknesses : Personalinfo.findOne({ createdBy: email }).assessment[0].consultingCoachweaknesses,
+          consultingclientcentricityrating : Personalinfo.findOne({ createdBy: email }).assessment[0].consultingclientcentricityrating,
+          consultingnegotiationrating : Personalinfo.findOne({ createdBy: email }).assessment[0].consultingnegotiationrating,
+          consultingmethodologyrating : Personalinfo.findOne({ createdBy: email }).assessment[0].consultingmethodologyrating,
+          consultinganalyticalrating : Personalinfo.findOne({ createdBy: email }).assessment[0].consultinganalyticalrating,
+          consultingmanagementrating : Personalinfo.findOne({ createdBy: email }).assessment[0].consultingmanagementrating,
+          technicalSelfEvaluation : Personalinfo.findOne({ createdBy: email }).assessment[0].technicalSelfEvaluation,
+          technicalCoachstrengths : Personalinfo.findOne({ createdBy: email }).assessment[0].technicalCoachstrengths,
+          technicalCoachweaknesses : Personalinfo.findOne({ createdBy: email }).assessment[0].technicalCoachweaknesses,
+          technicalbroadavaloqrating : Personalinfo.findOne({ createdBy: email }).assessment[0].technicalbroadavaloqrating,
+          technicaldeepavaloqrating : Personalinfo.findOne({ createdBy: email }).assessment[0].technicaldeepavaloqrating,
+          technicalskillsrating : Personalinfo.findOne({ createdBy: email }).assessment[0].technicalskillsrating,
+          technicalobjectmodellingrating : Personalinfo.findOne({ createdBy: email }).assessment[0].technicalobjectmodellingrating,
+          functionalSelfEvaluation : Personalinfo.findOne({ createdBy: email }).assessment[0].functionalSelfEvaluation,
+          functionalCoachstrengths : Personalinfo.findOne({ createdBy: email }).assessment[0].functionalCoachstrengths,
+          functionalCoachweaknesses : Personalinfo.findOne({ createdBy: email }).assessment[0].functionalCoachweaknesses,
+          functionalbroadbankingrating : Personalinfo.findOne({ createdBy: email }).assessment[0].functionalbroadbankingrating,
+          functionalspecificbankingrating : Personalinfo.findOne({ createdBy: email }).assessment[0].functionalspecificbankingrating,
+          functionalexperiencerating : Personalinfo.findOne({ createdBy: email }).assessment[0].functionalexperiencerating,
+          functionalmarketrating : Personalinfo.findOne({ createdBy: email }).assessment[0].functionalmarketrating,
+          softSelfEvaluation : Personalinfo.findOne({ createdBy: email }).assessment[0].softSelfEvaluation,
+          softCoachstrengths : Personalinfo.findOne({ createdBy: email }).assessment[0].softCoachstrengths,
+          softCoachweaknesses : Personalinfo.findOne({ createdBy: email }).assessment[0].softCoachweaknesses,
+          softsocialrating : Personalinfo.findOne({ createdBy: email }).assessment[0].softsocialrating,
+          softleadershiprating : Personalinfo.findOne({ createdBy: email }).assessment[0].softleadershiprating,
+          softseniorityrating : Personalinfo.findOne({ createdBy: email }).assessment[0].softseniorityrating,
+          softpressurerating : Personalinfo.findOne({ createdBy: email }).assessment[0].softpressurerating,
+          finalRating : Personalinfo.findOne({ createdBy: email }).assessment[0].finalRating,
+          finalinterimDate: Personalinfo.findOne({ createdBy: email }).assessment[0].createdAt,
+        }],
+    }
+    } 
+    })
   },
 });

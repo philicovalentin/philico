@@ -1,19 +1,19 @@
-/* ------------------------ General ----------------- */
 body {
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   background: #fff;
   color: white; 
-
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  padding: 0;
-  margin: 0;
-
   font-size: 14px;
+}
+
+#navHeight {
+  height: 80px !important;
+  font-family: 'Antic Slab', Arial, Helvetica, sans-serif;
+  font-size: 12px;
+}
+
+#navHeightContainer {
+  height: 80px !important;
+  width: 90% !important;
 }
 
 .navbar {
@@ -21,8 +21,20 @@ body {
   border: 0;
   font-size: 12px !important;
   letter-spacing: 0px;
+  margin-bottom: 0;
 }
 
+.logoph img{
+  margin-top: -10px;
+}
+
+.dropdown-menu li a {
+  padding-top: 15px;
+}
+
+.navbar li {
+  border-bottom: none;
+}
 .navbar li a, .navbar .navbar-brand {
   color: #203f60 !important;
   height: 50px;
@@ -38,28 +50,39 @@ body {
   color: #fff !important;
 }
 
-.navbar-brand {
-  letter-spacing: 0px;
-  font-size: 12px;
-}
-
-.navbar-brand img {
-  margin-top: -9px;
+#myNavbar {
+  left: 300px !important;
+  top: 10px !important;
+  right: 6.5%;
 }
 
 .loginbutton {
-  padding-top: 23px;
+  font-size: 10px;
+  margin-top: -25px;
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
+
+.login-display-name {
+  color: red;
+}
+
+.login-button {
+  background: red;
 }
 
 #login-buttons {
   display: inline;
 }
 
+#login-buttons-image-google {
+  margin-top: -4px;
+}
+
 .container {
   background: #fff;
   border-radius: 3px;
   padding: 10px;
-  margin-bottom: 10px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
 }
 
@@ -68,12 +91,21 @@ body {
 }
 
 .containerpage {
-  margin-top:100px;
+  width: 90%;
+}
+
+#page {
+  margin-top: 90px;
 }
 
 main {
   background: #203f60;
-  padding: 25px 15px 15px 15px;
+  padding: 10px;
+}
+
+.checkbuttonemployee {
+  height: 15px !important;
+  width: 15px;
 }
 
 /* --------------------Personal data--------------- */
@@ -82,7 +114,12 @@ main {
 }
 
 #perso p { 
-   flex: 0.5;
+  flex: 1;
+}
+
+#perso img {
+  max-height: 100px;
+  max-width: 100% !important;
 }
 
 #corecomp {
@@ -93,14 +130,18 @@ main {
   flex: 1;
 }
 
+#myFileInput {
+  color: white;
+  vertical-align: bottom !important;
+  width: default !important;
+  height: 20px;
+}
+
 .container input {
   display: inline;
   margin: 0;
   color: #203f60;
   font-size: 14px;
-  appearance: none;
-  box-shadow: none;
-  border-radius: none;
   height: 40px;
   position: relative;
 }
@@ -146,28 +187,38 @@ td select {
   margin: 0;
   font-size: 14px;
   color: black;
-  appearance: none;
-  box-shadow: none;
-  border-radius: none;
   height: 40px;
   vertical-align: bottom;
 }
 
-.checkbox {
-  display: inline;
-  align: middle;
+.checkbutton {
+  width: 80%;
+  margin-top: 10px !important;
+}
+
+.current {
+  vertical-align: bottom;
 }
 
 .submit {
   background: grey;
-  width: 220px;
   font-weight: bold;
   color: white !important ;
+  text-align: middle;
+  width: 25%;
+}
+
+.photo  {
+  vertical-align: top;
 }
 
 #comp {
   display: inline;
   height: 180px;
+  width: 90%;
+}
+
+.competencies {
   width: 90%;
 }
 
@@ -232,20 +283,25 @@ li {
 
 /* ------------------- CV ----------------------- */
 .containercv {
-  margin: 0 0 0 300px;
+  width: 21cm;
+  height: 29cm;
+}
+
+@page {
+  margin: 1cm;
 }
 
 .containercv main {
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   background: white;
-  padding: 10px 10px 10px 10px;
   position: relative;
   color: black;
-  font-size: 12px;
+  font-size: 14px;
+  margin: auto;
 }
 
 .cv tr {
-  height: 13px;
+  height: 15px;
   vertical-align: top;
 }
 
@@ -262,7 +318,7 @@ input[type=number]::-webkit-outer-spin-button {
 .cvsectionname {
   display: block; 
   border-bottom: 2px solid #203f60;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   color: #203f60 !important;
   height: 20px;
@@ -270,19 +326,31 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .cvtitle { 
-  font-size: 14px;
+  font-size: 16px;
   color: #203f60 !important;
 }
 
 .cvbluetext {
   color: #203f60 !important;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
 }
 
-@media print {
-    #printDiv{
-         position:absolute;
-         margin: 0 0 -300px 0;
-    }
+
+#pa {
+  width: 100%;
+}
+
+#pa td {
+  border: 3px solid white;
+  padding: 10px;
+}
+
+#pa input {
+  width: 100%;
+}
+
+#pa textarea {
+  width: 100%;
+  height: 200px;
 }

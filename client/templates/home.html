@@ -1,0 +1,54 @@
+<template name="home">
+  {{> navigation}}
+  {{#if currentUser }}
+    <!-- check if logged in for the first time and create a personal info instance -->
+    {{initialisation}}      
+    <div class="container containerpage">
+      <main>
+        {{#each personalinfo}}
+          <h3>WELCOME {{firstNameup}} {{familyNameup}}</h3>
+          <label class="signature"><input type="checkbox" class="checkbutton" name="signaturecheck" checked="{{signature}}"> My signature</label>
+            {{#if signaturecheck}}
+              <ul class="body-list">
+                <li>{{{emailSignature}}}</li>
+                <li><p><strong>Signature HTML</strong></p>{{emailSignature}}</li>
+              </ul>
+            {{/if}}
+        {{/each}}   
+        <br>
+        {{#if adminrights}}
+          <label class="newemployee"><input type="checkbox" class="checkbutton" name="addnewemployeecheck" checked="{{newemployee}}"> Add subcontractor</label>
+            {{#if addnewemployeecheck}}
+              <form class="new-employee">
+                <table class="inputs">
+                  <tr>
+                    <td>First name</td>
+                    <td><input type="text" name="firstName" required></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Family name</td>
+                    <td><input type="text" name="familyName" required></td>
+                  </tr>
+                  <tr>
+                    <td>Email</td>
+                    <td><input type="text" name="email" required></td>
+                  </tr>
+                  <tr>
+                    <td>Status</td>
+                    <td><select class="options" name="subcontractor">
+                          <option class="options" value=""></option>
+                          <option class="options" value="(Subcontractor)">(Subcontractor)</option>
+                        </select>
+                    </td>
+                  </tr>
+                </table>
+              <br>
+              <input class="submit" type="submit" value="Save new entries">
+              </form>
+            {{/if}}
+        {{/if}}
+      </main>
+    </div>
+  {{/if}}
+</template>

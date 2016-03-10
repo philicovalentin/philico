@@ -1,0 +1,495 @@
+<template name="projectassessment">
+  {{> navigation}}
+  {{#if currentUser}}
+  <div class="container containerpage">
+  <main>
+    <form class="new-assessment">
+      <h3>PROJECT ASSESSMENT</h3>
+          <p>
+          <table id="pa">
+          <col width="25%">
+          <col width="25%">
+          <col width="25%">
+          <col width="25%">
+          <tr>
+            <td>Name</td>
+            <td>{{assessment.[0].fullName}}</td>
+            <td>Position</td>
+            <td><input type="text" name="positionPhilico" value="{{assessment.[0].positionPhilico}}"></td>
+          </tr>
+          <tr>
+            <td>Coach</td>
+            <td><input type="text" name="coachName" value="{{assessment.[0].coachName}}"></td>
+            <td>Project Name</td>
+            <td><input type="text" name="projectName" value="{{assessment.[0].projectName}}"></td>
+          </tr>
+          <tr>
+            <td>Objectives set on</td>
+            <td><input type="date" name="objectivesDate" value="{{assessment.[0].objectivesDate}}"></td>
+            <td>Objectives set with</td>
+            <td><input type="text" name="objectivesWith" value="{{assessment.[0].objectivesWith}}"></td>
+          </tr>
+          <tr>
+            <td>Position difficulty(1/2/3)</td>
+            <td><input type="number" name="positionDifficulty" value="{{assessment.[0].positionDifficulty}}"></td>
+            <td>Man-days spent on the project</td>
+            <td><input type="number" name="manDays" value="{{assessment.[0].manDays}}"></td>
+          </tr>
+          <tr>
+            <td>Assessment from</td>
+            <td><input type="date" name="assessmentFrom" value="{{assessment.[0].assessmentFrom}}"></td>
+            <td>Assessment to</td>
+            <td><input type="date" name="assessmentTo" value="{{assessment.[0].assessmentTo}}"></td>
+          </tr>
+          <tr>
+            <td>Assessment date</td>
+            <td><input type="date" name="assessmentDate" value="{{assessment.[0].assessmentDate}}"></td>
+            <td>Assessment by</td>
+            <td><input type="text" name="assessmentBy" value="{{assessment.[0].assessmentBy}}"></td>
+          </tr>
+          <tr>
+            <td>Assessment type(interim/Final)</td>
+            <td><select class="options" name="assessmentType">
+                    <option class="options" value="Interim">Interim</option>
+                    <option class="options" value="Final">Final</option>
+                  </select></td>
+          </tr>
+        </table>
+      </p>
+      <br><br>
+      <p>
+        <table id="pa">
+          <col width="90%">
+          <col width="10%">
+          <tr>
+            <td>Position difficulty</td>
+            <td>Rating</td>
+          </tr>
+          <tr>
+            <td>Hard</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>Middle</td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <td>Light</td>
+            <td>3</td>
+          </tr>
+        </table>
+      </p>
+      <br><br>
+      <p>
+        <table id="pa">
+          <col width="90%">
+          <col width="10%">
+          <tr>
+            <td>Performance</td>
+            <td>Rating</td>
+          </tr>
+          <tr>
+            <td>Outstanding performer - consistently exceeds expectations</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>Very good performer - often exceeds expectations</td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <td>Good performer - fully meets expectations</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td>Requires some development to meet expectations</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>Does not meet expectations and requires significant development</td>
+            <td>5</td>
+          </tr>
+        </table>
+      </p>
+      <p>The project Assessment is agreed between the Consultant and the Coach at the end of the evaluation period.</p>
+    <br><br>
+    <!--<section class="pcp">-->
+      <h3>Personal Career Plan</h3>
+      <br>
+      <p>The PCP aims to let the Consultant give an insight on his mid-term (1-3 years) career objectives.</p>
+      <p>
+      <table id="pa">
+        <col width="10%">
+        <col width="90%">
+        <tr>
+          <td>Term</td>
+          <td>Definition</td>
+        </tr>
+        <tr>
+          <td>Client</td>
+          <td>Client location (onshore, offshore), type of project (from scratch, support, etc), type of responsibilities, type of modules</td>
+        </tr>
+        <tr>
+          <td>Education</td>
+          <td>Areas of interest, Avaloq courses, Business courses, Technical courses, etc.</td>
+        </tr>
+        <tr>
+          <td>Internal</td>
+          <td>Interests of being involved on internal projects (software dev, marketing, coaching, etc)</td>
+        </tr>
+      </table>
+      </p>
+      <br>
+      <p>
+      <table id="pa">
+        <col width="34%">
+        <col width="33%">
+        <col width="33%">
+        <tr>
+          <td>Client</td>
+          <td>Education</td>
+          <td>Internal</td>
+        </tr>
+        <tr>
+          <td><textarea name="pcpClient" value="{{assessment.[0].pcpClient}}"></textarea></td>
+          <td><textarea name="pcpEducation" value="{{assessment.[0].pcpEducation}}"></textarea></td>
+          <td><textarea name="pcpInternal" value="{{assessment.[0].pcpInternal}}"></textarea></td>
+        </tr>
+      </table>
+      </p>
+      <br><br>
+    <h3>Project Context</h3>
+    <p>
+      <table id="pa">
+      <col width="90%">
+      <col width="10%">
+      <tr>
+        <td>Project description</td>
+        <td>CT</td>
+      </tr>
+      <tr>
+        <td colspan="2"><textarea name="projectDescription" value="{{assessment.[0].projectDescription}}"></textarea></td>
+      </tr>
+      </table>
+    </p>
+    <br>
+    <p>
+      <table id="pa">
+      <col width="90%">
+      <col width="10%">
+      <tr>
+        <td>Individual's role on the project</td>
+        <td>CT</td>
+      </tr>
+      <tr>
+        <td colspan="2"><textarea name="projectIndividualRole" value="{{assessment.[0].projectIndividualRole}}"></textarea></td>
+      </tr>
+      </table>
+    </p>
+    <h3>Objectives</h3>
+    <p>
+      <table id="pa">
+      <col width="90%">
+      <col width="10%">
+      <tr>
+        <td>Objectives</td>
+        <td>CT+CO</td>
+      </tr>
+      <tr>
+        <td colspan="2"><textarea name="projectObjectives" value="{{assessment.[0].projectObjectives}}"></textarea></td>
+      </tr>
+      </table>
+    </p>
+    <br><br>
+    <h3>Assessment</h3>
+    <p>
+      <table id="pa">
+      <col width="50%">
+      <col width="40%">
+      <col width="10%">
+      <tr>
+        <td colspan="3"><h4>Overall project results</h4></td>
+      </tr>
+      <tr>
+        <td colspan="3">Overall project evaluation, quality of work produced, main success and main areas of improvement, overall objectives achievements</td>
+      </tr>
+      <tr>
+        <td colspan="2">Self-evaluation</td>
+        <td>CT</td>
+      </tr>
+      <tr>
+        <td colspan="3"><textarea name="overallSelfEvaluation" value="{{assessment.[0].overallSelfEvaluation}}"></textarea></td>
+      </tr>
+      <tr>
+        <td colspan="2">Coach evaluation and improvement areas</td>
+        <td>CO</td>
+      </tr>
+      <tr>
+        <td>Strengths</td>
+        <td colspan="2">Weaknesses</td>
+      </tr>
+      <tr>
+        <td><textarea name="overallCoachstrengths" value="{{assessment.[0].overallCoachstrengths}}"></textarea></td>
+        <td colspan="2"><textarea name="overallCoachweaknesses" value="{{assessment.[0].overallCoachweaknesses}}"></textarea></td>
+      </tr>
+      <tr>
+        <td colspan="2">Rating</td>
+        <td>CO</td>
+      </tr>
+      <tr>
+        <td colspan="2">Overall performance</td>
+        <td><input type="number" name="overallPerformanceRating" value="{{assessment.[0].overallPerformanceRating}}"></td>
+      </tr>
+      </table>
+    </p>
+    <br>
+    <p>
+      <table id="pa">
+      <col width="50%">
+      <col width="40%">
+      <col width="10%">
+      <tr>
+        <td colspan="3"><h4>Consulting</h4></td>
+      </tr>
+      <tr>
+        <td colspan="3">Client Centricity / Client Satisfaction, Negotiation Skills / Convincibility, Consulting Methodology, Analytical and conceptual thinking, Project Management</td>
+      </tr>
+      <tr>
+        <td colspan="2">Self-evaluation</td>
+        <td>CT</td>
+      </tr>
+      <tr>
+        <td colspan="3"><textarea name="consultingSelfEvaluation" value="{{assessment.[0].consultingSelfEvaluation}}"></textarea></td>
+      </tr>
+      <tr>
+        <td colspan="2">Coach evaluation and improvement areas</td>
+        <td>CO</td>
+      </tr>
+      <tr>
+        <td>Strengths</td>
+        <td colspan="2">Weaknesses</td>
+      </tr>
+      <tr>
+        <td><textarea name="consultingCoachstrengths" value="{{assessment.[0].consultingCoachstrengths}}"></textarea></td>
+        <td colspan="2"><textarea name="consultingCoachweaknesses" value="{{assessment.[0].consultingCoachweaknesses}}"></textarea></td>
+      </tr>
+      <tr>
+        <td colspan="3">Rating</td>
+      </tr>
+      <tr>
+        <td colspan="2">Client Centricity / Client Satisfaction</td>
+        <td><input type="number" name="consultingclientcentricityrating" value="{{assessment.[0].consultingclientcentricityrating}}"></td>
+      </tr>
+      <tr>
+        <td colspan="2">Negotiation Skills / Convincibility</td>
+        <td><input type="number" name="consultingnegotiationrating" value="{{assessment.[0].consultingnegotiationrating}}"></td>
+      </tr>
+      <tr>
+        <td colspan="2">Consulting Methodology</td>
+        <td><input type="number" name="consultingmethodologyrating" value="{{assessment.[0].consultingmethodologyrating}}"></td>
+      </tr>
+      <tr>
+        <td colspan="2">Analytical and conceptual thinking</td>
+        <td><input type="number" name="consultinganalyticalrating" value="{{assessment.[0].consultinganalyticalrating}}"></td>
+      </tr>
+      <tr>
+        <td colspan="2">Project Management</td>
+        <td><input type="number" name="consultingmanagementrating" value="{{assessment.[0].consultingmanagementrating}}"></td>
+      </tr>
+      </table>
+    </p>
+    <br>
+    <p>
+      <table id="pa">
+      <col width="50%">
+      <col width="40%">
+      <col width="10%">
+      <tr>
+        <td colspan="3"><h4>Technical</h4></td>
+      </tr>
+      <tr>
+        <td colspan="3">Broad Avaloq know how, Deep Avaloq know how, Technical skills, Object Modelling / System Architecture</td>
+      </tr>
+      <tr>
+        <td colspan="2">Self-evaluation</td>
+        <td>CT</td>
+      </tr>
+      <tr>
+        <td colspan="3"><textarea name="technicalSelfEvaluation" value="{{assessment.[0].technicalSelfEvaluation}}"></textarea></td>
+      </tr>
+      <tr>
+        <td colspan="2">Coach evaluation and improvement areas</td>
+        <td>CO</td>
+      </tr>
+      <tr>
+        <td>Strengths</td>
+        <td colspan="2">Weaknesses</td>
+      </tr>
+      <tr>
+        <td><textarea name="technicalCoachstrengths" value="{{assessment.[0].technicalCoachstrengths}}"></textarea></td>
+        <td colspan="2"><textarea name="technicalCoachweaknesses" value="{{assessment.[0].technicalCoachweaknesses}}"></textarea></td>
+      </tr>
+      <tr>
+        <td colspan="3">Rating</td>
+      </tr>
+      <tr>
+        <td colspan="2">Broad Avaloq know how</td>
+        <td><input type="number" name="technicalbroadavaloqrating" value="{{assessment.[0].technicalbroadavaloqrating}}"></td>
+      </tr>
+      <tr>
+        <td colspan="2">Deep Avaloq know how</td>
+        <td><input type="number" name="technicaldeepavaloqrating" value="{{assessment.[0].technicaldeepavaloqrating}}"></td>
+      </tr>
+      <tr>
+        <td colspan="2">Technical skills</td>
+        <td><input type="number" name="technicalskillsrating" value="{{assessment.[0].technicalskillsrating}}"></td>
+      </tr>
+      <tr>
+        <td colspan="2">Object Modelling / System Architecture</td>
+        <td><input type="number" name="technicalobjectmodellingrating" value="{{assessment.[0].technicalobjectmodellingrating}}"></td>
+      </tr>
+      </table>
+    </p>
+    <br>
+    <p>
+      <table id="pa">
+      <col width="50%">
+      <col width="40%">
+      <col width="10%">
+      <tr>
+        <td colspan="3"><h4>Functional (Banking, Business Analysis)</h4></td>
+      </tr>
+      <tr>
+        <td colspan="3">Broad banking knowledge, Specific banking knowledge, Experience / Seniority, Market Situation</td>
+      </tr>
+      <tr>
+        <td colspan="2">Self-evaluation</td>
+        <td>CT</td>
+      </tr>
+      <tr>
+        <td colspan="3"><textarea name="functionalSelfEvaluation" value="{{assessment.[0].functionalSelfEvaluation}}"></textarea></td>
+      </tr>
+      <tr>
+        <td colspan="2">Coach evaluation and improvement areas</td>
+        <td>CO</td>
+      </tr>
+      <tr>
+        <td>Strengths</td>
+        <td colspan="2">Weaknesses</td>
+      </tr>
+      <tr>
+        <td><textarea name="functionalCoachstrengths" value="{{assessment.[0].functionalCoachstrengths}}"></textarea></td>
+        <td colspan="2"><textarea name="functionalCoachweaknesses" value="{{assessment.[0].functionalCoachweaknesses}}"></textarea></td>
+      </tr>
+      <tr>
+        <td colspan="3">Rating</td>
+      </tr>
+      <tr>
+        <td colspan="2">Broad banking knowledge</td>
+        <td><input type="number" name="functionalbroadbankingrating" value="{{assessment.[0].functionalbroadbankingrating}}"></td>
+      </tr>
+      <tr>
+        <td colspan="2">Specific banking knowledge</td>
+        <td><input type="number" name="functionalspecificbankingrating" value="{{assessment.[0].functionalspecificbankingrating}}"></td>
+      </tr>
+      <tr>
+        <td colspan="2">Experience / Seniority</td>
+        <td><input type="number" name="functionalexperiencerating" value="{{assessment.[0].functionalexperiencerating}}"></td>
+      </tr>
+      <tr>
+        <td colspan="2">Market Situation</td>
+        <td><input type="number" name="functionalmarketrating" value="{{assessment.[0].functionalmarketrating}}"></td>
+      </tr>
+      </table>
+    </p>
+    <br>
+    <p>
+      <table id="pa">
+      <col width="50%">
+      <col width="40%">
+      <col width="10%">
+      <tr>
+        <td colspan="3"><h4>Soft skills</h4></td>
+      </tr>
+      <tr>
+        <td colspan="3">Social competence, Leadership Skills (Coaching), Ability to work under pressure / Personality</td>
+      </tr>
+      <tr>
+        <td colspan="2">Self-evaluation</td>
+        <td>CT</td>
+      </tr>
+      <tr>
+        <td colspan="3"><textarea name="softSelfEvaluation" value="{{assessment.[0].softSelfEvaluation}}"></textarea></td>
+      </tr>
+      <tr>
+        <td colspan="2">Coach evaluation and improvement areas</td>
+        <td>CO</td>
+      </tr>
+      <tr>
+        <td>Strengths</td>
+        <td colspan="2">Weaknesses</td>
+      </tr>
+      <tr>
+        <td><textarea name="softCoachstrengths" value="{{assessment.[0].softCoachstrengths}}"></textarea></td>
+        <td colspan="2"><textarea name="softCoachweaknesses" value="{{assessment.[0].softCoachweaknesses}}"></textarea></td>
+      </tr>
+      <tr>
+        <td colspan="3">Rating</td>
+      </tr>
+      <tr>
+        <td colspan="2">Social competence</td>
+        <td><input type="number" name="softsocialrating" value="{{assessment.[0].softsocialrating}}"></td>
+      </tr>
+      <tr>
+        <td colspan="2">Leadership Skills (Coaching)</td>
+        <td><input type="number" name="softleadershiprating" value="{{assessment.[0].softleadershiprating}}"></td>
+      </tr>
+      <tr>
+        <td colspan="2">Experience / Seniority</td>
+        <td><input type="number" name="softseniorityrating" value="{{assessment.[0].softseniorityrating}}"></td>
+      </tr>
+      <tr>
+        <td colspan="2">Ability to work under pressure</td>
+        <td><input type="number" name="softpressurerating" value="{{assessment.[0].softpressurerating}}"></td>
+      </tr>
+      </table>
+    </p>
+    <br><br><br>
+    <h3>Rating</h3>
+    <p>This final rating is a weighted average of each of the above rates. The weight of each rate is set for the whole company and equal for each employee. However, as the evaluator doesn’t have the whole pictures of employees’ performances, all individual rating will be presented and discussed at Partner’s level and are subject to company adjustments (not more then 0.5 point).</p>
+    <p>
+      <table align="center">
+        <tr>
+          <td align="center">Rating*</td>
+        </tr>
+        <tr>
+          <td align="center"><input type="number" class="finalrating" name="finalRating" value="{{assessment.[0].finalRating}}"></td>
+        </tr>
+      </table>
+    </p>
+    <p>*Rating has to be calculated using the corporate’s rating</p>
+    <br>
+    <p><input class="submit" type="submit" value="Save temporary version"></p>
+    </form>
+    <br>
+    <p><button id="clickme">Final version</button></p>
+    <br>
+    <h1>PREVIOUS ASSESSMENTS</h1>
+    <ul class="body-list">
+      {{#each assessmentfinals}}
+        <li>
+          <table width="100%">
+          <col width="20%">
+          <col width="60%">
+            <tr>
+              <td>{{assessmentDate}}</td>
+              <td><span class="cvbluetext">{{assessmentBy}}</span></td>
+              <td><button id="print"><span class="glyphicon glyphicon-print"></span> Print</button></td>
+            </tr>
+          </table>
+        </li>
+      {{/each}}
+    </ul>
+  </main>
+  </div>
+  {{/if}}
+</template>

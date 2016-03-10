@@ -1,0 +1,456 @@
+<template name="personaldataemployee">
+{{> navigation}}
+{{#if currentUser}}
+<div class="container containerpage">
+<main>
+  <div class="row">
+    <div class="col-sm-6">
+      <h3>DATA MODIFICATION</h3>
+        <button id="clickmedata">Modify {{firstName}}'s data</button>
+    </div>
+  </div>  
+  <br>
+
+  <section class="profile">
+    <h3>PERSONAL INFORMATION</h3>
+    <div class="row">
+      <div class="col-sm-6">
+        <table width="100%">
+        <col width="25%">
+        <col width="40%">
+        <col width="35%">
+          <tr>
+            <td>First name</td>
+            <td>{{firstName}}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Family name</td>
+            <td>{{familyName}}</td>
+          </tr>
+          <tr>
+            <td>Email</td>
+            <td>{{email}}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-sm-6">
+        <table width="100%">
+        <col width="25%">
+        <col width="40%">
+        <col width="5%">
+        <col width="30%">
+          <tr>
+            <td>Photo</td>
+            <td rowspan="2">{{#if image}}<img style="display:block;" width="100%" src="{{image}}" alt="If undisplayed, refresh">{{/if}}</td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-sm-6">
+        <table width="100%">
+        <col width="25%">
+        <col width="40%">
+        <col width="35%">
+          <tr>
+            <td>Address</td>
+            <td>{{addressStreet}}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{addressNumber}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{addressZip}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{addressCity}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{addressCountry}}</td>
+          </tr>
+          <tr>
+            <td>Nationalities</td>
+          </tr>
+          <tr>
+            <td>Nationality 1</td>
+            <td>{{nationality1}}</td>
+          </tr>
+          <tr>
+            <td>Nationality 2</td>
+            <td>{{nationality2}}</td>
+          </tr>
+          <tr>
+            <td>Nationality 3</td>
+            <td>{{nationality3}}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-sm-6">
+        <table width="100%">
+        <col width="25%">
+        <col width="40%">
+        <col width="35%">
+          <tr>
+            <td>Source tax</td>
+            <td>{{sourcetaxed}}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Domicile phone</td>
+            {{#if domicilePhone}}
+            <td>{{domicilecountryCode}} {{domicilePhone}}</td>
+            {{/if}}
+          </tr>
+          <tr>
+            <td>Mobile phone</td>
+            {{#if mobilePhone}}
+            <td>{{mobilecountryCode}} {{mobilePhone}}</td>
+            {{/if}}
+          </tr>
+          <tr>
+            <td>Date of birth</td>
+            <td>{{birthDatedisplayed}}</td>
+          </tr>
+          <tr>
+            <td>AHV/AVS number</td>
+            <td>{{ahvNumber}}</td>
+          </tr>
+          <tr>
+            <td>Start date in Philico</td>
+            <td>{{#if startDatephilico}}{{startDatephilicodisplayed}}{{/if}}</td>
+          </tr>
+          <tr>
+            <td>Position within Philico</td>
+            <td>{{positionPhilico}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <br>
+
+    <div class="row">
+    <div class="col-sm-6">
+      <table width="100%">
+        <col width="25%">
+        <col width="40%">
+        <col width="35%">
+          <tr>
+            <td><strong>Family information</strong></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Date of marriage</td>
+            <td>{{marriageDate}}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Spouse name</td>
+            <td>{{spousefamilyName}}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{spousefirstName}}</td>
+          </tr>
+          <tr>
+            <td>Child 1 name</td>
+            <td>{{child1Name}}</td>
+          </tr>
+          <tr>
+            <td>Child 1 birthdate</td>
+            <td>{{child1Birthdate}}</td>
+          </tr>
+          <tr>
+            <td>Child 2 name</td>
+            <td>{{child2Name}}</td>
+          </tr>
+          <tr>
+            <td>Child 2 birthdate</td>
+            <td>{{child2Birthdate}}</td>
+          </tr>
+          <tr>
+            <td>Child 3 name</td>
+            <td>{{child3Name}}</td>
+          </tr>
+          <tr>
+            <td>Child 3 birthdate</td>
+            <td>{{child3Birthdate}}</td>
+          </tr>
+        </table>
+      </div>
+    <div class="col-sm-6">
+      <table width="100%">
+        <col width="25%">
+        <col width="40%">
+        <col width="35%">
+          <tr>
+            <td><strong>Emergency contact</strong></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Person 1 first name</td>
+            <td>{{emergency1firstName}}</td>         
+          </tr>
+          <tr>
+            <td>Person 1 family name</td>
+            <td>{{emergency1familyName}}</td>         
+          </tr>
+          <tr>
+            <td>Person 1 relation</td>
+            <td>{{emergency1Relation}}</td>           
+          </tr>
+          <tr>
+            <td>Person 1 phone</td>
+            <td>{{emergency1Phone}}</td> 
+          </tr>
+          <br><br>
+          <tr>
+            <td>Person 2 first name</td>
+            <td>{{emergency2firstName}}</td>         
+          </tr>
+          <tr>
+            <td>Person 2 family name</td>
+            <td>{{emergency2familyName}}</td>         
+          </tr>
+          <tr>
+            <td>Person 2 relation</td>
+            <td>{{emergency2Relation}}</td>           
+          </tr>
+          <tr>
+            <td>Person 2 phone</td>
+            <td>{{emergency2Phone}}</td> 
+          </tr>
+        </table>
+      </div>
+    </div>
+    <br>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <table width="100%">
+        <col width="25%">
+        <col width="40%">
+        <col width="35%">
+          <tr>
+            <td colspan="2"><strong>Bank account for salary payments (CHF)</strong></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Bank name</td>
+            <td>{{CHbankName}}</td> 
+          </tr>
+          <tr>
+            <td>Bank city</td>
+            <td>{{CHbankCity}}</td>
+          </tr>
+          <tr>
+            <td>Bank ZIP</td>
+            <td>{{CHbankZip}}</td> 
+          </tr>
+          <tr>
+            <td>Clearing/IBAN</td>
+            <td>{{CHbankIban}}</td> 
+          </tr>
+          <tr>
+            <td>Account number</td>
+            <td>{{CHbankAccountnumber}}</td> 
+          </tr>
+          <tr>
+            <td>In the name of</td>
+            <td>{{CHbankAccountname}}</td> 
+          </tr>
+        </table>
+      </div>
+    <div class="col-sm-6">
+      <table width="100%">
+        <col width="25%">
+        <col width="40%">
+        <col width="35%">
+          <tr>
+            <td colspan="2"><strong>Bank account for salary payments (EUR)</strong></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Bank name</td>
+            <td>{{EURbankName}}</td>
+          </tr>
+          <tr>
+            <td>Bank city</td>
+            <td>{{EURbankCity}}</td>
+          </tr>
+          <tr>
+            <td>Bank ZIP</td>
+            <td>{{EURbankZip}}</td>
+          </tr>
+          <tr>
+            <td>Clearing/IBAN</td>
+            <td>{{EURbankIban}}</td>
+          </tr>
+          <tr>
+            <td>Account number</td>
+            <td>{{EURbankAccountnumber}}</td>
+          </tr>
+          <tr>
+            <td>In the name of</td>
+            <td>{{EURbankAccountname}}</td> 
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+  
+  <br><br>
+
+<!--           Core competencies             -->
+
+  <section class="competencies">
+  <h3>CORE COMPETENCIES</h3>
+    <div class="row">
+      <div class="col-sm-4">
+          <p class="Paragtitle">Communication and Analytical Skills</p>
+          <br>
+          <p>{{competencies.[0].communicationSkills}}</p>
+      </div>
+      <div class="col-sm-4">
+          <p class="Paragtitle">Business Expertise</p>
+          <br>
+          <p>{{competencies.[0].businessSkills}}</p>
+      </div>
+      <div class="col-sm-4">
+          <p class="Paragtitle">Technical Expertise</p>
+          <br>
+          <p>{{competencies.[0].technicalSkills}}</p>
+      </div>
+    </div>
+    <br>
+  </section>
+  
+  <br><br>
+
+<!--        Project experience section        -->
+
+  <section class="experiences">
+  <h3>PROJECT EXPERIENCE</h3>
+    <ul class="body-list">
+      {{#each experiences}}
+      <li>
+        <table width="100%">
+        <col width="20%">
+          {{#if projectCompany}}
+          <tr>
+            <td colspan="2"><span class="cvbluetext">{{projectCompany}}</span></td>
+          </tr>
+          {{/if}}
+          {{#if projectClient}}
+          <tr>
+            <td>{{projectStartdate}} - {{projectEnddate}}</td>
+            <td><span class="cvbluetext">{{#if projectClient}}{{projectClient}}{{#if projectClientcity}}, {{/if}}{{/if}}{{#if projectClientcity}}{{projectClientcity}}{{/if}}{{#if projectClientcountry}} - {{projectClientcountry}}{{/if}}{{#if projectClientdepartment}} : {{projectClientdepartment}}{{/if}}</span></td>
+          </tr>
+          {{/if}}
+          {{#if projectTitle}}
+          <tr>
+            <td></td>  
+            <td><strong>{{projectTitle}}</strong></td>
+          </tr>
+          {{/if}}
+          {{#if projectDescriptionHTML}}
+          <tr>
+            <td></td>
+            <td>{{{projectDescriptionHTML}}}</td>
+          </tr>
+          {{/if}}
+        </table>
+      </li>
+      {{/each}}
+    </ul>
+  </section>    
+  
+  <br><br>
+
+<!--           Employment history section             -->
+
+  <section class="employment">
+  <h3>EMPLOYMENT HISTORY</h3>
+    <ul class="body-list">
+      {{#each employments}}
+      <li>
+        <table width="100%">
+        <col width="20%">
+          <tr>
+            <td>{{employmentStartdate}} - {{employmentEnddate}}</td>
+            <td><span class="cvbluetext">{{employmentCompany}}{{#if employmentCity}}, {{employmentCity}} - {{employmentCountry}}{{/if}}</span></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>{{{employmentPositionHTML}}}</td>
+          </tr>
+        </table>
+      </li>
+      {{/each}}
+    </ul>
+  </section>
+      
+  <br><br>
+
+<!--           Degree section             -->
+
+  <section class="degrees">
+  <h3>DEGREES AND CERTIFICATIONS</h3>
+    <ul class="body-list">
+    {{#each degrees}}
+      <li>
+          <table width="100%">
+          <col width="20%">
+           <tr>
+            <td>{{#if degreeDatemonth}}{{degreeDate}}{{/if}}</td>
+            {{#if degreeUniversity}}
+            <td>{{degreeUniversity}}{{#if degreeCity}}, {{degreeCity}}{{/if}}{{#if degreeCountry}} - {{degreeCountry}}{{/if}}</td>
+            {{else}}
+            <td>{{degree}}{{#if degreeSpecialisation}}: {{degreeSpecialisation}}{{/if}}</td>
+            {{/if}}
+           </tr>
+           {{#if degreeUniversity}}
+           <tr>
+            <td></td>
+            <td>{{degree}}{{#if degreeSpecialisation}}: {{degreeSpecialisation}}{{/if}}</td>
+           </tr>
+           {{/if}}
+          </table>
+      </li>
+    {{/each}}
+    </ul>
+  </section>
+      
+  <br><br>
+
+<!--           Language section             -->
+   
+  <section class="languages" id="languages">
+  <h3>LANGUAGE SKILLS</h3>
+    <ul class="body-list">
+    {{#each languages}}
+      <li>
+          <table width="100%">
+          <col width="20%">
+           <tr>
+            <td>{{languageItem}}</td>
+            <td>{{languageSkill}}</td>
+           </tr>
+          </table>
+      </li>
+    {{/each}}
+    </ul>
+  </section>
+</main>
+</div>
+{{/if}}
+</template>

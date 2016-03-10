@@ -230,8 +230,6 @@ td select {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
 }
 
-
-
 .containercv main {
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
   background: white;
@@ -285,6 +283,20 @@ input[type=number]::-webkit-outer-spin-button {
 #pa td {
   border: 3px solid white;
   padding: 10px;
+}
+
+#pr {
+  width: 100%;
+}
+
+#pr tr {
+  padding: 10px;
+  height: 15px;
+}
+
+#pr td {
+  border: 3px solid #203f60;
+  padding-left: 10px;
 }
 
 #pa input {

@@ -166,7 +166,7 @@ td select {
 
 #textareaform {
   display: inline;
-  height: 100%;
+  height: 180px !important;
   width: 100%;
 }
 

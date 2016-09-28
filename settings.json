@@ -1,0 +1,7 @@
+{
+  "galaxy.meteor.com": { 
+     "env": {
+       "MONGO_URL": "mongodb://philico:philico2012@ds019916.mlab.com:19916/philico" 
+     } 
+   }
+}

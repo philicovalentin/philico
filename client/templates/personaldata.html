@@ -39,11 +39,11 @@
       <input class="submit" type="submit" value="Save preferences">
     </form>
     <br>
-
-   <section class="profile">
-    <h3>PERSONAL INFORMATION</h3>
-      <form class="new-profile">
-        <div class="row">
+<!--Personal Information-->
+ <section class="profile">
+  <h3>PERSONAL INFORMATION</h3>
+  <form class="new-profile">
+    <div class="row">
           <div class="col-sm-6">
             <table width="100%">
             <col width="25%">
@@ -211,14 +211,39 @@
               </tr>
               <tr>
                 <td>Position within Philico</td>
-                <td><input type="text" name="positionPhilico" value="{{positionPhilico}}"></td>
+                <td><select class="options" name="positionPhilico">
+                    <option class="options" value="Consultant">Consultant</option>
+                    <option class="options" value="Senior Consultant">Senior Consultant</option>
+                    <option class="options" value="Manager">Manager</option>
+                    <option class="options" value="Partner">Partner</option>
+                    </select></td>
+                  <td></td>
+                <td>  {{positionPhilico}}</td>
               </tr>
+             <tr>
+                 <td>Subcontractor</td>
+                 <td><select class="options" name="subcontractorcheck">
+                          <option class="options" value="">No</option>
+                          <option class="options" value="(Subcontractor)">Yes</option>
+                     </select>
+                    </td>
+                 <td ></td>
+                 <td>{{subcontractor}}</td>
+             </tr>
             </table>
           </div>
         </div>
         <br>
-
-        <div class="row">
+      <input class="submit" type="submit" value="Save information">
+  </form>  
+</section>
+<br><br>
+      
+<!---->
+<section class="internalinfo">
+    <h3>INTERNAL INFORMATION</h3>
+    <form class="new_internal">
+         <div class="row">
           <div class="col-sm-6">
           <table width="100%">
           <col width="25%">
@@ -398,15 +423,12 @@
           </table>
         </div>
       </div>
-      <br>
-      <input class="submit" type="submit" value="Save information">
-    </form>          
-  </section>
-  
+        <br>
+      <input class="submit" type="submit" value="Save internal information">
+    </form>
+</section>
   <br><br>
-
 <!--           Core competencies             -->
-
   <section class="competencies">
     <h3>CORE COMPETENCIES</h3>
     <form class="new-competency">
@@ -463,10 +485,10 @@
           <td>City</td>
           <td><input type="text" name="projectClientcity" ></td>
         </tr>
-        <tr>
+       <!-- <tr>
           <td>Country</td>
           <td><input type="text" name="projectClientcountry" ></td>
-        </tr>
+        </tr>-->
         </table>
         <br>
         </div>
@@ -515,28 +537,21 @@
               <td><span class="cvbluetext">{{#if projectClient}}{{projectClient}}{{#if projectClientcity}}, {{/if}}{{/if}}{{#if projectClientcity}}{{projectClientcity}}{{/if}}{{#if projectClientcountry}} - {{projectClientcountry}}{{/if}}{{#if projectClientdepartment}} : {{projectClientdepartment}}{{/if}}</span></td>
             </tr>
             {{/if}}
-            {{#if projectTitle}}
-            <tr>
-              <td></td>  
-              <td><strong>{{projectTitle}}</strong></td>
-            </tr>
-            {{/if}}
-            {{#if projectDescriptionHTML}}
-            <tr>
-              <td></td>
-              <td>{{{projectDescriptionHTML}}}</td>
-            </tr>
-            {{/if}}
+                <tr>
+                  <td></td>  
+                  <td><strong>{{projectTitle}}</strong></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>{{{projectDescriptionHTML}}}</td>
+                </tr>
           </table>
         </li>
       {{/each}}
     </ul>
   </section>    
-    
   <br><br>
-
   <!--           Employment history section             -->
-
     <section class="employment">
     <h3>EMPLOYMENT HISTORY</h3>
       <form class="new-employment">

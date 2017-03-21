@@ -17,7 +17,7 @@
         {{/each}}   
         <br>
         {{#if adminrights}}
-          <label class="newemployee"><input type="checkbox" class="checkbutton" name="addnewemployeecheck" checked="{{newemployee}}"> Add subcontractor</label>
+          <label class="newemployee"><input type="checkbox" class="checkbutton" name="addnewemployeecheck" checked="{{newemployee}}"> Add Person</label>
             {{#if addnewemployeecheck}}
               <form class="new-employee">
                 <table class="inputs">
@@ -37,7 +37,7 @@
                   <tr>
                     <td>Status</td>
                     <td><select class="options" name="subcontractor">
-                          <option class="options" value=""></option>
+                          <option class="options" value="">Employee</option>
                           <option class="options" value="(Subcontractor)">(Subcontractor)</option>
                         </select>
                     </td>

@@ -3,8 +3,12 @@
     <div class="container containercv">
       <main class="cv">
           
-      <!--  Header: logo, full name and photo  -->    
+      <!--  Header: logo, full name and photo  -->  
+       
+        <button id="savelatex" class="savecvinformation">Save the data for Latex</button>
         
+        <!--<a href="/tex/{{email}}">Download</a> -->
+          
         <table width="100%">
         <col width="50%">
         <col width="50%">
@@ -16,7 +20,7 @@
           <tr></tr>
           <tr class="cvtitle">
             <td><strong><span class="cvtitle">{{firstNameup}} {{familyNameup}}
-              {{#if subcontractor}}<br>{{subcontractor}}{{/if}}</span></strong><br><span class="cvtitle">Curriculum Vitae</span></td>
+              </span></strong><br><span class="cvtitle">{{positionPhilico}}</span>{{#if subcontractor}} - {{subcontractor}}{{/if}}</td>
             {{#if displayPhoto}}
             <td>{{#if image}}<img align="right" src="{{image}}" height="110" alt="If undisplayed, refresh">{{/if}}</td>
             {{/if}}
@@ -137,7 +141,7 @@
           <tr>
             <td></td>
             <td>{{projectStartdate}} - {{projectEnddate}}</td>
-            <td><span class="cvbluetext">{{#if projectClient}}{{projectClient}}{{#if projectClientcity}}, {{/if}}{{/if}}{{#if projectClientcity}}{{projectClientcity}}{{/if}}{{#if projectClientcountry}} - {{projectClientcountry}}{{/if}}{{#if projectClientdepartment}} : {{projectClientdepartment}}{{/if}}</span></td>
+            <td><span class="cvbluetext">{{#if projectClient}}{{projectClient}}{{#if projectClientcity}}, {{/if}}{{/if}}{{#if projectClientcity}}{{projectClientcity}}{{/if}}{{#if projectClientdepartment}} : {{projectClientdepartment}}{{/if}}</span></td>
           </tr>
           {{/if}}
           {{#if projectTitle}}

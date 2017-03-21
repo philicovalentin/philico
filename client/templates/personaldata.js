@@ -107,6 +107,18 @@ Template.personaldata.events({
     var ahvNumber=event.target.ahvNumber.value;
     var startDatephilico=event.target.startDatephilico.value;
     var positionPhilico=event.target.positionPhilico.value;
+    var subcontract = event.target.subcontractorcheck.value;
+      
+    Meteor.call("addPersonalinfo", firstName, familyName, email, addressStreet, addressNumber, addressZip, addressCity, addressCountry, nationality1, nationality2, nationality3,
+     sourcetaxed, domicilecountryCode, domicilePhone, mobilecountryCode, mobilePhone, birthDate, ahvNumber, startDatephilico, positionPhilico,subcontract,Meteor.user()._id);
+
+    alert("Your personal information has been submitted successfully !!!");
+  },
+    
+"submit .new_internal": function(event){
+    event.preventDefault();
+    console.log("Enter insert internal information");
+    var myDocument1 = Personalinfo.findOne({ createdBy: this.email });
     var marriageDate=event.target.marriageDate.value;
     var spousefamilyName=event.target.spousefamilyName.value;
     var spousefirstName=event.target.spousefirstName.value;
@@ -137,13 +149,12 @@ Template.personaldata.events({
     var EURbankAccountnumber=event.target.EURbankAccountnumber.value;
     var EURbankAccountname=event.target.EURbankAccountname.value;
     
-    Meteor.call("addPersonalinfo", firstName, familyName, email, addressStreet, addressNumber, addressZip, addressCity, addressCountry, nationality1, nationality2, nationality3,
-     sourcetaxed, domicilecountryCode, domicilePhone, mobilecountryCode, mobilePhone, birthDate, ahvNumber, startDatephilico, positionPhilico, marriageDate, spousefamilyName, spousefirstName, child1Name, child1Birthdate, 
+    //to create method to add the internal information
+    Meteor.call("addInternalinfo",this.email, marriageDate, spousefamilyName, spousefirstName, child1Name, child1Birthdate, 
      child2Name, child2Birthdate, child3Name, child3Birthdate, emergency1firstName, emergency1familyName, emergency1Relation, emergency1Phone, emergency2firstName, emergency2familyName, emergency2Relation, emergency2Phone, CHbankName, 
      CHbankCity, CHbankZip, CHbankIban, CHbankAccountnumber, CHbankAccountname, EURbankName, EURbankCity, EURbankZip, EURbankIban, EURbankAccountnumber, EURbankAccountname, Meteor.user()._id);
-
-    alert("Your personal information has been submitted successfully !!!");
-  },
+    alert("Your internal information has been submitted successfully !!!");
+},
 
   'change .myFileInput': function(event, template) {
     event.preventDefault();
@@ -168,7 +179,7 @@ Template.personaldata.events({
             
             location.reload();
             Meteor.call("addimage", email, {"image": "/cfs/files/images/" + fileObj._id}, fileObj._id);
-            alert("Your photo has been submitted successfully !!!")  
+            alert("Your photo has been submitted boooo !!!" + email + " file name " + fileObj._id)  
           }
         })
       }
@@ -195,15 +206,16 @@ Template.personaldata.events({
       var projectEnddate = event.target.projectEnddatemonth.value +"."+ event.target.projectEnddateyear.value};
     var projectClient = event.target.projectClient.value;
     var projectClientcity = event.target.projectClientcity.value;
-    var projectClientcountry = event.target.projectClientcountry.value;
+    //var projectClientcountry = event.target.projectClientcountry.value;
     var projectClientdepartment = event.target.projectClientdepartment.value;
     var projectTitle = event.target.projectTitle.value;
     var projectDescription = event.target.projectDescription.value;
     
-    Meteor.call('addExperience', projectCompany, projectStartdatemonth, projectStartdateyear, projectStartdate, projectEnddate, projectClient, projectClientcity, projectClientcountry, projectClientdepartment, projectTitle, 
-      projectDescription, this.email)
+    Meteor.call('addExperience', projectCompany, projectStartdatemonth, projectStartdateyear, projectStartdate, projectEnddate, projectClient, projectClientcity, projectClientdepartment, projectTitle, projectDescription, this.email);
+    
+    alert("Your Experience has been submitted successfully !!! " + this.email);  
     // Clear form
-    event.target.projectCompany.value="";
+    /*event.target.projectCompany.value="";
     event.target.projectStartdatemonth.value="";
     event.target.projectStartdateyear.value="";
     if (!(event.target.currentprojcheck.checked)) {
@@ -214,7 +226,7 @@ Template.personaldata.events({
     event.target.projectClientcountry.value="";
     event.target.projectClientdepartment.value="";
     event.target.projectTitle.value="";
-    event.target.projectDescription.value="";
+    event.target.projectDescription.value="";*/
   },
 
   "submit .new-employment": function (event) {

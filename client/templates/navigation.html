@@ -1,71 +1,71 @@
 <template name="navigation">
-  <link href='http://fonts.googleapis.com/css?family=Antic+Slab' rel='stylesheet' type='text/css'>
-  <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container-fluid">
-      
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>    
-        <a class="navbar-brand" href="http://philico-cv-app.meteorapp.com"><img class="logo" align="left" src="/images/logo_philico.png" width="100" alt="Philico logo"></a>
-      </div>
-      
-      <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav navbar-right">
-          {{#if currentUser}}
-              <li role="presentation"><a href="/">Home</a>
-              </li>
-                {{#unless adminrights}}
-                  {{#each personalinfo}}
+    <link href='http://fonts.googleapis.com/css?family=Antic+Slab' rel='stylesheet' type='text/css'>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>    
+                <a class="navbar-brand" href="/"><img class="logo" align="left" src="/images/logo_philico.png" width="100" alt="Philico logo"></a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    {{#if currentUser}}
+                    <li role="presentation"><a href="/">Home</a>
+                    </li>
+                    {{#unless adminrights}}
+                    {{#each personalinfo}}
                     <li role="presentation"><a href="/personaldata/{{email}}">My Data</a></li>
-                  {{/each}}
-                {{/unless}}
-            {{#if adminrights}}
-              <li role="presentation" class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees<span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  {{#each adminpersonalinfo}}
-                    <li><a href="/personaldataemployee/{{email}}">{{fullName}}</a></li>
-                  {{/each}}
+                    {{/each}}
+                    {{/unless}}
+                    {{#if adminrights}}
+                    <li role="presentation" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Employees<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            {{#each adminpersonalinfo}}
+                            <li><a href="/personaldataemployee/{{email}}">{{fullName}}</a></li>
+                            {{/each}}
+                        </ul>
+                    </li>
+                    {{/if}}
+                    {{#unless adminrights}}
+                    {{#each personalinfo}}
+                    <li role="presentation"><a href="/projectassessment/{{email}}">My Assessment</a></li>
+                    {{/each}}
+                    {{/unless}}
+                    {{#if adminrights}}
+                    <li role="presentation" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Assessments <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            {{#each adminpersonalinfo}}
+                            <li><a href="/projectassessment/{{email}}">{{fullName}}</a></li>
+                            {{/each}}
+                        </ul>
+                    </li>
+                    {{/if}}
+                    {{#unless adminrights}}
+                    {{#each personalinfo}}
+                    <li role="presentation"><a href="/cv/{{email}}" target="_blank">My Resume</a></li>
+                    {{/each}}
+                    {{/unless}}
+                    {{#if adminrights}}
+                    <li role="presentation" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Resumes <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            {{#each adminpersonalinfo}}
+                            <li><a href="/cv/{{email}}" target="_blank">{{fullName}}</a></li>
+                            {{/each}}
+                        </ul>
+                    </li>
+                    {{/if}}
+                    {{/if}}
+                    <li><p class="loginbutton">{{>loginButtons}}</p></li>
                 </ul>
-              </li>
-            {{/if}}
-            {{#unless adminrights}}
-              {{#each personalinfo}}
-              <li role="presentation"><a href="/projectassessment/{{email}}">My Assessment</a></li>
-              {{/each}}
-            {{/unless}}
-            {{#if adminrights}}
-              <li role="presentation" class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Assessments <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  {{#each adminpersonalinfo}}
-                    <li><a href="/projectassessment/{{email}}">{{fullName}}</a></li>
-                  {{/each}}
-                </ul>
-              </li>
-            {{/if}}
-            {{#unless adminrights}}
-              {{#each personalinfo}}
-                <li role="presentation"><a href="/cv/{{email}}" target="_blank">My Resume</a></li>
-              {{/each}}
-            {{/unless}}
-            {{#if adminrights}}
-              <li role="presentation" class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="/" role="button" aria-haspopup="true" aria-expanded="false">Resumes <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  {{#each adminpersonalinfo}}
-                    <li><a href="/cv/{{email}}" target="_blank">{{fullName}}</a></li>
-                  {{/each}}
-                </ul>
-              </li>
-            {{/if}}
-          {{/if}}
-              <li><p class="loginbutton">{{>loginButtons}}</p></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+            </div>
+        </div>
+    </nav>
 </template>

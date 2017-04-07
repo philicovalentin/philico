@@ -1,62 +1,73 @@
+:root{
+    --text-size:14px; /* font size for text */
+    --border-size:0px; /* size of the border to see */
+    --title-size:21px; /* font size for titles */
+    --blue-color:#004A8D; /* blue */
+    --grey-color:#807E82; /* grey */
+    --title-padding:15px; /* space between title and text */
+    --paragraph-padding:15px; /* space between 2 paragraphes */
+}
+
+
 body {
-  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  background: #fff;
-  color: #203f60; 
-  font-size: 14px;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    background: #fff;
+    color: #203f60; 
+    font-size: 14px;
 }
 
 .navbar {
-  margin-right: 5%;
-  margin-left: 5%;
-  margin-bottom: 0;
-  border-radius: 3px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-  height: 70px;
-  background-color: white;
+    margin-right: 5%;
+    margin-left: 5%;
+    margin-bottom: 0;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    height: 70px;
+    background-color: white;
 }
 
 .navbar-inverse {
-  border: none;
+    border: none;
 }
 
 .navbar-nav {
-  margin: 10px 0 10px 0;
+    margin: 10px 0 10px 0;
 }
 
 .container-fluid {
-  font-family: 'Antic Slab', Arial, Helvetica, sans-serif;
-  background-color: #fff;
+    font-family: 'Antic Slab', Arial, Helvetica, sans-serif;
+    background-color: #fff;
 }
 
 .login-display-name {
-  display: none !important;
+    display: none !important;
 }
 
 .dropdown-menu li a {
-  padding: 15px;
+    padding: 15px;
 }
 
 .navbar li a, .navbar .navbar-brand {
-  color: #203f60 !important;
+    color: #203f60 !important;
 }
 
 .navbar-nav li a:hover, .navbar-nav li.active a {
-  color: #fff !important;
-  background-color: #203f60 !important;
+    color: #fff !important;
+    background-color: #203f60 !important;
 }
 
 .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
-  color: #fff !important;
-  background-color: #203f60;
+    color: #fff !important;
+    background-color: #203f60;
 }
 
 .navbar-toggle{
-  border-color: #fff;
-  background-color: #fff;
+    border-color: #fff;
+    background-color: #fff;
 }
 
 .icon-bar {
-  background-color: #203f60 !important; 
+    background-color: #203f60 !important; 
 }
 
 .navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
@@ -64,185 +75,188 @@ body {
 }
 
 .navbar-inverse .navbar-toggle:hover .icon-bar,.navbar-inverse .navbar-toggle:focus .icon-bar{
-  background-color: #fff !important; 
+    background-color: #fff !important; 
 }
 
 .loginbutton {
-  padding-top: 10px;
-  padding-left: 10px;
+    padding-top: 10px;
+    padding-left: 10px;
 }
 
 .containerpage {
-  width: 90%;
-  margin-right: 5%;
-  margin-left: 5%;
-  margin-top: 90px;
-  background: #fff;
-  border-radius: 3px;
-  padding: 10px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    width: 90%;
+    margin-right: 5%;
+    margin-left: 5%;
+    margin-top: 90px;
+    background: #fff;
+    border-radius: 3px;
+    padding: 10px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
 }
 
 main {
-  background: #f5f5f5;
-  padding: 10px;
+    background: #f5f5f5;
+    padding: 10px;
 }
 
 .checkbutton {
-  height: 15px !important;
-  width: 15px !important;
+    height: 15px !important;
+    width: 15px !important;
 }
 
 .inputs td {
-  padding-right: 5px;
+    padding-right: 5px;
 }
 
 /* --------------------Personal data--------------- */
 
 #perso img {
-  max-height: 100px;
-  max-width: 100% !important;
+    max-height: 100px;
+    max-width: 100% !important;
 }
 
 #myFileInput {
-  color: white;
-  vertical-align: bottom !important;
-  width: default !important;
-  height: 20px;
+    color: white;
+    vertical-align: bottom !important;
+    width: default !important;
+    height: 20px;
 }
 
 .container input {
-  display: inline;
-  margin: 0;
-  color: #203f60;
-  font-size: 14px;
-  height: 40px;
-  position: relative;
+    display: inline;
+    margin: 0;
+    color: #203f60;
+    font-size: 14px;
+    height: 40px;
+    position: relative;
 }
 
 .container tr {
-  height: 50px;
+    height: 50px;
 }
 
 li tr {
-  height: 20px !important;
+    height: 20px !important;
 }
 
 td input {
-  width:100%;
+    width:100%;
 }
 
 td select {
-  width:100%;
+    width:100%;
 }
 
 .container input:focus{
-  border: solid 1px #707070;
-  box-shadow: 0 0 5px 1px #969696;
+    border: solid 1px #707070;
+    box-shadow: 0 0 5px 1px #969696;
 }
 
 .container select {
-  display: inline;
-  margin: 0;
-  font-size: 14px;
-  color: black;
-  height: 40px;
-  vertical-align: bottom;
+    display: inline;
+    margin: 0;
+    font-size: 14px;
+    color: black;
+    height: 40px;
+    vertical-align: bottom;
 }
 
 .photo  {
-  vertical-align: top;
+    vertical-align: top;
 }
 
 #comp {
-  display: inline;
-  height: 180px;
-  width: 90%;
+    display: inline;
+    height: 180px;
+    width: 90%;
 }
 
 .competencies {
-  width: 90%;
+    width: 90%;
 }
 
 #textareaform {
-  display: inline;
-  height: 180px !important;
-  width: 100%;
+    display: inline;
+    height: 180px !important;
+    width: 100%;
 }
 
 #code {
-  width: 100px;
+    width: 100px;
 }
 
 #number {
-  width: 100px;
+    width: 100px;
 }
 
 #month {
-  width: 50px;
+    width: 50px;
 }
 
 #year {
-  width: 50px;
+    width: 50px;
 }
 
 .body-list {
-  margin: 0;
-  padding: 0;
-  background: white;
+    margin: 0;
+    padding: 0;
+    background: white;
 }
 
 .body-list li {
-  position: relative;
-  list-style: none;
-  padding: 10px;
-  color: black;
-  border-bottom: #eee solid 1px;
+    position: relative;
+    list-style: none;
+    padding: 10px;
+    color: black;
+    border-bottom: #eee solid 1px;
 }
 
 #delete {
-  float: right;
-  font-weight: bold;
-  background: none;
-  font-size: 1em;
-  border: none;
-  position: relative;
+    float: right;
+    font-weight: bold;
+    background: none;
+    font-size: 1em;
+    border: none;
+    position: relative;
 }
 
 #clickme {
-  width: 25%;
-  height: 50px;
-  background: red;
-  font-weight: bold;
-  font-size: 18px;
-  color: white !important ;
-  text-align: middle;
+    width: 25%;
+    height: 50px;
+    background: red;
+    font-weight: bold;
+    font-size: 18px;
+    color: white !important ;
+    text-align: middle;
 }
 
 .Paragtitle{
-  font-weight: bold;
+    font-weight: bold;
 }
+
+
 
 /* ------------------- CV ----------------------- */
 .containercv {
-  width: 21cm;
-  border-radius: 3px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    width: 21cm;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
 }
+
 
 .containercv main {
-  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  background: white;
-  position: relative;
-  color: black;
-  font-size: 14px;
-  margin: auto;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    background: white;
+    /*position: relative;*/
+    color: var(--grey-color) !important;
+    font-size: var(--text-size);
+    /*margin: auto;*/
 }
 
-.cv tr {
-  height: 15px;
-  vertical-align: top;
-}
+/*.cv tr {
+height: 15px;
+vertical-align: top;
+}*/
 
 tr {
     height: 35px;
@@ -250,75 +264,496 @@ tr {
 
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+    -webkit-appearance: none; 
+    margin: 0; 
 }
 
 .cvsectionname {
-  display: block; 
-  border-bottom: 2px solid #203f60;
-  font-size: 16px;
-  font-weight: bold;
-  color: #203f60 !important;
-  height: 20px;
-  vertical-align: top;
+    display: block; 
+    border-bottom: 2px solid #203f60;
+    font-size: var(--text-size);
+    font-weight: bold;
+    color: #203f60 !important;
+    height: 20px;
+    vertical-align: top;
 }
 
-.cvtitle { 
-  font-size: 16px;
-  color: #203f60 !important;
-}
+/*.cvtitle { 
+font-size: 16px;
+color: #203f60 !important;
+}*/
 
 .cvbluetext {
-  color: #203f60 !important;
-  font-size: 14px;
-  font-weight: bold;
+    color: #203f60 !important;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 
 #pa {
-  width: 100%;
+    width: 100%;
 }
 
 #pa td {
-  border: 3px solid white;
-  padding: 10px;
+    border: 3px solid white;
+    padding: 10px;
 }
 
-#pr {
-  width: 100%;
-}
+/*#pr {
+width: 100%;
+}*/
 
-#pr tr {
-  padding: 10px;
-  height: 15px;
-}
+/*#pr tr {
+padding: 10px;
+height: 15px;
+}*/
 
-#pr td {
-  border: 3px solid #203f60;
-  padding-left: 10px;
-}
+/*#pr td {
+border: 3px solid #203f60;
+padding-left: 10px;
+}*/
 
 #pa input {
-  width: 100%;
+    width: 100%;
 }
 
 #pa textarea {
-  width: 100%;
-  height: 200px;
+    width: 100%;
+    height: 200px;
 }
 
 .finalrating {
-  align: center;
-  width:20%;
-  text-align: center;
+    align: center;
+    width:20%;
+    text-align: center;
 }
 
 #print {
-  float: right;
-  font-weight: bold;
-  background: none;
-  font-size: 1em;
-  border: none;
-  position: relative;
+    float: right;
+    font-weight: bold;
+    background: none;
+    font-size: 1em;
+    border: none;
+    position: relative;
+}
+/* New classes for CV with divs  */
+
+/*  display only on screen */
+@media screen{
+
+    /* ---------- header classes ------------*/
+    .cvHeader {
+        height: 4cm;
+        color: var(--blue-color) !important;
+        display: table;
+        table-layout: fixed;
+        border: var(--border-size) solid black;
+    }
+
+
+    .leftHeader {
+        padding-top: 0px;
+        margin-top: 0px;
+        width: 30%;
+        font-size: var(--title-size);
+        color: var(--blue-color) !important;
+        display: table-cell;
+        font-weight: bold;
+        border: var(--border-size) solid black;
+    }
+
+
+    .rightHeader {
+        width: 20%;
+        display: table-cell;
+        border: var(--border-size) solid black;
+    }
+
+
+    /* ------------- body classes ------------ */
+
+    .sectionWithTitle {
+        page-break-inside: avoid;
+        margin-top: var(--title-padding);
+        font-size: var(--text-size);
+        border: var(--border-size) solid black;
+        display: table;
+        table-layout: fixed;
+    }
+
+
+    .sectionNoTitle {
+        page-break-inside: avoid;
+        font-size: var(--text-size);
+        border: var(--border-size) solid black;
+        display: table;
+        table-layout: fixed;
+        margin-top: 0px;
+    }
+
+
+    .sectionTitle {
+        width: 100%;
+        display: table-cell;
+        border: var(--border-size) solid black;
+        font-size: var(--title-size);
+        color: var(--blue-color) !important;
+        font-weight: bold;
+        border-bottom: 3px solid var(--blue-color) !important;
+    }
+
+
+    .emptySection {
+        border-bottom: 3px solid var(--blue-color) !important;
+    }
+
+    .projectRow {
+        display: table-row;
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+        border: var(--border-size) solid black;
+        color: var(--grey-color) !important;
+        font-size: var(--text-size);
+    }
+    /*---------------------------PERSONNAL INFO-------------------------*/
+
+    .infoTitle {
+        width: 40%;
+        display: table-cell;
+        color: var(--blue-color) !important;
+        padding-bottom: 0px;
+        padding-top: var(--paragraph-padding);
+        font-size: var(--text-size);
+    }
+
+
+    .infoContent {
+        width: 60%;
+        display: table-cell;
+        border: var(--border-size) solid black;
+        color: var(--grey-color) !important;
+        font-size: var(--text-size);
+    }
+
+
+    /*--------------------CORE COMPETENCIES-----------------------------*/
+
+    .coreTitle {
+        width: 40%;
+        display: table-cell;
+        border: var(--border-size) solid black;
+        color: var(--blue-color) !important;
+        font-weight: bold;
+        padding-bottom: 0px;
+        padding-top: var(--paragraph-padding);
+        font-size: var(--text-size);
+    }
+
+    .coreContent {
+        width: 60%;
+        display: table-cell;
+        border: var(--border-size) solid black;
+        color: var(--grey-color) !important;
+        font-size: var(--text-size);
+    }
+
+    /*---------------------------PROJECT EXP-----------------------------*/
+
+    .companyTitle {
+        width: 40%;
+        display: table-cell;
+        border: var(--border-size) solid black;
+        color: var(--blue-color) !important;
+        font-weight: bold;
+        padding-bottom: 0px;
+        padding-top: var(--paragraph-padding);
+        font-size: var(--text-size);
+    }
+
+    .emptyCompany {
+        width: 60%;
+        display: table-cell;
+        border: var(--border-size) solid black;
+    }
+
+    .projectDate {
+        width: 40%;
+        display: table-cell;
+        border: var(--border-size) solid black;
+        color: var(--grey-color) !important;
+        font-size: var(--text-size);
+    }
+
+    .CVprojectDescription {
+        width: 60%;
+        display: table-cell;
+        border: var(--border-size) solid black;
+        color: var(--grey-color) !important;
+        font-size: var(--text-size);
+    }
+    /*---------------EMPLOYEMENT HISTORY---------------*/
+
+    .empDate {
+        width: 40%;
+        display: table-cell;
+        border: var(--border-size) solid black;
+        color: var(--grey-color) !important;
+        padding-bottom: 0px;
+        padding-top: var(--paragraph-padding);
+        font-size: var(--text-size);
+    }
+
+    .empContent {
+        width: 60%;
+        display: table-cell;
+        border: var(--border-size) solid black;
+        color: var(--grey-color) !important;
+        font-size: var(--text-size);
+    }
+
+    /*-------------------DEGREES--------------*/
+
+    .CVdegreeDate {
+        width: 40%;
+        display: table-cell;
+        border: var(--border-size) solid black;
+        color: var(--grey-color) !important;
+        padding-top: var(--paragraph-padding);
+        padding-bottom: 0px;
+        font-size: var(--text-size);
+    }
+
+    .degreeContent {
+        width: 60%;
+        display: table-cell;
+        border: var(--border-size) solid black;
+        color: var(--grey-color) !important;
+        font-size: var(--text-size);
+    }
+
+    /*-----------------LANGUAGES---------------*/
+
+    .CVlanguage {
+        width: 40%;
+        display: table-cell;
+        border: var(--border-size) solid black;
+        color: var(--grey-color) !important;
+        padding-top: var(--paragraph-padding);
+        padding-bottom: 0px;
+        font-size: var(--text-size);
+    }
+
+    .languageSkills {
+        width: 60%;
+        display: table-cell;
+        border: var(--border-size) solid black;
+        color: var(--grey-color) !important;
+        font-size: var(--text-size);
+    }
+
+    h1 {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        color: var(--blue-color) !important;
+        font-weight: bold;
+        font-size: var(--text-size);
+    }
+
+
+    h2 {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        color: var(--grey-color) !important;
+        font-weight: bold;
+        font-size: var(--text-size);
+    }
+
+    .CVp {
+        margin-top: 0px;
+        color: var(--grey-color) !important;
+        margin-bottom: 0px;
+        font-size: var(--text-size);
+        border: var(--border-size) solid black;
+    }
+}
+
+/*-----------     media print ------------------*/
+@media print{
+    .cvHeader {
+        height: 4cm;
+        color: var(--blue-color) !important;
+        display: table;
+        table-layout: fixed;
+    }
+    .leftHeader {
+        padding-top: 0px;
+        width: 30%;
+        font-size: var(--title-size);
+        color: var(--blue-color) !important;
+        display: table-cell;
+        font-weight: bold;
+    }
+    .rightHeader {
+        width: 20%;
+        display: table-cell;
+    }
+    .sectionWithTitle {
+        page-break-inside: avoid;
+        margin-top: var(--title-padding);
+        font-size: var(--text-size);
+        display: table;
+        table-layout: fixed;
+    }
+    .sectionNoTitle {
+        page-break-inside: avoid;
+        font-size: var(--text-size);
+        display: table;
+        table-layout: fixed;
+        margin-top: 0px;
+    }
+    .sectionTitle {
+        width: 100%;
+        display: table-cell;
+        font-size: var(--title-size);
+        color: var(--blue-color) !important;
+        font-weight: bold;
+        border-bottom: 3px solid var(--blue-color) !important;
+    }
+    .emptySection {
+        border-bottom: 3px solid var(--blue-color) !important;
+    }
+    .projectRow {
+        display: table-row;
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+        color: var(--grey-color) !important;
+        font-size: var(--text-size);
+    }
+    .infoTitle {
+        width: 40%;
+        display: table-cell;
+        color: var(--blue-color) !important;
+        padding-bottom: 0px;
+        padding-top: var(--paragraph-padding);
+        font-size: var(--text-size);
+    }
+    .infoContent {
+        width: 60%;
+        display: table-cell;
+        color: var(--grey-color) !important;
+        font-size: var(--text-size);
+    }
+    .coreTitle {
+        width: 40%;
+        display: table-cell;
+        color: var(--blue-color) !important;
+        font-weight: bold;
+        padding-bottom: 0px;
+        padding-top: var(--paragraph-padding);
+        font-size: var(--text-size);
+    }
+    .coreContent {
+        width: 60%;
+        display: table-cell;
+        color: var(--grey-color) !important;
+        font-size: var(--text-size);
+    }
+    .companyTitle {
+        width: 40%;
+        display: table-cell;
+        color: var(--blue-color) !important;
+        font-weight: bold;
+        padding-bottom: 0px;
+        padding-top: var(--paragraph-padding);
+        font-size: var(--text-size);
+    }
+    .emptyCompany {
+        width: 60%;
+        display: table-cell;
+    }
+    .projectDate {
+        width: 40%;
+        display: table-cell;
+        color: var(--grey-color) !important;
+        font-size: var(--text-size);
+    }
+    .CVprojectDescription {
+        width: 60%;
+        display: table-cell;
+        color: var(--grey-color) !important;
+        font-size: var(--text-size);
+    }
+    .empDate {
+        width: 40%;
+        display: table-cell;
+        color: var(--grey-color) !important;
+        padding-bottom: 0px;
+        padding-top: var(--paragraph-padding);
+        font-size: var(--text-size);
+    }
+    .containercv main {
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        background: white;
+        /*position: relative;*/
+        color: var(--grey-color) !important;
+        font-size: var(--text-size);
+        /*margin: auto;*/
+        -webkit-print-color-adjust: exact;
+    }
+    .CVp {
+        margin-top: 0px;
+        color: var(--grey-color) !important;
+        margin-bottom: 0px;
+        font-size: var(--text-size);
+    }
+    h2 {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        color: var(--grey-color) !important;
+        font-weight: bold;
+        font-size: var(--text-size);
+    }
+    h1 {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        color: var(--blue-color) !important;
+        font-weight: bold;
+        font-size: var(--text-size);
+    }
+    .languageSkills {
+        width: 60%;
+        display: table-cell;
+        color: var(--grey-color) !important;
+        font-size: var(--text-size);
+    }
+    .CVlanguage {
+        width: 40%;
+        display: table-cell;
+        color: var(--grey-color) !important;
+        padding-top: var(--paragraph-padding);
+        padding-bottom: 0px;
+        font-size: var(--text-size);
+    }
+    .degreeContent {
+        width: 60%;
+        display: table-cell;
+        color: var(--grey-color) !important;
+        font-size: var(--text-size);
+    }
+    .CVdegreeDate {
+        width: 40%;
+        display: table-cell;
+        color: var(--grey-color) !important;
+        padding-top: var(--paragraph-padding);
+        padding-bottom: 0px;
+        font-size: var(--text-size);
+    }
+    .empContent {
+        width: 60%;
+        display: table-cell;
+        color: var(--grey-color) !important;
+        font-size: var(--text-size);
+    }
 }

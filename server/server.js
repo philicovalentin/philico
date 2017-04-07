@@ -4,14 +4,14 @@ Meteor.publish('personalinfo', function() {
         idUser==="fabian.knecht@philico.com" || 
         idUser==="alex.mueller@philico.com" || 
         idUser==="fabien.roth@philico.com" || 
+        idUser==="marc-antoine.pallaud@philico.com" ||
         idUser==="valentin.mercier@philico.com")
       {return Personalinfo.find()} else {return Personalinfo.find({createdBy:idUser})}
   });
   
   Meteor.publish("images", function() { 
     idAdmin=this.userId;
-    if (idAdmin==="walid.benhammoud@philico.com" || idAdmin==="fabian.knecht@philico.com" || idAdmin==="alex.mueller@philico.com" || idAdmin==="fabien.roth@philico.com"|| 
-        idUser==="valentin.mercier@philico.com")
+    if (idAdmin==="walid.benhammoud@philico.com" || idAdmin==="fabian.knecht@philico.com" || idAdmin==="alex.mueller@philico.com" || idAdmin==="fabien.roth@philico.com"|| idAdmin==="marc-antoine.pallaud@philico.com"|| idAdmin==="valentin.mercier@philico.com")
       {return Images.find({})} else {return Images.find({owner:idAdmin})}
   });
   
@@ -35,7 +35,7 @@ Meteor.publish('personalinfo', function() {
   //If the google service exists 
   if ((service = user.services) !== undefined ? service.google : undefined) { 
   user._id = user.services.google.email;
-  user.emails = [ { address: user.services.google.email, verified: (user.services.google.email==="walid.benhammoud@philico.com") || (user.services.google.email==="fabian.knecht@philico.com") || (user.services.google.email==="fabien.roth@philico.com") || (user.services.google.email==="alex.mueller@philico.com")|| (user.services.google.email==="valentin.mercier@philico.com")} ]; 
+  user.emails = [ { address: user.services.google.email, verified: (user.services.google.email==="walid.benhammoud@philico.com") || (user.services.google.email==="fabian.knecht@philico.com") || (user.services.google.email==="fabien.roth@philico.com") || (user.services.google.email==="alex.mueller@philico.com")|| (user.services.google.email==="marc-antoine.pallaud@philico.com")|| (user.services.google.email==="valentin.mercier@philico.com")} ]; 
   user.profile.firstName = user.services.google.given_name; 
   user.profile.lastName = user.services.google.family_name;
   user.profile.profile_picture = user.services.google.picture;

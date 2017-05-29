@@ -2,13 +2,26 @@
     --text-size:14px; /* font size for text */
     --border-size:0px; /* size of the border to see */
     --title-size:21px; /* font size for titles */
-    --blue-color:#004A8D; /* blue */
+    --blue-color:#01416F; /* blue */
     --grey-color:#807E82; /* grey */
     --title-padding:15px; /* space between title and text */
     --paragraph-padding:15px; /* space between 2 paragraphes */
 }
 
 
+/*@page
+{
+    margin: 19.1mm 17.8mm 19.1mm 17.8mm;
+}*/
+
+@font-face{
+    font-family: philicoFont;
+    src: url(FRABK.TTF);
+}
+@font-face{
+    font-family: philicoFontBold;
+    src: url(FranklinGothicMedium.ttf);
+}
 body {
     font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
     background: #fff;
@@ -91,7 +104,7 @@ body {
     background: #fff;
     border-radius: 3px;
     padding: 10px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    /*box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);*/
 }
 
 main {
@@ -128,7 +141,6 @@ main {
     color: #203f60;
     font-size: 14px;
     height: 40px;
-    position: relative;
 }
 
 .container tr {
@@ -153,7 +165,6 @@ td select {
 }
 
 .container select {
-    display: inline;
     margin: 0;
     font-size: 14px;
     color: black;
@@ -204,7 +215,6 @@ td select {
 }
 
 .body-list li {
-    position: relative;
     list-style: none;
     padding: 10px;
     color: black;
@@ -217,7 +227,14 @@ td select {
     background: none;
     font-size: 1em;
     border: none;
-    position: relative;
+}
+
+#plus {
+    float: right;
+    font-weight: bold;
+    background: none;
+    font-size: 1em;
+    border: none;
 }
 
 #clickme {
@@ -240,14 +257,13 @@ td select {
 .containercv {
     width: 21cm;
     border-radius: 3px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    /*box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);*/
 }
 
 
 .containercv main {
-    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-family: philicoFont,Helvetica Neue, Helvetica, Arial, sans-serif;
     background: white;
-    /*position: relative;*/
     color: var(--grey-color) !important;
     font-size: var(--text-size);
     /*margin: auto;*/
@@ -269,9 +285,10 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .cvsectionname {
-    display: block; 
-    border-bottom: 2px solid #203f60;
+    /*display: block; */
+    border-bottom: 1.5pt solid #203f60;
     font-size: var(--text-size);
+    font-family: philicoFontBold, Helvetica Neue, Helvetica, Arial, sans-serif;
     font-weight: bold;
     color: #203f60 !important;
     height: 20px;
@@ -286,6 +303,7 @@ color: #203f60 !important;
 .cvbluetext {
     color: #203f60 !important;
     font-size: 14px;
+    font-family: philicoFontBold, Helvetica Neue, Helvetica, Arial, sans-serif;
     font-weight: bold;
 }
 
@@ -328,18 +346,16 @@ padding-left: 10px;
     text-align: center;
 }
 
-#print {
-    float: right;
+/*#print {
     font-weight: bold;
     background: none;
     font-size: 1em;
     border: none;
-    position: relative;
-}
+}*/
 /* New classes for CV with divs  */
 
 /*  display only on screen */
-@media screen{
+@media all{
 
     /* ---------- header classes ------------*/
     .cvHeader {
@@ -353,6 +369,7 @@ padding-left: 10px;
 
     .leftHeader {
         padding-top: 0px;
+        font-family: philicoFontBold, Helvetica Neue, Helvetica, Arial, sans-serif;
         margin-top: 0px;
         width: 30%;
         font-size: var(--title-size);
@@ -373,7 +390,6 @@ padding-left: 10px;
     /* ------------- body classes ------------ */
 
     .sectionWithTitle {
-        page-break-inside: avoid;
         margin-top: var(--title-padding);
         font-size: var(--text-size);
         border: var(--border-size) solid black;
@@ -383,7 +399,14 @@ padding-left: 10px;
 
 
     .sectionNoTitle {
-        page-break-inside: avoid;
+        font-size: var(--text-size);
+        border: var(--border-size) solid black;
+        display: table;
+        table-layout: fixed;
+        margin-top: 0px;
+    }
+    
+    .sectionProjectNoTitle {
         font-size: var(--text-size);
         border: var(--border-size) solid black;
         display: table;
@@ -393,18 +416,19 @@ padding-left: 10px;
 
 
     .sectionTitle {
+        font-family: philicoFontBold, Helvetica Neue, Helvetica, Arial, sans-serif;
         width: 100%;
         display: table-cell;
         border: var(--border-size) solid black;
         font-size: var(--title-size);
         color: var(--blue-color) !important;
         font-weight: bold;
-        border-bottom: 3px solid var(--blue-color) !important;
+        border-bottom: 1.5pt solid var(--blue-color) !important;
     }
 
 
     .emptySection {
-        border-bottom: 3px solid var(--blue-color) !important;
+        border-bottom: 1.5pt solid var(--blue-color) !important;
     }
 
     .projectRow {
@@ -416,6 +440,21 @@ padding-left: 10px;
         color: var(--grey-color) !important;
         font-size: var(--text-size);
     }
+    
+    .projectRowExp {
+        page-break-inside: avoid;
+        display: table-row;
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+        border: var(--border-size) solid black;
+        color: var(--grey-color) !important;
+        font-size: var(--text-size);
+    }
+    .avoidReturnExp {
+        /*border: 2px solid black;*/
+        /*page-break-inside: avoid;*/
+    }
     /*---------------------------PERSONNAL INFO-------------------------*/
 
     .infoTitle {
@@ -423,7 +462,7 @@ padding-left: 10px;
         display: table-cell;
         color: var(--blue-color) !important;
         padding-bottom: 0px;
-        padding-top: var(--paragraph-padding);
+        padding-top: var(--info-padding);
         font-size: var(--text-size);
     }
 
@@ -440,6 +479,7 @@ padding-left: 10px;
     /*--------------------CORE COMPETENCIES-----------------------------*/
 
     .coreTitle {
+        font-family: philicoFontBold, Helvetica Neue, Helvetica, Arial, sans-serif;
         width: 40%;
         display: table-cell;
         border: var(--border-size) solid black;
@@ -456,11 +496,13 @@ padding-left: 10px;
         border: var(--border-size) solid black;
         color: var(--grey-color) !important;
         font-size: var(--text-size);
+        text-align: justify;
     }
 
     /*---------------------------PROJECT EXP-----------------------------*/
 
     .companyTitle {
+        font-family: philicoFontBold, Helvetica Neue, Helvetica, Arial, sans-serif;
         width: 40%;
         display: table-cell;
         border: var(--border-size) solid black;
@@ -486,8 +528,17 @@ padding-left: 10px;
     }
 
     .CVprojectDescription {
+        /*page-break-inside: avoid;*/
         width: 60%;
-        display: table-cell;
+        display: table-row;
+        border: var(--border-size) solid black;
+        color: var(--grey-color) !important;
+        font-size: var(--text-size);
+    }
+    .CVprojectDescriptionTitle {
+        page-break-inside: avoid;
+        width: 60%;
+        display: table-row;
         border: var(--border-size) solid black;
         color: var(--grey-color) !important;
         font-size: var(--text-size);
@@ -519,7 +570,7 @@ padding-left: 10px;
         display: table-cell;
         border: var(--border-size) solid black;
         color: var(--grey-color) !important;
-        padding-top: var(--paragraph-padding);
+        padding-top: var(--info-padding);
         padding-bottom: 0px;
         font-size: var(--text-size);
     }
@@ -539,7 +590,7 @@ padding-left: 10px;
         display: table-cell;
         border: var(--border-size) solid black;
         color: var(--grey-color) !important;
-        padding-top: var(--paragraph-padding);
+        padding-top: var(--info-padding);
         padding-bottom: 0px;
         font-size: var(--text-size);
     }
@@ -553,6 +604,7 @@ padding-left: 10px;
     }
 
     h1 {
+        font-family: philicoFontBold, Helvetica Neue, Helvetica, Arial, sans-serif;
         margin-top: 0px;
         margin-bottom: 0px;
         color: var(--blue-color) !important;
@@ -562,6 +614,7 @@ padding-left: 10px;
 
 
     h2 {
+        font-family: philicoFontBold, Helvetica Neue, Helvetica, Arial, sans-serif;
         margin-top: 0px;
         margin-bottom: 0px;
         color: var(--grey-color) !important;
@@ -570,190 +623,11 @@ padding-left: 10px;
     }
 
     .CVp {
+       font-family: philicoFont, Helvetica Neue, Helvetica, Arial, sans-serif;
         margin-top: 0px;
         color: var(--grey-color) !important;
         margin-bottom: 0px;
         font-size: var(--text-size);
-        border: var(--border-size) solid black;
-    }
-}
-
-/*-----------     media print ------------------*/
-@media print{
-    .cvHeader {
-        height: 4cm;
-        color: var(--blue-color) !important;
-        display: table;
-        table-layout: fixed;
-    }
-    .leftHeader {
-        padding-top: 0px;
-        width: 30%;
-        font-size: var(--title-size);
-        color: var(--blue-color) !important;
-        display: table-cell;
-        font-weight: bold;
-    }
-    .rightHeader {
-        width: 20%;
-        display: table-cell;
-    }
-    .sectionWithTitle {
-        page-break-inside: avoid;
-        margin-top: var(--title-padding);
-        font-size: var(--text-size);
-        display: table;
-        table-layout: fixed;
-    }
-    .sectionNoTitle {
-        page-break-inside: avoid;
-        font-size: var(--text-size);
-        display: table;
-        table-layout: fixed;
-        margin-top: 0px;
-    }
-    .sectionTitle {
-        width: 100%;
-        display: table-cell;
-        font-size: var(--title-size);
-        color: var(--blue-color) !important;
-        font-weight: bold;
-        border-bottom: 3px solid var(--blue-color) !important;
-    }
-    .emptySection {
-        border-bottom: 3px solid var(--blue-color) !important;
-    }
-    .projectRow {
-        display: table-row;
-        display: table;
-        table-layout: fixed;
-        width: 100%;
-        color: var(--grey-color) !important;
-        font-size: var(--text-size);
-    }
-    .infoTitle {
-        width: 40%;
-        display: table-cell;
-        color: var(--blue-color) !important;
-        padding-bottom: 0px;
-        padding-top: var(--paragraph-padding);
-        font-size: var(--text-size);
-    }
-    .infoContent {
-        width: 60%;
-        display: table-cell;
-        color: var(--grey-color) !important;
-        font-size: var(--text-size);
-    }
-    .coreTitle {
-        width: 40%;
-        display: table-cell;
-        color: var(--blue-color) !important;
-        font-weight: bold;
-        padding-bottom: 0px;
-        padding-top: var(--paragraph-padding);
-        font-size: var(--text-size);
-    }
-    .coreContent {
-        width: 60%;
-        display: table-cell;
-        color: var(--grey-color) !important;
-        font-size: var(--text-size);
-    }
-    .companyTitle {
-        width: 40%;
-        display: table-cell;
-        color: var(--blue-color) !important;
-        font-weight: bold;
-        padding-bottom: 0px;
-        padding-top: var(--paragraph-padding);
-        font-size: var(--text-size);
-    }
-    .emptyCompany {
-        width: 60%;
-        display: table-cell;
-    }
-    .projectDate {
-        width: 40%;
-        display: table-cell;
-        color: var(--grey-color) !important;
-        font-size: var(--text-size);
-    }
-    .CVprojectDescription {
-        width: 60%;
-        display: table-cell;
-        color: var(--grey-color) !important;
-        font-size: var(--text-size);
-    }
-    .empDate {
-        width: 40%;
-        display: table-cell;
-        color: var(--grey-color) !important;
-        padding-bottom: 0px;
-        padding-top: var(--paragraph-padding);
-        font-size: var(--text-size);
-    }
-    .containercv main {
-        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-        background: white;
-        /*position: relative;*/
-        color: var(--grey-color) !important;
-        font-size: var(--text-size);
-        /*margin: auto;*/
-        -webkit-print-color-adjust: exact;
-    }
-    .CVp {
-        margin-top: 0px;
-        color: var(--grey-color) !important;
-        margin-bottom: 0px;
-        font-size: var(--text-size);
-    }
-    h2 {
-        margin-top: 0px;
-        margin-bottom: 0px;
-        color: var(--grey-color) !important;
-        font-weight: bold;
-        font-size: var(--text-size);
-    }
-    h1 {
-        margin-top: 0px;
-        margin-bottom: 0px;
-        color: var(--blue-color) !important;
-        font-weight: bold;
-        font-size: var(--text-size);
-    }
-    .languageSkills {
-        width: 60%;
-        display: table-cell;
-        color: var(--grey-color) !important;
-        font-size: var(--text-size);
-    }
-    .CVlanguage {
-        width: 40%;
-        display: table-cell;
-        color: var(--grey-color) !important;
-        padding-top: var(--paragraph-padding);
-        padding-bottom: 0px;
-        font-size: var(--text-size);
-    }
-    .degreeContent {
-        width: 60%;
-        display: table-cell;
-        color: var(--grey-color) !important;
-        font-size: var(--text-size);
-    }
-    .CVdegreeDate {
-        width: 40%;
-        display: table-cell;
-        color: var(--grey-color) !important;
-        padding-top: var(--paragraph-padding);
-        padding-bottom: 0px;
-        font-size: var(--text-size);
-    }
-    .empContent {
-        width: 60%;
-        display: table-cell;
-        color: var(--grey-color) !important;
-        font-size: var(--text-size);
+        text-align: justify;
     }
 }

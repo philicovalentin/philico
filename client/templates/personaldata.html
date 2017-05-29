@@ -3,42 +3,17 @@
     {{#if currentUser}}
     <div class="container containerpage">
         <main>
-            <h3>CV DISPLAY</h3>
-            <form class="displayDetails">       
-                <table width="50%">
-                    <col width="25%">
-                    <col width="40%">
-                    <col width="35%">
-                    <tr>
-                        <td>Display photo in CV</td>
-                        <td><select class="options" name="displayPhoto">
-                            <option class="options" value="yes">Yes</option>
-                            <option class="options" value="no">No</option>
-                            </select>
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Display address in CV</td>
-                        <td><select class="options" name="displayAddress">
-                            <option class="options" value="yes">Yes</option>
-                            <option class="options" value="no">No</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Display contact in CV</td>
-                        <td><select class="options" name="displayContact">
-                            <option class="options" value="yes">Yes</option>
-                            <option class="options" value="no">No</option>
-                            </select>
-                        </td>
-                    </tr>
-                </table>
+            <div>
+                <h3>PICTURE</h3>
+                <h2>Please select a profil picture less than 1.5 MB</h2>
+                <input type="file" accept="image/*" name="uploadImage" class="imageUploadClick" title=" " style="color: transparent;">
+                {{#if picture}}
                 <br>
-                <input class="submit" type="submit" value="Save preferences">
-            </form>
-            <br>
+                {{namePicture}} <!-- display the name of the file -->
+                <img style="display:block;border-radius: {{roundBorder}}px;" height="140" src="data:image/jpeg;base64,{{getImage}}" alt="If undisplayed, refresh">
+                {{/if}}
+            </div>
+
             <!--Personal Information-->
             <section class="profile">
                 <h3>PERSONAL INFORMATION</h3>
@@ -52,19 +27,19 @@
                                 <col width="30%">
                                 <tr>
                                     <td>First name</td>
-                                    <td><input type="text" name="firstName" value="{{firstName}}"></td>
+                                    <td><input type="text" name="firstName" value="{{firstName}}" required></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr>
                                     <td>Family name</td>
-                                    <td><input type="text" name="familyName" value="{{familyName}}"></td>
+                                    <td><input type="text" name="familyName" value="{{familyName}}" required></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr>
                                     <td>Email</td>
-                                    <td><input type="text" name="email" value="{{email}}"></td>
+                                    <td><input type="text" name="email" value="{{email}}" required></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
@@ -77,17 +52,11 @@
                                 <col width="5%">
                                 <col width="30%">
                                 <tr>
-                                    <td>Photo</td>
-                                    <td rowspan="2">{{#if image}}<img style="display:block;" width="100%" src="{{image}}" alt="If undisplayed, refresh">{{/if}}</td>
-                                    <td></td>
-                                    <td></td>
+
                                 </tr>
                                 <tr></tr>
                                 <tr>
-                                    <td>Upload your photo</td>
-                                    <td><input type="file" name="photo" class="myFileInput" id="myFileInput"></td>
-                                    <td></td>
-                                    <td></td>
+
                                 </tr>
                             </table>
                         </div>
@@ -102,25 +71,25 @@
                                 <col width="30%">
                                 <tr>
                                     <td>Address</td>
-                                    <td><input type="text" name="addressStreet" value="{{addressStreet}}" placeholder="Street"></td>
+                                    <td><input type="text" name="addressStreet" value="{{addressStreet}}" placeholder="Street" required></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td><input type="text" name="addressNumber" value="{{addressNumber}}" placeholder="Number"></td>
+                                    <td><input type="text" name="addressNumber" value="{{addressNumber}}" placeholder="Number" required></td>
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td><input type="number" name="addressZip" value="{{addressZip}}" placeholder="ZIP"></td>
+                                    <td><input type="number" name="addressZip" value="{{addressZip}}" placeholder="ZIP" required></td>
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td><input type="text" name="addressCity" value="{{addressCity}}" placeholder="City"></td>
+                                    <td><input type="text" name="addressCity" value="{{addressCity}}" placeholder="City" required></td>
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td><input type="text" name="addressCountry" value="{{addressCountry}}" placeholder="Country"></td>
+                                    <td><input type="text" name="addressCountry" value="{{addressCountry}}" placeholder="Country" required></td>
                                 </tr>
                                 <tr>
                                     <td>Nationalities</td>
@@ -153,49 +122,38 @@
                                 <col width="30%">
                                 <tr>
                                     <td>Source tax</td>
-                                    <td><select class="options" name="sourcetaxed">
-                                        {{#if sourcetaxedIsunknown}}
-                                        <option class="options" value="?" selected>?</option>
-                                        {{else}}
-                                        <option class="options" value="?">?</option>
-                                        {{/if}}
-                                        {{#if sourcetaxedIsyes}}
-                                        <option class="options" value="Yes" selected>Yes</option>
-                                        {{else}}
+                                    <td><select value="{{sourcetaxed}}" name="sourcetaxed">
+                                        <option selected disabled value={{sourcetaxed}}>Choose here</option>
                                         <option class="options" value="Yes">Yes</option>
-                                        {{/if}}
-                                        {{#if sourcetaxedIsno}}
-                                        <option class="options" value="No" selected>No</option>
-                                        {{else}}
                                         <option class="options" value="No">No</option>
-                                        {{/if}}
                                         </select></td>
                                     <td></td>
                                     <td>{{sourcetaxed}}</td>
                                 </tr>
                                 <tr>
                                     <td>Domicile phone</td>
-                                    <td><select name="domicilecountryCode">{{>phonecode}}</select></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td><input type="number" pattern='\d{9}' name="domicilePhone" value="{{domicilePhone}}"></td>
+                                    <td><select name="domicilecountryCode" value="{{domicilecountryCode}}">{{>phonecode}}</select></td>
                                     {{#if domicilePhone}}
                                     <td></td>
-                                    <td>{{domicilecountryCode}}{{domicilePhone}}</td>
+                                    <td>{{domicilecountryCode}}</td>
                                     {{/if}}
+                                </tr>
+                                <tr>
+                                    <td style="font-size:x-small;">(Without 0 nor country code)</td>
+                                    <td><input type="number" pattern='\d{9}' name="domicilePhone" value="{{domicilePhone}}"></td>
                                 </tr>
                                 <tr>
                                     <td>Mobile phone</td>
-                                    <td><select name="mobilecountryCode">{{>phonecode}}</select></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td><input type="number" pattern="\d9" name="mobilePhone" value="{{mobilePhone}}"></td>
+                                    <td><select name="mobilecountryCode" value="{{mobilecountryCode}}">{{>phonecode}}</select></td>
                                     {{#if mobilePhone}}
                                     <td></td>
-                                    <td>{{mobilecountryCode}}{{mobilePhone}}</td>
+                                    <td>{{mobilecountryCode}}</td>
                                     {{/if}}
+                                </tr>
+                                <tr>
+                                    <td style="font-size:x-small;">(Without 0 nor country code)</td>
+                                    <td><input type="number" pattern="\d9" name="mobilePhone" value="{{mobilePhone}}"></td>
+
                                 </tr>
                                 <tr>
                                     <td>Date of birth</td>
@@ -212,6 +170,7 @@
                                 <tr>
                                     <td>Position within Philico</td>
                                     <td><select class="options" name="positionPhilico">
+                                        <option selected disabled value={{positionPhilico}}>Choose here</option>
                                         <option class="options" value="Junior Consultant">Junior Consultant</option>
                                         <option class="options" value="Consultant">Consultant</option>
                                         <option class="options" value="Senior Consultant">Senior Consultant</option>
@@ -224,23 +183,25 @@
                                 <tr>
                                     <td>Subcontractor</td>
                                     <td><select class="options" name="subcontractorcheck">
+                                        <option selected disabled value="{{subcontractor}}">Choose here</option>
                                         <option class="options" value="">No</option>
-                                        <option class="options" value="(Subcontractor)">Yes</option>
+                                        <option class="options" value="Subcontractor">Yes</option>
                                         </select>
                                     </td>
                                     <td ></td>
-                                    <td>{{subcontractor}}</td>
+                                    <td>{{#if subcontractor}}Yes{{/if}}{{#unless subcontractor}}No{{/unless}} </td>
                                 </tr>
                             </table>
                         </div>
                     </div>
                     <br>
                     <input class="submit" type="submit" value="Save information">
+                    {{#if savedInfo}}&#10004;{{/if}} <!-- display a tick if the form is saved -->
                 </form>  
             </section>
             <br><br>
 
-            <!---->
+            <!--        INTERNAL INFORMATION                   -->
             <section class="internalinfo">
                 <h3>INTERNAL INFORMATION</h3>
                 <form class="new_internal">
@@ -322,14 +283,15 @@
                                 <tr>
                                     <td>Person 1 phone</td>
                                     <td><select name="emergency1countryCode">{{>phonecode}}</select></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td><input type="number" pattern="\d9" name="emergency1Phone" value="{{emergency1Phone}}" placeholder="e.g: 789119191"></td>
                                     {{#if emergency1Phone}}
                                     <td></td>
-                                    <td>{{emergency1countryCode}}{{emergency1Phone}}</td>
+                                    <td>{{emergency1countryCode}}</td>
                                     {{/if}}
+                                </tr>
+                                <tr>
+                                    <td style="font-size:x-small;">(Without 0 nor country code)</td>
+                                    <td><input type="number" pattern="\d9" name="emergency1Phone" value="{{emergency1Phone}}" placeholder="e.g: 789119191"></td>
+
                                 </tr>
                                 <tr></tr>
                                 <tr>
@@ -346,15 +308,16 @@
                                 </tr>
                                 <tr>
                                     <td>Person 2 phone</td>
-                                     <td><select name="emergency2countryCode">{{>phonecode}}</select></td>
+                                    <td><select name="emergency2countryCode">{{>phonecode}}</select></td>
+                                    {{#if emergency2Phone}}
+                                    <td></td>
+                                    <td>{{emergency2countryCode}}</td>
+                                    {{/if}}
                                 </tr>
                                 <tr>
-                                    <td></td>
+                                    <td style="font-size:x-small;">(Without 0 nor country code)</td>
                                     <td><input type="number" pattern="\d9" name="emergency2Phone" value="{{emergency2Phone}}" placeholder="e.g: 789119191"></td>
-                                     {{#if emergency2Phone}}
-                                    <td></td>
-                                    <td>{{emergency2countryCode}}{{emergency2Phone}}</td>
-                                    {{/if}}
+
                                 </tr>
                             </table>
                         </div>
@@ -375,20 +338,21 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td>Bank name</td>
+                                    <td>Bank</td>
                                     <td><input type="text" name="CHbankName" value="{{CHbankName}}"></td> 
+                                </tr>
+
+                                <tr>
+                                    <td>Bank ZIP</td>
+                                    <td><input type="number" name="CHbankZip" value="{{CHbankZip}}"></td> 
                                 </tr>
                                 <tr>
                                     <td>Bank city</td>
                                     <td><input type="text" name="CHbankCity" value="{{CHbankCity}}"></td>
                                 </tr>
                                 <tr>
-                                    <td>Bank ZIP</td>
-                                    <td><input type="number" name="CHbankZip" value="{{CHbankZip}}"></td> 
-                                </tr>
-                                <tr>
                                     <td>Clearing/IBAN</td>
-                                    <td><input type="text" name="CHbankIban" maxlength="21" value="{{CHbankIban}}"></td> 
+                                    <td><input type="text" name="CHbankIban" maxlength="34" value="{{cleanIban CHbankIban}}"></td> 
                                 </tr>
                                 <tr>
                                     <td>Account number</td>
@@ -413,20 +377,21 @@
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <td>Bank name</td>
+                                    <td>Bank</td>
                                     <td><input type="text" name="EURbankName" value="{{EURbankName}}"></td>
-                                </tr>
-                                <tr>
-                                    <td>Bank city</td>
-                                    <td><input type="text" name="EURbankCity" value="{{EURbankCity}}"></td>
                                 </tr>
                                 <tr>
                                     <td>Bank ZIP</td>
                                     <td><input type="text" name="EURbankZip" value="{{EURbankZip}}"></td>
                                 </tr>
                                 <tr>
+                                    <td>Bank city</td>
+                                    <td><input type="text" name="EURbankCity" value="{{EURbankCity}}"></td>
+                                </tr>
+
+                                <tr>
                                     <td>Clearing/IBAN</td>
-                                    <td><input type="text" name="EURbankIban" maxlength="21" value="{{EURbankIban}}"></td>
+                                    <td><input type="text" name="EURbankIban" maxlength="34" value="{{cleanIban EURbankIban}}"></td>
                                 </tr>
                                 <tr>
                                     <td>Account number</td>
@@ -441,6 +406,7 @@
                     </div>
                     <br>
                     <input class="submit" type="submit" value="Save internal information">
+                    {{#if savedInternal}}&#10004;{{/if}}
                 </form>
             </section>
             <br><br>
@@ -451,26 +417,27 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <p class="Paragtitle">Communication and Analytical Skills</p>
-                            <textarea name="communicationSkills" id="comp" value="{{competencies.[0].communicationSkills}}"></textarea>
+                            <textarea name="communicationSkills" id="comp" value="{{competencies.[0].communicationSkills}}" spellcheck="true" required></textarea>
                         </div>
                         <div class="col-sm-4">
-                            <p class="Paragtitle">Professional Experience</p>
-                            <textarea name="businessSkills" id="comp" value="{{competencies.[0].businessSkills}}"></textarea>
+                            <p class="Paragtitle">Business Expertise</p>
+                            <textarea name="businessSkills" id="comp" value="{{competencies.[0].businessSkills}}" spellcheck="true"></textarea>
                         </div>
                         <div class="col-sm-4">
                             <p class="Paragtitle">Technical Expertise</p>
-                            <textarea name="technicalSkills" id="comp" value="{{competencies.[0].technicalSkills}}"></textarea>
+                            <textarea name="technicalSkills" id="comp" value="{{competencies.[0].technicalSkills}}" spellcheck="true"></textarea>
                         </div>
                     </div>
                     <br>
                     <input class="submit" type="submit" value="Save competencies">
+                    {{#if savedComp}}&#10004;{{/if}}
                 </form>
             </section>
 
             <br><br>
-            
+
             <!--        Internship section                -->
-            {{#if isJunior}}
+            {{#if isJunior}} 
             <section class="internship">
                 <h3>INTERNSHIP HISTORY</h3>
                 <form class="new-internship">
@@ -489,7 +456,7 @@
                                     <td><select id="month" name="internshipEnddatemonth">{{>month}}</select>.<input type="number" maxlength="4" name="internshipEnddateyear" id="year" placeholder="YYYY" ></td>
                                 </tr>
                                 <tr>
-                                    <td>Company name</td>
+                                    <td>Employer</td>
                                     <td><input type="text" name="internshipCompany" ></td>
                                 </tr>
                                 <tr>
@@ -510,7 +477,7 @@
                                 <col width="30%">
                                 <tr>
                                     <td rowspan="5">Position description</td>
-                                    <td rowspan="5"><textarea name="internshipPosition" id="textareaform"></textarea></td>
+                                    <td rowspan="5"><textarea name="internshipPosition" id="textareaform" spellcheck="true"></textarea></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
@@ -523,6 +490,7 @@
                     </div>
                     <br>
                     <input class="submit" type="submit" value="Save internship">
+                    {{#if savedInternship}}&#10004;{{/if}}
                 </form>
                 <br>
 
@@ -553,99 +521,314 @@
             <section class="experiences">
                 <h3>PROJECT EXPERIENCE</h3>
                 <form class="new-experience">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <table width="100%">
-                                <col width="25%">
-                                <col width="40%">
-                                <col width="35%">
-                                <tr>    
-                                    <td>Start date</td>
-                                    <td id="current"><select id="month" name="projectStartdatemonth">{{>month}}</select>.<input type="number" maxlength="4" name="projectStartdateyear" id="year" placeholder="YYYY" ></td>
-                                    <td class="checkbox"><label class="currentproject"><input class="checkbutton" type="checkbox" name="currentprojcheck" checked="{{mycurrentproject}}"> Current Experience</label></td>
-                                </tr>
-                                <tr>
-                                    <td>End date</td>
-                                    <td>{{#if notcurrentproject}}<select id="month" name="projectEnddatemonth">{{>month}}</select>.<input type="number" maxlength="4" name="projectEnddateyear" id="year" placeholder="YYYY" >{{/if}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Company name</td>
-                                    <td><input type="text" name="projectCompany" ></td>
-                                </tr>
-                                <tr>
-                                    <td>Client name</td>
-                                    <td><input type="text" name="projectClient" ></td>
-                                </tr>
-                                <tr>
-                                    <td>City</td>
-                                    <td><input type="text" name="projectClientcity" ></td>
-                                </tr>
-                                <!-- <tr>
-<td>Country</td>
-<td><input type="text" name="projectClientcountry" ></td>
+
+
+                    <table width="100%">
+                        <col width="25%">
+                        <col width="50%">
+                        <col width="10%">
+                        <tr>  
+                            <td>
+                                <select class="employer" id="nameEmployer">
+                                    <option selected disabled value={{projectCompany}}>Select a new or an existing employer</option>
+                                    <option value="" disabled>--------------</option>
+                                    <option value="New">Add a new employer</option>
+                                    <option value="" disabled>--------------</option>
+                                    {{#each experiences}}
+                                    <option value="{{_id}}">{{projectCompany}}</option>
+                                    {{/each}}
+
+                                </select>
+                            </td><td></td>
+                        </tr>
+                        {{#if newEmployerStatut}}
+                        
+                        <tr>
+
+
+                            <td>Employer</td>
+                                <td><input type="text" name="projectCompany" ></td>
+
+
+                            
+                        </tr>
+                        {{/if}}
+
+
+
+                        <tr>  
+                            <td>
+                                <select class="client" id="nameClient">
+                                    <option selected disabled value={{projectClient}}>Select a new or an existing client</option>
+                                    <option value="" disabled>--------------</option>
+                                    <option value="New">Add a new client</option>
+                                    <option value="" disabled>--------------</option>
+                                    {{#each experiencesClient}}
+                                    <option value="{{_id}}">{{projectClient}}</option>
+                                    {{/each}}
+
+                                </select>
+                            </td>
+                            <td></td>
+                        </tr>
+                        {{#if newClientStatut}}
+                        <tr>
+                            <td>Start date</td>
+                            <td id="current"><select id="month" name="projectStartdatemonth">{{>month}}</select>.<input type="number" maxlength="4" name="projectStartdateyear" id="year" placeholder="YYYY"></td>
+                        </tr>
+                        <tr>
+                                <td></td><td><div class="checkbox"><label class="currentproject"><input class="checkbutton" type="checkbox" name="currentprojcheck" > Current Experience</label></div></td>
+                        </tr>
+                        <tr>
+                            {{#if notcurrentproject}}
+                            <td>End date</td>
+                            <td><select id="month" name="projectEnddatemonth">{{>month}}</select>.<input type="number" maxlength="4" name="projectEnddateyear" id="year" placeholder="YYYY"></td><td></td>
+                            {{/if}}
+                        </tr>
+                        <!-- <tr>
+<td>Employer</td>
+<td><input type="text" name="projectCompany" ></td>
 </tr>-->
-                            </table>
-                            <br>
-                        </div>
-                        <div class="col-sm-6">
-                            <table width="100%">
-                                <col width="25%">
-                                <col width="40%">
-                                <col width="35%">
-                                <tr>
-                                    <td>Department</td>
-                                    <td><input type="text" name="projectClientdepartment" ></td>
-                                </tr>
-                                <tr>
-                                    <td>Project name</td>
-                                    <td><input type="text" name="projectTitle"></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td rowspan="4">Project description</td>
-                                    <td rowspan="4"><textarea name="projectDescription" id="textareaform"></textarea></td>
-                                </tr>
-                                <tr></tr>
-                                <tr></tr>
-                                <tr></tr>
-                            </table>
-                        </div>
-                    </div>
-                    <input class="submit" type="submit" value="Save experience">
+                        <tr>
+                            <td>Client</td>
+                            <td><input type="text" name="projectClient" ></td><td></td>
+                        </tr>
+                        <tr>
+                            <td>City</td>
+                            <td><input type="text" name="projectClientcity" ></td><td></td>
+                        </tr>
+                        <tr>
+
+                            <td>Position</td>
+                            <td><input type="text" name="projectClientdepartment" ></td><td></td>
+
+                        </tr>
+                        {{/if}}
+                        <tr>
+                            <td>Project title</td>
+                            <td><input type="text" name="projectTitle0"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td rowspan="4">Project description</td>
+                            <td rowspan="4"><textarea name="projectDescription0" id="textareaform" spellcheck="true"></textarea></td><td></td>
+                        </tr>
+                    </table>
+                    <br>
+
+
+
+
+                    <input class="submit" type="submit" value="Save project experience">
+                    {{#if savedExp}}&#10004;{{/if}}
+                    <!--<input type="button" Value="Add a new project" onclick="addInput()"/>
+
+<script>
+//script to add 2 new boxes to add a project within this client 
+var countBox =1;
+var boxName = 0;
+function addInput()
+{
+var boxProjectName="projectTitle"+countBox; 
+var boxDescriptionName="projectDescription"+countBox; 
+document.getElementById('newProjectBox').innerHTML+='<table width="100%"><col width="25%"><col width="40%"><col width="35%"><tr><td>Project title</td><td><input type="text" name="'+boxProjectName+'"></td><td></td></tr><tr><td rowspan="4">Project description</td><td rowspan="4"><textarea name="'+boxDescriptionName+'" id="textareaform"></textarea></td></tr><tr><td></td></tr><tr></tr><tr></tr></table>';
+countBox += 1;
+Session.set("counter",countBox);
+}
+
+</script>-->
                 </form>
                 <br>
 
                 <ul class="body-list">
+                    {{#if experiences}}
+                    <h2>Double click on an element to edit it</h2>
+                    {{/if}}
                     {{#each experiences}}
                     <li>
+                        {{#if noParentCompany _id}} <!--we look for the parent employer -->
                         <button id="delete" class="deleteanexperience">&times;</button>
+                        {{/if}}
                         <table width="100%">
                             <col width="20%">
+                            <col width="80%">
                             {{#if projectCompany}}
+                            {{#if editValueprojectCompany}} <!-- if the user double clicks on the field it will return true and display a form to edit the experience -->
+
+                            <form class="edit-projectCompany">
+                                <tr>
+                                    <td colspan="2"><span class="cvbluetext">
+                                        <input type="text" name="editprojectCompany" value="{{projectCompany}}"/>
+                                        <input class="submit" type="submit" value="Update">
+                                        </span></td>
+                                </tr>
+                            </form>
+                            {{else}}
                             <tr>
-                                <td colspan="2"><span class="cvbluetext">{{projectCompany}}</span></td>
+                                <td colspan="2"><span class="cvbluetext">
+                                    <span id="spanIdprojectCompany">{{projectCompany}}</span>
+                                    </span></td>
                             </tr>
+                            {{/if}} 
                             {{/if}}
-                            {{#if projectClient}}
+                            {{#each ../experiencesClient}}
+                            {{#if isEqual idExp ../_id}}
                             <tr>
-                                <td> {{#if projectStartdatemonth}}
-                                    {{projectStartdate}} - {{projectEnddate}}
+                                <td> 
+                                    {{#if projectStartdatemonth}}
+                                    {{#if editValueprojectStartdate}}
+
+                                    <form class="edit-projectStartdate">
+                                        <input type="text" name="editprojectStartdatemonth" value="{{projectStartdatemonth}}"/>
+                                        <input type="text" name="editprojectStartdateyear" value="{{projectStartdateyear}}"/>
+                                        <input class="submit" type="submit" value="Update">
+                                    </form>
+                                    {{else}}
+                                    <span id="spanIdprojectStartdate">{{projectStartdate}}</span>
+                                    {{/if}} 
+                                    - 
+                                    {{#if editValueprojectEnddate}}
+
+                                    <form class="edit-projectEnddate">
+                                        <input type="text" name="editprojectEnddatemonth" value="{{cleanDateMonth projectEnddate}}"/>
+                                        <input type="text" name="editprojectEnddateyear" value="{{cleanDateYear projectEnddate}}"/>
+                                        <input class="submit" type="submit" value="Update">
+                                    </form>
+                                    {{else}}
+                                    <span id="spanIdprojectEnddate">{{projectEnddate}}</span>
+                                    {{/if}} 
                                     {{/if}}</td>
-                                <td><span class="cvbluetext">{{#if projectClient}}{{projectClient}}{{#if projectClientcity}}, {{/if}}{{/if}}{{#if projectClientcity}}{{projectClientcity}}{{/if}}{{#if projectClientcountry}} - {{projectClientcountry}}{{/if}}{{#if projectClientdepartment}} : {{projectClientdepartment}}{{/if}}</span></td>
+                                <td><span class="cvbluetext">
+                                    {{#if projectClient}}
+                                    {{#if editValueprojectClient}}
+
+                                    <form class="edit-projectClient">
+                                        <input type="text" name="editprojectClientInput" value="{{projectClient}}"/>
+                                        <input class="submit" type="submit" value="Update">
+                                    </form>
+                                    {{else}}
+                                    <span id="spanIdprojectClient">{{projectClient}}</span>
+                                    {{/if}} 
+                                    {{/if}}
+                                    {{#if projectClientcity}}, 
+                                    {{#if editValueprojectClientcity}}
+
+                                    <form class="edit-projectClientcity">
+                                        <input type="text" name="editprojectClientcity" value="{{projectClientcity}}"/>
+                                        <input class="submit" type="submit" value="Update">
+                                    </form>
+                                    {{else}}
+                                    <span id="spanIdprojectClientcity">{{projectClientcity}}</span>
+                                    {{/if}}
+                                    {{/if}}
+                                    {{#if projectClientdepartment}} - 
+                                    {{#if editValueprojectClientdepartment}}
+
+                                    <form class="edit-projectClientdepartment">
+                                        <input type="text" name="editprojectClientdepartment" value="{{projectClientdepartment}}"/>
+                                        <input class="submit" type="submit" value="Update">
+                                    </form>
+                                    {{else}}
+                                    <span id="spanIdprojectClientdepartment">{{projectClientdepartment}}</span>
+                                    {{/if}}{{/if}}</span>
+                                    {{#if noParentClient _id}}
+                                    <button id="delete" class="deleteaclient">&times;</button>
+                                    {{/if}}
+                                    <!--<button id="plus" class="plusXp">&plus;</button>-->
+
+
+
+
+                                </td>
                             </tr>
-                            {{/if}}
+                            {{#each ../../experiencesClientProject}}
+                            {{#if isEqual idExpClientProject ../_id}}
+
+                            {{#if editValueExpTitle}}
                             <tr>
                                 <td></td>  
-                                <td><strong>{{projectTitle}}</strong></td>
+                                <form class="edit-experienceTitle">
+                                    <td><input type="text" name="editTitleInput" value="{{projectTitle}}"/>
+                                        <br>
+                                        <input class="submit" type="submit" value="Update">
+
+
+
+                                    </td>
+                                    <td></td>
+                                </form>
                             </tr>
+                            {{else}}
                             <tr>
                                 <td></td>
-                                <td>{{{projectDescriptionHTML}}}</td>
+                                <td>
+                                    <span class="content col-md-10" id="spanIdTitleXp" ><strong>{{projectTitle}}  </strong> </span></td>
+                                <button id="delete" class="deleteaproject">&times;</button>
+                                <td></td>
                             </tr>
+                            {{/if}} 
+
+                            {{#if editValueExpDescription}}
+                            <tr>
+
+                                <td></td>
+                                <form class="edit-experienceDesc">
+                                    <td>
+                                        <textarea type="text" rows="4" cols="80" name="editExpDesc" spellcheck="true">{{projectDescription}}</textarea>
+                                        <br>
+                                        <input class="submit" type="submit" value="Update">
+
+
+                                    </td>
+
+                                </form>
+
+                            </tr>
+                            {{else}}
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <span class="content col-md-10" id="spanIdDescXp" >{{{projectDescriptionHTML}}} </span></td>
+                                <td></td>
+                            </tr>
+                            {{/if}} 
+
+
+                            {{/if}}
+                            {{/each}}
+                            {{/if}}
+                            {{/each}}
                         </table>
                     </li>
                     {{/each}}
                 </ul>
+
+
+
+                <!--{{#if editNewproject}}  to add a new project to an existing client 
+                <table width="100%">
+                    <col width="30%">
+                    <col width="70%">
+                    <form class="edit-newExperience">
+                        <br>
+                        <tr>
+                            <td>Project title</td>
+                            <td><input type="text" name="editNewTitle" value=""/>
+                                <br></td>
+
+
+                        </tr>
+                        <tr>
+                            <td valign="top">Project description</td>
+                            <td><textarea type="text" rows="4" cols="80" name="editNewExpDesc" spellcheck="true"></textarea></td>
+                            <td></td><br>
+                        </tr>
+                        <tr>
+                            <input class="submit" type="submit" value="Save new project">
+                        </tr>
+                    </form>
+                </table>
+                {{/if}}-->
             </section> 
             {{/if}}
             <br><br>
@@ -669,16 +852,12 @@
                                     <td>{{#if notcurrentemployment}}<select id="month" name="employmentEnddatemonth">{{>month}}</select>.<input type="number" maxlength="4" name="employmentEnddateyear" id="year" placeholder="YYYY" >{{/if}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Company name</td>
+                                    <td>Employer</td>
                                     <td><input type="text" name="employmentCompany" ></td>
                                 </tr>
                                 <tr>
                                     <td>City</td>
                                     <td><input type="text" name="employmentCity" ></td>
-                                </tr>
-                                <tr>
-                                    <td>Country</td>
-                                    <td><input type="text" name="employmentCountry" ></td>
                                 </tr>
                             </table>
                         </div>
@@ -690,7 +869,7 @@
                                 <col width="30%">
                                 <tr>
                                     <td rowspan="5">Position description</td>
-                                    <td rowspan="5"><textarea name="employmentPosition" id="textareaform"></textarea></td>
+                                    <td rowspan="5"><textarea name="employmentPosition" id="textareaform" spellcheck="true"></textarea></td>
                                     <td></td>
                                     <td></td>
                                 </tr>
@@ -703,6 +882,7 @@
                     </div>
                     <br>
                     <input class="submit" type="submit" value="Save employment">
+                    {{#if savedEmp}}&#10004;{{/if}}
                 </form>
                 <br>
 
@@ -714,7 +894,7 @@
                             <col width="20%">
                             <tr>
                                 <td>{{employmentStartdate}} - {{employmentEnddate}}</td>
-                                <td><span class="cvbluetext">{{employmentCompany}}{{#if employmentCity}}, {{employmentCity}} - {{employmentCountry}}{{/if}}</span></td>
+                                <td><span class="cvbluetext">{{employmentCompany}}{{#if employmentCity}}, {{employmentCity}}{{/if}}</span></td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -729,12 +909,11 @@
             <br><br>
 
             <!--           Degree section             -->
-
             <section class="degrees">
                 <h3>DEGREES AND CERTIFICATIONS</h3>
                 <form class="new-degree">
                     <table width="50%">
-                        <col width="25%">
+                        <col width="30%">
                         <col width="40%">
                         <col width="5%">
                         <col width="30%">
@@ -745,14 +924,6 @@
                             <td></td>
                         </tr>
                         <tr>
-                            <td>Degree/Certification</td>
-                            <td><input type="text" name="degree" ></td>
-                        </tr>
-                        <tr>
-                            <td>Specialisation</td>
-                            <td><input type="text" name="degreeSpecialisation"></td>
-                        </tr>
-                        <tr>
                             <td>University/Company</td>
                             <td><input type="text" name="degreeUniversity" ></td>
                         </tr>
@@ -760,13 +931,19 @@
                             <td>City</td>
                             <td><input type="text" name="degreeCity" ></td>
                         </tr>
+
                         <tr>
-                            <td>Country</td>
-                            <td><input type="text" name="degreeCountry"></td>
+                            <td>Degree/Certification</td>
+                            <td><input type="text" name="degree" ></td>
+                        </tr>
+                        <tr>
+                            <td>Specialisation</td>
+                            <td><input type="text" name="degreeSpecialisation"></td>
                         </tr>
                     </table>
                     <br>
                     <input class="submit" type="submit" value="Save degree">
+                    {{#if savedDegree}}&#10004;{{/if}}
                 </form>
                 <br>
 
@@ -781,13 +958,13 @@
                                 {{#if degreeUniversity}}
                                 <td>{{degreeUniversity}}{{#if degreeCity}}, {{degreeCity}}{{/if}}{{#if degreeCountry}} - {{degreeCountry}}{{/if}}</td>
                                 {{else}}
-                                <td>{{degree}}{{#if degreeSpecialisation}}: {{degreeSpecialisation}}{{/if}}</td>
+                                <td>{{degree}}{{#if degreeSpecialisation}}, {{degreeSpecialisation}}{{/if}}</td>
                                 {{/if}}
                             </tr>
                             {{#if degreeUniversity}}
                             <tr>
                                 <td></td>
-                                <td>{{degree}}{{#if degreeSpecialisation}}: {{degreeSpecialisation}}{{/if}}</td>
+                                <td>{{degree}}{{#if degreeSpecialisation}}, {{degreeSpecialisation}}{{/if}}</td>
                             </tr>
                             {{/if}}
                         </table>
@@ -795,11 +972,9 @@
                     {{/each}}
                 </ul>
             </section>
-
             <br><br>
 
             <!--           Language section             -->
-
             <section class="languages" id="languages">
                 <h3>LANGUAGE SKILLS</h3>
                 <form class="new-language">
@@ -817,6 +992,7 @@
                         <tr>
                             <td>Skill</td>
                             <td><select class="options" name="languageSkill" >
+                                <option selected disabled value={{languageSkill}}>Choose here</option>
                                 <option class="options" value="Mother tongue">Mother tongue</option>
                                 <option class="options" value="Written and spoken fluency">Written and spoken fluency</option>
                                 <option class="options" value="Working proficiency">Working proficiency</option>
@@ -826,6 +1002,7 @@
                     </table>
                     <br>
                     <input class="submit" type="submit" value="Save language">
+                    {{#if savedLanguage}}&#10004;{{/if}}
                 </form>
                 <br>
 

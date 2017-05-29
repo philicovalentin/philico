@@ -1,64 +1,120 @@
 <template name="cv">
     {{#if currentUser}}
+    <!--                   Settings for the current CV                          -->
+    <div align="center">
+    <br>
+    <h3>CV DISPLAY</h3>
+            <br>
+        <h3>{{fullName}}</h3>
+            <br>
+            <form class="displayDetails">       
+                <table width="60%">
+                    <col width="25%">
+                    <col width="40%">
+                 
+                   <br>
+                   <label class="anon"><input type="checkbox" class="checkbutton" name="anoncheck" checked={{isAnon}}> Anonymous CV</label>
+                    <br>
+                     <tr>
+                        <td>CV Personal Info paragraph padding in px</td>
+                        <td><input type="text" name="CVInfoparagraphPadding" value="{{CVInfoparagraphPadding}}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>CV other paragraph padding in px</td>
+                        <td><input type="text" name="CVparagraphPadding" value="{{CVparagraphPadding}}">
+                        </td>
+                    </tr>
+                
+                     <tr>
+                        <td>CV before title padding in px</td>
+                        <td><input type="text" name="CVtitlePadding" value="{{CVtitlePadding}}">
+                        </td>
+                    </tr>
+                      <tr>
+                        <td>CV after title padding in px</td>
+                        <td><input type="text" name="CVaftertitlePadding" value="{{CVaftertitlePadding}}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Paragraph text size in px</td>
+                        <td><input type="text" name="CVTextSize" value="{{CVTextSize}}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Title text size in px</td>
+                        <td><input type="text" name="CVTitleSize" value="{{CVTitleSize}}">
+                        </td>
+                    </tr>
+                     <tr>
+                        <td>Round border for the picture in px</td>
+                        <td><input type="number" name="roundBorder" value="{{roundBorder}}">
+                        </td>
+                    </tr>
+                    
+                </table>
+                <br>
+                <input class="submit" type="submit" value="Save preferences">
+                {{#if savedCVDetails}}&#10004;{{/if}}
+                <br>
+            </form>
+        <br>
+     <a href="#" class="btn btn-primary generate-pdf" >Generate PDF</a>
+        <br>
+        {{#if spinnerState}}{{> spinner}}{{/if}}
+    </div>
+    
+    <!--             CV             -->
     <div class="container containercv">
+        
         <main class="cv">
+            <style type="text/css">
+                :root{
+                    --info-padding:{{CVInfoparagraphPadding}}px;
+                    --paragraph-padding: {{CVparagraphPadding}}px; /* space between 2 paragraphes */
+                    --title-padding:{{CVtitlePadding}}px; /* space between title and text */
+                    --text-size:{{CVTextSize}}px; /* font size for text */
+                    --title-size:{{CVTitleSize}}px; /* font size for titles */
+                    --titleAfter:{{CVaftertitlePadding}}px;
+                }
+            </style>
             <!-- header -->
             <div class="cvHeader">
                 <div class="leftHeader" style="vertical-align:top">
                     <p>
                         <img src="/images/logo_philico.png" alt="Logo Philico" height="99"/>
                     </p>  
+                    {{#unless isAnon}}
                     {{firstNameup}} {{familyNameup}} <br>
+                    {{/unless}}
+                    <div class="CVp" style="color: #01416F !important; font-size:{{CVTitleSize}}px;">
                     {{#if isJunior}}
-                    Consultant {{#if subcontractor}} - {{subcontractor}}{{/if}}
+                    Consultant {{#if subcontractor}} - Subcontractor {{/if}}
                     {{else}}
-                    {{positionPhilico}} {{#if subcontractor}} - {{subcontractor}}{{/if}}
+                    {{positionPhilico}} {{#if subcontractor}} - Subcontractor{{/if}}
                     {{/if}}
+                    </div>
                 </div>
                 <div class="rightHeader" align="right">
                     <p>
-                        <img src="/images/{{cleanemail email}}.jpg" alt="Profile picture" height="140"/>
+                        {{#unless isAnon}}
+                        <img src="data:image/jpeg;base64,{{getImage}}" alt="Profile picture" height="140" style="border-radius: {{roundBorder}}px;"/>
+                        {{/unless}}
                     </p>
                 </div>
             </div>
-
-            <!--  Header: logo, full name and photo  -->  
-
-            <!--<button id="savelatex" class="savecvinformation">Save the data for Latex</button>-->
-
-            <!--<a href="/tex/{{email}}">Download</a> -->
-
-            <!--  <table width="100%">
-<col width="50%">
-<col width="50%">
-<tr>
-<td><img align="left" src="/images/logo_philico.png" height="99" alt="Philico logo"></td>
-</tr>
-<tr></tr>
-<tr></tr>
-<tr></tr>
-<tr class="cvtitle">
-<td><strong><span class="cvtitle">{{firstNameup}} {{familyNameup}}
-</span></strong><br><span class="cvtitle">{{positionPhilico}}</span>{{#if subcontractor}} - {{subcontractor}}{{/if}}</td>
-{{#if displayPhoto}}
-<td>{{#if image}}<img align="right" src="{{image}}" height="110" alt="If undisplayed, refresh">{{/if}}</td>
-{{/if}}
-</tr>
-<tr></tr>
-<tr></tr>
-</table>-->
 
             <!-- PERSONNAL INFORMATION -->
             <div>
                 <div class="sectionWithTitle">
                     <div class="projectRow">
                         <div class="sectionTitle" align="left">
-                            PERSONNAL INFORMATION
+                            PERSONAL INFORMATION
                         </div>
                         <div class="emptySection" align="right"></div>
                     </div>
                     <div class="projectRow">
-                        <div class="infoTitle">
+                        <div class="infoTitle" style="padding-top:var(--titleAfter);">
                             Birthday
                         </div>
                         <div class="infoContent">
@@ -75,6 +131,7 @@
                             {{nationality1}}{{#if nationality2}}, {{nationality2}}{{/if}}{{#if nationality3}}, {{nationality3}}{{/if}}
                         </div>
                     </div>
+                    {{#unless isAnon}}
                     <div class="projectRow">
                         <div class="infoTitle">
                             Address
@@ -90,10 +147,11 @@
                             Contact
                         </div>
                         <div class="infoContent">
-                            {{mobilecountryCode}}{{mobilePhone}} <br>
+                            {{mobilecountryCode}}{{cleanphone mobilecountryCode mobilePhone}} <br>
                             {{email}}
                         </div>
                     </div>
+                    {{/unless}}
                 </div>
             </div>
 
@@ -169,7 +227,7 @@
                         <div class="emptySection" align="right"></div>
                     </div>
                     <div class="projectRow">
-                        <div class="coreTitle">
+                        <div class="coreTitle" style="padding-top:var(--titleAfter);">
                             Communication and Analytical Skills
                         </div>
                         <div class="coreContent">
@@ -190,7 +248,7 @@
                     {{/if}}
                     <div class="projectRow">
                         <div class="coreTitle">
-                            Technical expertise
+                            Technical Expertise
                         </div>
                         <div class="coreContent">
                             {{{competencies.[0].technicalSkillsHTML}}}
@@ -229,147 +287,203 @@
 </table>-->
 
             <!-- PROJECT EXPERIENCE -->
-            {{#if isJunior}}
+{{#if isJunior}}
             {{#if internship}}
-            <div>
+                <div>
                 {{#each internship}}
-                {{#if @index $not 0}} <!-- if this is not the first element -->
-                <div class="sectionNoTitle">
-                    <div class="projectRow">
-                        <div class="empDate">
-                            {{internshipStartdate}} - {{internshipEnddate}}
+                    {{#if @index $not 0}} <!-- if this is not the first element -->
+                        <div class="sectionNoTitle">
+                            <div class="projectRow">
+                                <div class="empDate">
+                                    {{internshipStartdate}} - {{internshipEnddate}}
+                                </div>
+                                <div class="empContent">
+                                    <h1>
+                                    {{internshipCompany}}, {{internshipCity}}
+                                    </h1>
+                                    <p class="CVp">{{{internshipPositionHTML}}}</p> 
+                                </div>
+                            </div>
                         </div>
-                        <div class="empContent">
-                            <h1>
-                                {{internshipCompany}}, {{internshipCity}}
-                            </h1>
-                            <p class="CVp">{{{internshipPositionHTML}}}</p> 
+                    {{else}}
+                        <div class="sectionWithTitle">
+                            <div class="projectRow">
+                                <div class="sectionTitle" align="left">
+                                    INTERNSHIP HISTORY
+                                </div>
+                                <div class="emptySection" align="right"></div>
+                            </div>
+                            <div class="projectRow">
+                                <div class="empDate" style="padding-top:var(--titleAfter);">
+                                    {{internshipStartdate}} - {{internshipEnddate}}
+                                </div>
+                                <div class="empContent">
+                                    <h1>
+                                        {{internshipCompany}}, {{internshipCity}}
+                                    </h1>
+                                    <p class="CVp">{{{internshipPositionHTML}}}</p> 
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                {{else}}
-                <div class="sectionWithTitle">
-                    <div class="projectRow">
-                        <div class="sectionTitle" align="left">
-                            INTERNSHIP HISTORY
-                        </div>
-                        <div class="emptySection" align="right"></div>
-                    </div>
-                    <div class="projectRow">
-                        <div class="empDate">
-                            {{internshipStartdate}} - {{internshipEnddate}}
-                        </div>
-                        <div class="empContent">
-                            <h1>
-                                {{internshipCompany}}, {{internshipCity}}
-                            </h1>
-                            <p class="CVp">{{{internshipPositionHTML}}}</p> 
-                        </div>
-                    </div>
-                </div>
-                {{/if}}
+                    {{/if}}
                 {{/each}}
-            </div>
-            {{/if}}
-
-            {{else}}
-            {{#if experiences}}
-            <div>
-                {{#each experiences}}
-                {{#if @index $not 0}} <!-- if this is not the first xp element -->
-                <div class="sectionNoTitle">
-                    <div class="projectRow">
-                        <div class="companyTitle" align="left">{{projectCompany}}</div>
-                        <div class="emptyCompany" align="right"></div>
-                    </div>
-                    <div class="projectRow">
-                        <div class="projectDate" align="left">
-                            {{#if projectStartdatemonth}}
-                            {{projectStartdate}} - {{projectEnddate}}
-                            {{/if}}
-                        </div>
-                        <div class="projectDescription" align="left">
-                            <h1>{{#if projectClient}}{{projectClient}}{{#if projectClientcity}}, {{/if}}{{/if}}{{#if projectClientcity}}{{projectClientcity}}{{/if}}{{#if projectClientdepartment}} - {{projectClientdepartment}}{{/if}}</h1>
-                            <h2>{{#if projectTitle}}{{projectTitle}}{{/if}}</h2>
-                            <p class="CVp">{{{projectDescriptionHTML}}}</p> 
-                        </div>
-                    </div>
                 </div>
-                {{else}}
-                <div class="sectionWithTitle">
-                    <div class="projectRow">
-                        <div class="sectionTitle" align="left">
-                            PROJECT EXPERIENCE
-                        </div>
-                        <div class="emptySection" align="right"></div>
-                    </div>
-                    <div class="projectRow">
-                        <div class="companyTitle" align="left">
-                            {{projectCompany}}
-                        </div>
-                        <div class="emptyCompany" align="right"></div>
-                    </div>
-                    <div class="projectRow">
-                        <div class="projectDate" align="left">
-                            {{#if projectStartdatemonth}}
-                            {{projectStartdate}} - {{projectEnddate}}
-                            {{/if}}
-                        </div>
-                        <div class="CVprojectDescription" align="left">
-                            <h1>{{projectClient}}, {{projectClientcity}}{{#if projectClientdepartment}} – {{projectClientdepartment}}{{/if}}</h1>
-                            <h2>{{projectTitle}}</h2>
-                            <p class="CVp">{{{projectDescriptionHTML}}}</p> 
-                        </div>
-                    </div>
+            {{/if}}
+{{else}}
+              {{#if experiences}}
+                <div>
+                   {{#each experiences}}
+                    {{setDivBool true}}
+                        {{#if @index $not 0}}
+                            <div class="sectionProjectNoTitle">
+                                 {{#each ../experiencesClient}}
+                                    {{#if isEqual idExp ../_id}}
+                                    {{setBoolClient true}}
+                                    {{#each ../../experiencesClientProject}}
+                                        {{#if isEqual idExpClientProject ../_id }}
+                                            {{#if getBoolClient}}
+                                                {{#if getDivBool}}
+                                                    <div class="avoidReturnExp">
+                                                        <div class="projectRow">
+                                                            <div class="companyTitle" align="left">{{../../projectCompany}}</div>
+                                                            <div class="emptyCompany" align="right"></div>
+                                                        </div>
+                                                        <div class="projectRow">
+                                                            <div class="projectDate" align="left">
+                                                                {{#if ../projectStartdatemonth}}
+                                                                    {{../projectStartdate}} - {{../projectEnddate}}
+                                                                {{/if}}
+                                                            </div>
+                                                            <div align="left">  
+                                                                    <div  class="CVprojectDescriptionTitle" align="left">
+                                                                            <h1>{{#if ../projectClient}}
+                                                                                    {{../projectClient}}
+                                                                                    {{#if ../projectClientcity}},{{/if}}
+                                                                                {{/if}}
+                                                                                {{#if ../projectClientcity}}
+                                                                                    {{../projectClientcity}}
+                                                                                {{/if}}
+                                                                                {{#if ../projectClientdepartment}} - {{../projectClientdepartment}}{{/if}}
+                                                                            </h1>
+                                                                    </div>
+                                                                    <div  class="CVprojectDescription" align="left">
+                                                                        <h2>{{#if projectTitle}}{{projectTitle}}{{/if}}</h2>
+                                                                        <p class="CVp">{{{projectDescriptionHTML}}}</p>
+                                                                    </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {{setBoolClient false}}
+                                                    {{setDivBool false}}
+                                                {{else}}
+                                                      <div class="projectRowExp">
+                                                        <div class="projectDate" align="left">
+                                                            {{#if ../projectStartdatemonth}}
+                                                                {{../projectStartdate}} - {{../projectEnddate}}
+                                                            {{/if}}
+                                                        </div>
+                                                        <div align="left">  
+                                                                <div  class="CVprojectDescriptionTitle" align="left">
+                                                                        <h1>{{#if ../projectClient}}
+                                                                                {{../projectClient}}
+                                                                                {{#if ../projectClientcity}},{{/if}}
+                                                                            {{/if}}
+                                                                            {{#if ../projectClientcity}}
+                                                                                {{../projectClientcity}}
+                                                                            {{/if}}
+                                                                            {{#if ../projectClientdepartment}} - {{../projectClientdepartment}}{{/if}}
+                                                                        </h1>
+                                                                </div>
+                                                                <div  class="CVprojectDescription" align="left">
+                                                                    <h2>{{#if projectTitle}}{{projectTitle}}{{/if}}</h2>
+                                                                    <p class="CVp">{{{projectDescriptionHTML}}}</p>
+                                                                </div>
+                                                        </div>
+                                                    </div>
+                                                {{/if}}
+                                            {{else}}
+                                                    <div class="projectRowExp">
+                                                        <div class="projectDate"></div>
+                                                        <div align="left">
+                                                            <div class="CVprojectDescription" align="left">
+                                                                <h2>{{#if projectTitle}}{{projectTitle}}{{/if}}</h2>
+                                                                <p class="CVp">{{{projectDescriptionHTML}}}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            {{/if}}
+                                        {{/if}}
+                                    {{/each}}
+                                {{/if}}
+                                {{/each}}
+                             
+                                                
+                                 
+                            </div>
+                        {{else}}
+                            <div class="sectionWithTitle">
+                                <div class="projectRow">
+                                    <div class="sectionTitle" align="left">PROJECT EXPERIENCE</div>
+                                    <div class="emptySection" align="right"></div>
+                                </div>
+                                <div class="projectRow">
+                                    <div class="companyTitle" align="left" style="padding-top:var(--titleAfter);">{{projectCompany}}</div>
+                                    <div class="emptyCompany" align="right"></div>
+                                </div>
+                                 {{#each ../experiencesClient}}
+                                    {{#if isEqual idExp ../_id}}
+                                    {{setBoolClient true}}
+                                    {{#each ../../experiencesClientProject}}
+                                        {{#if isEqual idExpClientProject ../_id }}
+                                            {{#if getBoolClient}}
+                                                <div class="projectRowExp">
+                                                    <div class="projectDate" align="left">
+                                                        {{#if ../projectStartdatemonth}}
+                                                            {{../projectStartdate}} - {{../projectEnddate}}
+                                                        {{/if}}
+                                                    </div>
+                                                    <div align="left">  
+                                                            <div  class="CVprojectDescriptionTitle" align="left">
+                                                                    <h1>{{#if ../projectClient}}
+                                                                            {{../projectClient}}
+                                                                            {{#if ../projectClientcity}},{{/if}}
+                                                                        {{/if}}
+                                                                        {{#if ../projectClientcity}}
+                                                                            {{../projectClientcity}}
+                                                                        {{/if}}
+                                                                        {{#if ../projectClientdepartment}} - {{../projectClientdepartment}}{{/if}}
+                                                                    </h1>
+                                                            </div>
+                                                            <div  class="CVprojectDescription" align="left">
+                                                                <h2>{{#if projectTitle}}{{projectTitle}}{{/if}}</h2>
+                                                                <p class="CVp" >{{{projectDescriptionHTML}}}</p>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                {{setBoolClient false}}
+                                            {{else}}
+                                                    <div class="projectRow">
+                                                        <div class="projectDate"></div>
+                                                        <div align="left">
+                                                            <div class="CVprojectDescription" align="left">
+                                                                <h2>{{#if projectTitle}}{{projectTitle}}{{/if}}</h2>
+                                                                <p class="CVp">{{{projectDescriptionHTML}}}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            {{/if}}
+                                        {{/if}}
+                                    {{/each}}
+                                {{/if}}
+                                {{/each}}
+                            </div>
+                        {{/if}}
+                    
+                    {{/each}}
                 </div>
-
-                {{/if}}
-                {{/each}}
-
-            </div>
-            {{/if}}
-            {{/if}}
-            <!--  PROJECT EXPERIENCE   --> 
-
-            <!--<table width="100%">
-<col width="3%">
-<col width="27%">
-<col width="70%">
-<tr>
-<td colspan="3"><span class="cvsectionname">PROJECT EXPERIENCE</span></td>
-</tr>
-<tr></tr>
-{{#each experiences}}
-{{#if projectCompany}}
-<tr>
-<td></td>
-<td colspan="2"><span class="cvbluetext">{{projectCompany}}</span></td>
-</tr>
+            {{/if}}    
 {{/if}}
-{{#if projectClient}}
-<tr>
-<td></td>
-<td>{{projectStartdate}} - {{projectEnddate}}</td>
-<td><span class="cvbluetext">{{#if projectClient}}{{projectClient}}{{#if projectClientcity}}, {{/if}}{{/if}}{{#if projectClientcity}}{{projectClientcity}}{{/if}}{{#if projectClientdepartment}} : {{projectClientdepartment}}{{/if}}</span></td>
-</tr>
-{{/if}}
-{{#if projectTitle}}
-<tr>
-<td></td>
-<td></td>  
-<td><strong>{{projectTitle}}</strong></td>
-</tr>
-{{/if}}
-{{#if projectDescriptionHTML}}
-<tr>
-<td></td>
-<td></td>
-<td>{{{projectDescriptionHTML}}}</td>
-</tr>
-{{/if}}
-<tr></tr>
-{{/each}}
-</table>-->
+         
 
             <!-- EMPLOYMENT HISTORY -->
             {{#if employments}}
@@ -398,7 +512,7 @@
                         <div class="emptySection" align="right"></div>
                     </div>
                     <div class="projectRow">
-                        <div class="empDate">
+                        <div class="empDate" style="padding-top:var(--titleAfter);">
                             {{employmentStartdate}} - {{employmentEnddate}}
                         </div>
                         <div class="empContent">
@@ -414,30 +528,7 @@
             </div>
             {{/if}}
 
-            <!--  EMPLOYMENT HISTORY   --> 
-
-            <!--<table width="100%">
-<col width="3%">
-<col width="27%">
-<col width="70%">
-<tr>
-<td colspan="3"><span class="cvsectionname">EMPLOYMENT HISTORY</span></td>
-</tr>
-<tr></tr>
-{{#each employments}}
-<tr>
-<td></td>
-<td>{{employmentStartdate}} - {{employmentEnddate}}</td>
-<td><span class="cvbluetext">{{employmentCompany}}{{#if employmentCity}}, {{employmentCity}} - {{employmentCountry}}{{/if}}</span></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td>{{{employmentPositionHTML}}}</td>
-</tr>
-<tr></tr>
-{{/each}}
-</table>-->
+          
 
             <!-- DEGREES -->
             <div>
@@ -449,8 +540,8 @@
                             {{degreeDate}}
                         </div>
                         <div class="degreeContent">
-                            {{#if degreeUniversity}}{{degreeUniversity}}{{#if degreeCity}}, {{degreeCity}}{{/if}}{{#if degreeCountry}} - {{degreeCountry}} <br> {{/if}}{{/if}}
-                            {{degree}}
+                            {{#if degreeUniversity}}{{degreeUniversity}}{{#if degreeCity}}, {{degreeCity}}{{/if}}<br> {{/if}}
+                            {{degree}}{{#if degreeSpecialisation}}, {{degreeSpecialisation}}{{/if}}
                         </div>
                     </div>
                 </div>
@@ -463,12 +554,12 @@
                         <div class="emptySection" align="right"></div>
                     </div>
                     <div class="projectRow">
-                        <div class="CVdegreeDate">
+                        <div class="CVdegreeDate" style="padding-top:var(--titleAfter);">
                             {{degreeDate}}
                         </div>
                         <div class="degreeContent">
-                            {{#if degreeUniversity}}{{degreeUniversity}}{{#if degreeCity}}, {{degreeCity}}<br>{{/if}} {{/if}}
-                            {{degree}}
+                            {{#if degreeUniversity}}{{degreeUniversity}}{{#if degreeCity}}, {{degreeCity}}{{/if}} {{/if}}<br>
+                            {{degree}}{{#if degreeSpecialisation}}, {{degreeSpecialisation}}{{/if}}
                         </div>
                     </div>
                 </div>
@@ -476,36 +567,7 @@
                 {{/if}}
                 {{/each}}
             </div>
-            <!--  DEGREES   --> 
-
-            <!--<table width="100%">
-<col width="3%">
-<col width="27%">
-<col width="70%">
-<tr>
-<td colspan="3"><span class="cvsectionname">DEGREES</span></td>
-</tr>
-<tr></tr>
-{{#each degrees}}
-<tr>
-<td></td>
-<td>{{#if degreeDatemonth}}{{degreeDate}}{{/if}}</td>
-{{#if degreeUniversity}}
-<td>{{degreeUniversity}}{{#if degreeCity}}, {{degreeCity}}{{/if}}{{#if degreeCountry}} - {{degreeCountry}}{{/if}}</td>
-{{else}}
-<td>{{degree}}{{#if degreeSpecialisation}}: {{degreeSpecialisation}}{{/if}}</td>
-{{/if}}
-</tr>
-{{#if degreeUniversity}}
-<tr>
-<td></td>
-<td></td>
-<td>{{degree}}{{#if degreeSpecialisation}}: {{degreeSpecialisation}}{{/if}}</td>
-</tr>
-{{/if}}
-<tr></tr>
-{{/each}}
-</table>-->
+        
 
             <!-- LANGUAGES -->
             <div>
@@ -530,7 +592,7 @@
                         <div class="emptySection" align="right"></div>
                     </div>
                     <div class="projectRow">
-                        <div class="CVlanguage">
+                        <div class="CVlanguage" style="padding-top:var(--titleAfter);">
                             {{languageItem}}
                         </div>
                         <div class="languageSkills">
@@ -542,25 +604,7 @@
                 {{/each}}
             </div>
 
-            <!--  LANGUAGE SKILLS   --> 
-
-            <!--<table width="100%">
-<col width="3%" />
-<col width="27%" />
-<col width="70%" />
-<tr>
-<td colspan="3"><span class="cvsectionname">LANGUAGE SKILLS</span></td>
-</tr>
-<tr></tr>
-{{#each languages}}
-<tr>
-<td></td>
-<td>{{languageItem}}</td>
-<td>{{languageSkill}}</td>
-</tr>
-{{/each}}
-</table>-->
-
+        
 
         </main>
     </div>

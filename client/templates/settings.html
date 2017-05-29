@@ -1,0 +1,63 @@
+<template name="settings">
+    {{> navigation}}
+    {{#if currentUser}}
+    <div class="container containerpage">
+        <main>
+            <div class="col-sm-6 col-sm-offset-3" style="text-align: center">
+                
+</div>
+            <h3>GENERAL CV DISPLAY</h3>
+            <h2>Will overwrite all other individual CV display settings</h2>
+            <form class="displayAllDetails">       
+                <table width="60%">
+                    <col width="25%">
+                    <col width="40%">
+
+                  <tr>
+                        <td>CV Personal Info paragraph padding in px</td>
+                        <td><input type="text" name="CVAllInfoparagraphPadding" value="{{CVInfoparagraphPadding}}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>CV other paragraph padding in px</td>
+                        <td><input type="text" name="CVAllparagraphPadding" value="{{CVparagraphPadding}}">
+                        </td>
+                    </tr>
+                
+                     <tr>
+                        <td>CV before title padding in px</td>
+                        <td><input type="text" name="CVAlltitlePadding" value="{{CVtitlePadding}}">
+                        </td>
+                    </tr>
+                      <tr>
+                        <td>CV after title padding in px</td>
+                        <td><input type="text" name="CVAllaftertitlePadding" value="{{CVaftertitlePadding}}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Paragraph text size in px</td>
+                        <td><input type="text" name="CVAllTextSize" value="{{CVTextSize}}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Title text size in px</td>
+                        <td><input type="text" name="CVAllTitleSize" value="{{CVTitleSize}}">
+                        </td>
+                    </tr>
+                     <tr>
+                        <td>Round border for the picture in px</td>
+                        <td><input type="number" name="AllroundBorder" value="{{roundBorder}}">
+                        </td>
+                    </tr>
+                    
+                </table>
+                <br>
+                <input class="submit" type="submit" value="Save preferences">
+                {{#if savedAllCVDetails}}&#10004;{{/if}}
+                <br>
+            </form>
+           
+        </main>
+    </div>
+    {{/if}}
+</template>

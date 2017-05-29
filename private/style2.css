@@ -1,0 +1,16 @@
+ .leftHeader {
+        padding-top: 0px;
+        width: 30%;
+        display: table-cell;
+        font-weight: bold;
+        table-layout: fixed;
+    }
+    .rightHeader {
+        width: 20%;
+        display: table-cell;
+    }
+	.cvHeader {
+        height: 3cm;
+        display: table;
+        table-layout: fixed;
+    }

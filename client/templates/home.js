@@ -1,5 +1,5 @@
 Template.home.helpers({
-
+    //create a user in the DB when first login
     initialisation: function () {
         if(Meteor.user({_id:this.userId})){
             user=Meteor.user({_id:this.userId});
@@ -11,7 +11,6 @@ Template.home.helpers({
     personalinfo: function () {
         return Personalinfo.find({createdBy: Meteor.user()._id})
     },
-
     addnewemployeecheck: function () {
         if (Session.get("newemployee")) {
             return true;
@@ -53,6 +52,8 @@ Template.home.events({
 
     "change .newemployee input": function (event) {
         Session.set("newemployee", event.target.checked);
+        //in home.js we can't use a JS global variable for the tick because the user is not defined yet, so we need to write a boolean entry in the DB 
+        Meteor.call("initSave", false, Meteor.user()._id);
     },
 
     "change .signature input": function (event) {
@@ -67,7 +68,7 @@ Template.home.events({
         var subcontractor=event.target.subcontractor.value;
         var isJunior=event.target.addjunior.checked;
         Meteor.call("init", email, firstName, familyName, email, subcontractor,isJunior);
-        alert("A new employee has been created successfully !!!");
+        Meteor.call("initSave", true, Meteor.user()._id);
     }
 
 });

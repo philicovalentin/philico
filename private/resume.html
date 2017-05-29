@@ -1,0 +1,477 @@
+<div class="container containercv" style="font-size:{{CVTextSize}}px;">
+    <main class="cv" style="font-size:{{CVTextSize}}px;">
+        <style type="text/css"></style>
+        <!-- header -->
+        <div class="cvHeader">
+            <div class="leftHeader" style="font-size:{{CVTitleSize}}px;">
+                <div class="divlogo">
+                    <img src="http://philico-cv-app.meteorapp.com/images/logo_philico.png" alt="Logo Philico" height="45"/>
+                </div>
+                <div class="divname" >
+                    {{#unless isAnon}}
+                    {{firstNameup}} {{familyNameup}} <br>
+                    {{/unless}}
+                    <div class="CVp" style="color: #01416F !important; font-size:{{CVTitleSize}}px;">
+                        {{#if isJunior}}
+                        Consultant {{#if subcontractor}} - Subcontractor {{/if}}
+                        {{else}}
+                        {{positionPhilico}} {{#if subcontractor}} - Subcontractor{{/if}}
+                        {{/if}}
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="rightHeader" align="right" style="vertical-align:bottom;">
+                <p>
+                    {{#unless isAnon}}
+                    <img src="data:image/jpeg;base64,{{getImage email}}" alt="Profile picture" height="100" style="float:right;border-radius: {{roundBorder}}px;"/>
+                    {{/unless}}
+                </p>
+            </div>
+        </div>
+
+        <!-- PERSONNAL INFORMATION -->
+        <div style="padding-top:10px;">
+            <div class="sectionWithTitle">
+                <div class="projectRow">
+                    <div class="sectionTitle" align="left" style="padding-top:{{CVtitlePadding}}px; font-size:{{CVTitleSize}}px;">
+                        PERSONAL INFORMATION
+                    </div>
+                    <div class="emptySection" align="right"></div>
+                </div>
+                <div class="projectRow">
+                    <div class="infoTitle" style="padding-top:{{CVaftertitlePadding}}px;">
+                        Birthday
+                    </div>
+                    <div class="infoContent">
+                        {{#if birthDate}}{{birthDatedisplayed}}{{/if}}
+                    </div>
+                </div>
+            </div>
+            <div class="sectionNoTitle">
+                <div class="projectRow">
+                    <div class="infoTitle" style="padding-top:{{CVInfoparagraphPadding}}px;">
+                        Nationality
+                    </div>
+                    <div class="infoContent">
+                        {{nationality1}}{{#if nationality2}}, {{nationality2}}{{/if}}{{#if nationality3}}, {{nationality3}}{{/if}}
+                    </div>
+                </div>
+                {{#unless isAnon}}
+                <div class="projectRow">
+                    <div class="infoTitle" style="padding-top:{{CVInfoparagraphPadding}}px;">
+                        Address
+                    </div>
+                    <div class="infoContent">
+                        {{addressStreet}} {{addressNumber}} <br>
+                        {{addressZip}} {{addressCity}} <br>
+                        {{addressCountry}}
+                    </div>
+                </div>
+                <div class="projectRow">
+                    <div class="infoTitle" style="padding-top:{{CVInfoparagraphPadding}}px;">
+                        Contact
+                    </div>
+                    <div class="infoContent">
+                        {{mobilecountryCode}}{{cleanphone mobilecountryCode mobilePhone}} <br>
+                        {{email}}
+                    </div>
+                </div>
+                {{/unless}}
+            </div>
+        </div>
+
+        <!-- CORE COMPETENCIES -->
+        <div>
+            <div class="sectionWithTitle">
+                <div class="projectRow">
+                    <div class="sectionTitle" align="left" style="padding-top:{{CVtitlePadding}}px;font-size:{{CVTitleSize}}px;">
+                        CORE COMPETENCIES
+                    </div>
+                    <div class="emptySection" align="right"></div>
+                </div>
+                <div class="projectRow">
+                    <div class="coreTitle" style="padding-top:{{CVaftertitlePadding}}px;">
+                        <h1 style="font-size:{{CVTextSize}}px;">Communication and Analytical Skills</h1>
+                    </div>
+                    <div class="coreContent">
+                        {{{competencies.[0].communicationSkillsHTML}}}
+                    </div>
+                </div>
+            </div>
+            <div class="sectionNoTitle">
+                {{#if competencies.[0].businessSkillsHTML}}
+                <div class="projectRow">
+                    <div class="coreTitle" style="padding-top:{{CVparagraphPadding}}px;">
+                        <h1 style="font-size:{{CVTextSize}}px;">Business Expertise</h1>
+                    </div>
+                    <div class="coreContent">
+                        {{{competencies.[0].businessSkillsHTML}}}
+                    </div>
+                </div>
+                {{/if}}
+                <div class="projectRow">
+                    <div class="coreTitle" style="padding-top:{{CVparagraphPadding}}px;">
+                        <h1 style="font-size:{{CVTextSize}}px;">Technical Expertise</h1>
+                    </div>
+                    <div class="coreContent">
+                        {{{competencies.[0].technicalSkillsHTML}}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROJECT EXPERIENCE -->
+        {{#if isJunior}}
+        {{#if internship}}
+        <div>
+            {{#each internship}}
+            {{#if @index $not 0}} <!-- if this is not the first element we don't display the section title -->
+            <div class="sectionNoTitle">
+                <div class="projectRow">
+                    <div class="empDate" style="padding-top:{{../CVparagraphPadding}}px;">
+                        {{internshipStartdate}} - {{internshipEnddate}}
+                    </div>
+                    <div class="empContent">
+                        <h1  style="font-size:{{../CVTextSize}}px;">
+                            {{internshipCompany}}, {{internshipCity}}
+                        </h1>
+                        <p class="CVp">{{{internshipPositionHTML}}}</p> 
+                    </div>
+                </div>
+            </div>
+            {{else}} <!-- For the first element we display the section title -->
+            <div class="sectionWithTitle" style="padding-top:{{../CVtitlePadding}}px;">
+                <div class="projectRow">
+                    <div class="sectionTitle" align="left" style="font-size:{{../CVTitleSize}}px;">
+                        INTERNSHIP HISTORY
+                    </div>
+                    <div class="emptySection" align="right"></div>
+                </div>
+                <div class="projectRow">
+                    <div class="empDate" style="padding-top:{{../CVaftertitlePadding}}px;">
+                        {{internshipStartdate}} - {{internshipEnddate}}
+                    </div>
+                    <div class="empContent">
+                        <h1  style="font-size:{{../CVTextSize}}px;">
+                            {{internshipCompany}}, {{internshipCity}}
+                        </h1>
+                        <p class="CVp">{{{internshipPositionHTML}}}</p> 
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+            {{/each}}
+        </div>
+        {{/if}}
+        {{else}}
+        {{#if experiences}}
+        <div>
+            {{#each experiences}} <!-- loop through the employers -->
+            {{setisDivVisibleTrue}} <!-- set the employer as the first one: so no page break for this one -->
+            {{#if @index $not 0}} <!-- we don't display the section section if this is not the first experience -->
+            {{#each ../experiencesClient}} <!-- loop through the clients -->
+            <div class="sectionProjectNoTitle">
+
+                {{#if isEqual idExp ../_id}}  <!-- if the client is linked to the employer -->
+                {{setFirstClientTrue}} <!-- we set it as the first client -->
+                {{#each ../../experiencesClientProject}} <!-- we loop through the projects -->
+                {{#if isEqual idExpClientProject ../_id }} <!-- if the project is linked to the client -->
+                {{#if getBoolClient}} <!-- check if first client to avoid page break -->
+                {{#if getDivBool}} <!-- check if first project to avoid page break -->
+                <div class="avoidReturnExp">
+                    <div class="projectRow">
+                        <div class="companyTitle" align="left" style="padding-top:{{../../../CVparagraphPadding}}px;"><h1 style="font-size:{{../../../CVTextSize}}px;">{{../../projectCompany}}</h1></div>
+                        <div class="emptyCompany" align="right"></div>
+                    </div>
+                    <div class="projectRow">
+                        <div class="projectDate" align="left">
+                            {{#if ../projectStartdatemonth}}
+                            {{../projectStartdate}} - {{../projectEnddate}}
+                            {{/if}}
+                        </div>
+                        <div align="left">  
+                            <div  class="CVprojectDescriptionTitle" align="left">
+                                <h1 style="font-size:{{../../../CVTextSize}}px;">{{#if ../projectClient}}
+                                    {{../projectClient}}
+                                    {{#if ../projectClientcity}},{{/if}}
+                                    {{/if}}
+                                    {{#if ../projectClientcity}}
+                                    {{../projectClientcity}}
+                                    {{/if}}
+                                    {{#if ../projectClientdepartment}} - {{../projectClientdepartment}}{{/if}}
+                                </h1>
+                            </div>
+                            <div  class="CVprojectDescription" align="left">
+                                <h2 style="font-size:{{../../../CVTextSize}}px;">{{#if projectTitle}}{{projectTitle}}{{/if}}</h2>
+                                <p class="CVp" style="font-size:{{../../../CVTextSize}}px;">{{{projectDescriptionHTML}}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{setFirstClientFalse}} <!-- now that the first client is done we set the boolean false -->
+                {{setisDivVisibleFalse}} <!-- same for the employer -->
+                {{else}}
+                <div class="projectRowExp">
+                    <div class="projectDate" align="left">
+                        {{#if ../projectStartdatemonth}}
+                        {{../projectStartdate}} - {{../projectEnddate}}
+                        {{/if}}
+                    </div>
+                    <div align="left">  
+                        <div  class="CVprojectDescriptionTitle" align="left">
+                            <h1 style="font-size:{{../../../CVTextSize}}px;">{{#if ../projectClient}}
+                                {{../projectClient}}
+                                {{#if ../projectClientcity}},{{/if}}
+                                {{/if}}
+                                {{#if ../projectClientcity}}
+                                {{../projectClientcity}}
+                                {{/if}}
+                                {{#if ../projectClientdepartment}} - {{../projectClientdepartment}}{{/if}}
+                            </h1>
+                        </div>
+                        <div  class="CVprojectDescription" align="left">
+                            <h2 style="font-size:{{../../../CVTextSize}}px;">{{#if projectTitle}}{{projectTitle}}{{/if}}</h2>
+                            <p class="CVp" style="font-size:{{../../../CVTextSize}}px;">{{{projectDescriptionHTML}}}</p>
+                        </div>
+                    </div>
+                </div>
+                {{/if}}
+                {{else}}
+                <div class="projectRowExp">
+                    <div class="projectDate"></div>
+                    <div align="left">
+                        <div class="CVprojectDescription" align="left">
+                            <h2 style="font-size:{{../../../CVTextSize}}px;">{{#if projectTitle}}{{projectTitle}}{{/if}}</h2>
+                            <p class="CVp" style="font-size:{{../../../CVTextSize}}px;">{{{projectDescriptionHTML}}}</p>
+                        </div>
+                    </div>
+                </div>
+                {{/if}}
+                {{/if}}
+                {{/each}}
+                {{/if}}
+            </div>
+            {{/each}}
+           
+            {{else}}
+            <div class="sectionProjectNoTitle" style="padding-top:{{../CVtitlePadding}}px;">
+
+                <div class="sectionProjectNoTitle">
+                    {{#each ../experiencesClient}}
+                    {{#if isEqual idExp ../_id}}
+                    {{setFirstClientTrue}}
+                    {{#each ../../experiencesClientProject}}
+                    {{#if isEqual idExpClientProject ../_id }}
+                    {{#if getBoolClient}}
+                    {{#if getDivBool}}
+                    <div class="avoidReturnExp">
+                        <div class="projectRow">
+                            <div class="sectionTitle" align="left" style="font-size:{{../../../CVTitleSize}}px;">
+                                PROJECT EXPERIENCE</div>
+                            <div class="emptySection" align="right"></div>
+                        </div>
+                        <div class="projectRow">
+
+                            <div class="companyTitle" align="left" style="padding-top:{{../../../CVaftertitlePadding}}px;"><h1 style="font-size:{{../../../CVTextSize}}px;">{{../../projectCompany}}</h1></div>
+                            <div class="emptyCompany" align="right"></div>
+                        </div>
+                        <div class="projectRow">
+                            <div class="projectDate" align="left">
+                                {{#if ../projectStartdatemonth}}
+                                {{../projectStartdate}} - {{../projectEnddate}}
+                                {{/if}}
+                            </div>
+                            <div align="left">  
+                                <div  class="CVprojectDescriptionTitle" align="left">
+                                    <h1 style="font-size:{{../../../CVTextSize}}px;">{{#if ../projectClient}}
+                                        {{../projectClient}}
+                                        {{#if ../projectClientcity}},{{/if}}
+                                        {{/if}}
+                                        {{#if ../projectClientcity}}
+                                        {{../projectClientcity}}
+                                        {{/if}}
+                                        {{#if ../projectClientdepartment}} - {{../projectClientdepartment}}{{/if}}
+                                    </h1>
+                                </div>
+                                <div  class="CVprojectDescription" align="left">
+                                    <h2 style="font-size:{{../../../CVTextSize}}px;">{{#if projectTitle}}{{projectTitle}}{{/if}}</h2>
+                                    <p class="CVp" style="font-size:{{../../../CVTextSize}}px;">{{{projectDescriptionHTML}}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{setFirstClientFalse}}
+                    {{setisDivVisibleFalse}}
+                    {{else}}
+                    <div class="projectRowExp">
+                        <div class="projectDate" align="left">
+                            {{#if ../projectStartdatemonth}}
+                            {{../projectStartdate}} - {{../projectEnddate}}
+                            {{/if}}
+                        </div>
+                        <div align="left">  
+                            <div  class="CVprojectDescriptionTitle" align="left">
+                                <h1 style="font-size:{{../../../CVTextSize}}px;">{{#if ../projectClient}}
+                                    {{../projectClient}}
+                                    {{#if ../projectClientcity}},{{/if}}
+                                    {{/if}}
+                                    {{#if ../projectClientcity}}
+                                    {{../projectClientcity}}
+                                    {{/if}}
+                                    {{#if ../projectClientdepartment}} - {{../projectClientdepartment}}{{/if}}
+                                </h1>
+                            </div>
+                            <div  class="CVprojectDescription" align="left">
+                                <h2 style="font-size:{{../../../CVTextSize}}px;">{{#if projectTitle}}{{projectTitle}}{{/if}}</h2>
+                                <p class="CVp" style="font-size:{{../../../CVTextSize}}px;">{{{projectDescriptionHTML}}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {{/if}}
+                    {{else}}
+                    <div class="projectRowExp">
+                        <div class="projectDate"></div>
+                        <div align="left">
+                            <div class="CVprojectDescription" align="left">
+                                <h2 style="font-size:{{../../../CVTextSize}}px;">{{#if projectTitle}}{{projectTitle}}{{/if}}</h2>
+                                <p class="CVp" style="font-size:{{../../../CVTextSize}}px;">{{{projectDescriptionHTML}}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {{/if}}
+                    {{/if}}
+                    {{/each}}
+                    {{/if}}
+                    {{/each}}
+          
+
+                </div>
+                
+            </div>
+            {{/if}}
+
+            {{/each}}
+        </div>
+        {{/if}}    
+        {{/if}}
+        <!-- EMPLOYMENT HISTORY -->
+        {{#if employments}}
+        <div style="page-break-inside: avoid;">
+            {{#each employments}}
+            {{#if @index $not 0}} <!-- if this is not the first element -->
+            <div class="sectionNoTitle">
+                <div class="projectRow">
+                    <div class="empDate" style="padding-top:{{../CVparagraphPadding}}px;">
+                        {{employmentStartdate}} - {{employmentEnddate}}
+                    </div>
+                    <div class="empContent">
+                        <h1 style="font-size:{{../CVTextSize}}px;">
+                            {{employmentCompany}}, {{employmentCity}}
+                        </h1>
+                        <p class="CVp">{{{employmentPositionHTML}}}</p> 
+                    </div>
+                </div>
+            </div>
+            {{else}}
+            <div class="sectionWithTitle" style="padding-top:{{../CVtitlePadding}}px;">
+                <div class="projectRow">
+                    <div class="sectionTitle" align="left" style="font-size:{{../CVTitleSize}}px;">
+                        EMPLOYMENT HISTORY
+                    </div>
+                    <div class="emptySection" align="right"></div>
+                </div>
+                <div class="projectRow">
+                    <div class="empDate" style="padding-top:{{../CVaftertitlePadding}}px;">
+                        {{employmentStartdate}} - {{employmentEnddate}}
+                    </div>
+                    <div class="empContent">
+                        <h1 style="font-size:{{../CVTextSize}}px;">
+                            {{employmentCompany}}, {{employmentCity}}
+                        </h1>
+                        <p class="CVp">{{{employmentPositionHTML}}}</p> 
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+            {{/each}}
+        </div>
+        {{/if}}
+
+        <!-- DEGREES -->
+        <div style="page-break-inside: avoid;">
+            {{#each degrees}}
+            {{#if @index $not 0}} <!-- if this is not the first element -->
+            <div class="sectionNoTitle">
+                <div class="projectRow">
+                    <div class="CVdegreeDate"  style="padding-top:{{../CVInfoparagraphPadding}}px;">
+                        {{degreeDate}}
+                    </div>
+                    <div class="degreeContent">
+                        {{#if degreeUniversity}}{{degreeUniversity}}{{#if degreeCity}}, {{degreeCity}}{{/if}}<br> {{/if}}
+                        {{degree}}{{#if degreeSpecialisation}}, {{degreeSpecialisation}}{{/if}}
+                    </div>
+                </div>
+            </div>
+            {{else}}
+            <div class="sectionWithTitle" style="padding-top:{{../CVtitlePadding}}px;">
+                <div class="projectRow">
+                    <div class="sectionTitle" align="left" style="font-size:{{../CVTitleSize}}px;">
+                        DEGREES
+                    </div>
+                    <div class="emptySection" align="right"></div>
+                </div>
+                <div class="projectRow">
+                    <div class="CVdegreeDate"  style="padding-top:{{../CVaftertitlePadding}}px;">
+                        {{degreeDate}}
+                    </div>
+                    <div class="degreeContent">
+                        {{#if degreeUniversity}}{{degreeUniversity}}{{#if degreeCity}}, {{degreeCity}}{{/if}}<br> {{/if}}
+                        {{degree}}{{#if degreeSpecialisation}}, {{degreeSpecialisation}}{{/if}}
+                    </div>
+                </div>
+            </div>
+
+            {{/if}}
+            {{/each}}
+        </div>
+
+        <!-- LANGUAGES -->
+        <div style="page-break-inside: avoid;">
+            {{#each languages}}
+            {{#if @index $not 0}} <!-- if this is not the first element -->
+            <div class="sectionNoTitle">
+                <div class="projectRow">
+                    <div class="CVlanguage"  style="padding-top:{{../CVInfoparagraphPadding}}px;">
+                        {{languageItem}}
+                    </div>
+                    <div class="languageSkills">
+                        {{languageSkill}}
+                    </div>
+                </div>
+            </div>
+            {{else}}
+            <div class="sectionWithTitle" style="padding-top:{{../CVtitlePadding}}px;">
+                <div class="projectRow">
+                    <div class="sectionTitle" align="left" style="font-size:{{../CVTitleSize}}px;">
+                        LANGUAGE SKILLS
+                    </div>
+                    <div class="emptySection" align="right"></div>
+                </div>
+                <div class="projectRow">
+                    <div class="CVlanguage"  style="padding-top:{{../CVaftertitlePadding}}px;">
+                        {{languageItem}}
+                    </div>
+                    <div class="languageSkills">
+                        {{languageSkill}}
+                    </div>
+                </div>
+            </div>
+            {{/if}}
+            {{/each}}
+        </div>
+
+
+    </main>
+</div>

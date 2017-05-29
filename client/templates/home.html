@@ -1,7 +1,7 @@
 <template name="home">
     {{> navigation}}
     {{#if currentUser }}
-    <!-- check if logged in for the first time and create a personal info instance -->
+    <!-- check if logged in for the first time and create a personal info DB instance -->
     {{initialisation}}      
     <div class="container containerpage">
         <main>
@@ -38,19 +38,22 @@
                         <td>Status</td>
                         <td><select class="options" name="subcontractor">
                             <option class="options" value="">Employee</option>
-                            <option class="options" value="(Subcontractor)">(Subcontractor)</option>
+                            <option class="options" value="(Subcontractor)">Subcontractor</option>
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>
-                            <label class="Junior"><input type="checkbox" class="checkbutton" name="addjunior" checked="{{junior}}"> Junior</label>
+                            <label class="Junior"><input type="checkbox" class="checkbutton" name="addjunior" checked="{{junior}}"> New hire</label>
                         </td>
                     </tr>
                 </table>
                 <br>
                 <input class="submit" type="submit" value="Save new entries">
+                {{#each personalinfo}}
+               {{#if initSaved}} &#10004;{{/if}} <!--tick if saved-->
+                {{/each}}
             </form>
             {{/if}}
             {{/if}}

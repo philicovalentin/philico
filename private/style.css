@@ -1,0 +1,310 @@
+
+
+@font-face{
+    font-family: philicoFont;
+    src: url(http://philico-cv-app.meteorapp.com/FRABK.TTF);
+}
+@font-face{
+    font-family: philicoFontBold;
+    src: url(http://philico-cv-app.meteorapp.com/FranklinGothicMedium.ttf);
+}
+
+
+@page
+{
+    margin: 14mm 10mm 14mm 10mm;
+}
+
+body {
+    font-family: philicoFont, Helvetica Neue, Helvetica, Arial, sans-serif;
+    background: #fff;
+    color: #203f60; 
+}
+
+
+
+.containerpage {
+    width: 90%;
+    margin-right: 5%;
+    margin-left: 5%;
+    margin-top: 50px;
+    background: #fff;
+    border-radius: 3px;
+    padding: 10px;
+}
+
+main {
+    background: #f5f5f5;
+    padding: 10px;
+}
+
+
+/* --------------------Personal data--------------- */
+
+#perso img {
+    max-height: 100px;
+    max-width: 100% !important;
+}
+
+.photo  {
+    vertical-align: top;
+}
+
+#comp {
+    display: inline;
+    height: 180px;
+    width: 90%;
+}
+
+.competencies {
+    width: 90%;
+}
+
+#code {
+    width: 100px;
+}
+
+#number {
+    width: 100px;
+}
+
+#month {
+    width: 50px;
+}
+
+#year {
+    width: 50px;
+}
+
+
+/* ------------------- CV ----------------------- */
+.containercv {
+    width:14cm;
+    border-radius: 6px;
+}
+
+
+.containercv main {
+    font-family: philicoFont, Helvetica Neue, Helvetica, Arial, sans-serif;
+    background: white;
+    color: #807E82 !important;
+}
+
+
+.cvsectionname {
+    font-family: philicoFontBold, Helvetica Neue, Helvetica, Arial, sans-serif;
+    border-bottom: 1.5px solid #203f60;
+    font-weight: bold;
+    color: #203f60 !important;
+    height: 20px!important;
+    vertical-align: top;
+}
+
+
+.cvbluetext {
+    font-family: philicoFontBold, Helvetica Neue, Helvetica, Arial, sans-serif;
+    color: #203f60 !important;
+    font-weight: bold;
+}
+
+
+
+/*-----------     media print ------------------*/
+@media all{
+    .cvHeader {
+        height: 3cm;
+        color: #01416F !important;
+        display: table;
+        table-layout: fixed;
+    }
+    .leftHeader {
+        font-family: philicoFontBold, Helvetica Neue, Helvetica, Arial, sans-serif;
+        padding-top: 0px;
+        width: 60%;
+        color: #01416F !important;
+        display: table-cell;
+        font-weight: bold;
+        table-layout: fixed;
+        position: absolute;
+        height:3cm;
+    }
+    .rightHeader {
+        width: 20%;
+        display: table-cell;
+        right:23px;
+        position:absolute;
+    }
+     .divlogo{
+      position:absolute;
+      top:0;
+      padding-top: 10px;
+    }
+     .divname{
+      position:absolute;
+      bottom:0;
+    }
+    .sectionWithTitle {
+        page-break-inside: avoid;
+        padding-bottom: :0px;
+        display: table;
+        table-layout: fixed;
+    }
+    .sectionNoTitle {
+        page-break-inside: avoid;
+        display: table;
+        margin-top: 0px;
+    }
+    .sectionProjectNoTitle {
+        display: table;
+        margin-top: 0px;
+    }
+    .sectionTitle {
+        font-family: philicoFontBold, Helvetica Neue, Helvetica, Arial, sans-serif;
+        width: 100%;
+        display: table-cell;
+        color: #01416F !important;
+        font-weight: bold;
+        border-bottom: 1.5pt solid #01416F !important;
+    }
+    .emptySection {
+        border-bottom: 1.5pt solid #01416F !important;
+    }
+    .projectRow {
+        display: table-row;
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+        color: #807E82 !important;
+    }
+    .projectRowExp {
+        page-break-inside: avoid;
+        display: table-row;
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+        color: #807E82 !important;
+    }
+    .avoidReturnExp {
+        page-break-inside: avoid;
+    }
+    .infoTitle {
+        width: 40%;
+        display: table-cell;
+        color: #01416F !important;
+        padding-bottom: 0px;
+        padding-left: 15px;
+    }
+    .infoContent {
+        width: 60%;
+        display: table-cell;
+        color: #807E82 !important;
+    }
+    .coreTitle {
+        font-family: philicoFontBold, Helvetica Neue, Helvetica, Arial, sans-serif;
+        width: 40%;
+        display: table-cell;
+        color: #01416F !important;
+        font-weight: bold;
+        padding-bottom: 0px;
+        padding-left: 15px;
+		padding-right:10px;
+    }
+    .coreContent {
+        width: 60%;
+        display: table-cell;
+        color: #807E82 !important;
+        text-align: justify;
+    }
+    .companyTitle {
+        font-family: philicoFontBold, Helvetica Neue, Helvetica, Arial, sans-serif;
+        width: 40%;
+        display: table-cell;
+        color: #01416F !important;
+        font-weight: bold;
+        padding-bottom: 0px;
+        padding-left: 15px;
+    }
+    .emptyCompany {
+        width: 60%;
+        display: table-cell;
+    }
+    .projectDate {
+        width: 40%;
+        display: table-cell;
+        color: #807E82 !important;
+        padding-left: 15px;
+    }
+    .CVprojectDescription {
+        width: 60%;
+        display: table-row;
+        color: #807E82 !important;
+    }
+    .CVprojectDescriptionTitle {
+        width: 60%;
+        display: table-row;
+        border: var(--border-size) solid black;
+        color: #807E82 !important;
+    }
+    .empDate {
+        width: 40%;
+        display: table-cell;
+        color: #807E82 !important;
+        padding-bottom: 0px;
+        padding-left: 15px;
+    }
+    .containercv main {
+        font-family: philicoFont, Helvetica Neue, Helvetica, Arial, sans-serif;
+        background: white;
+        color: #807E82 !important;
+    }
+    .CVp {
+        font-family: philicoFont, Helvetica Neue, Helvetica, Arial, sans-serif;
+        margin-top: 0px;
+        color: #807E82 !important;
+        margin-bottom: 0px;
+        text-align: justify;
+    }
+    h2 {
+        font-family: philicoFontBold, Helvetica Neue, Helvetica, Arial, sans-serif;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        color: #807E82 !important;
+        font-weight: bold;
+    }
+    h1 {
+        font-family: philicoFontBold, Helvetica Neue, Helvetica, Arial, sans-serif;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        color: #01416F !important;
+        font-weight: 900;
+    }
+    .languageSkills {
+        width: 60%;
+        display: table-cell;
+        color: #807E82 !important;
+    }
+    .CVlanguage {
+        width: 40%;
+        display: table-cell;
+        color: #807E82 !important;
+        padding-left: 15px;
+        padding-bottom: 0px;
+    }
+    .degreeContent {
+        width: 60%;
+        display: table-cell;
+        color: #807E82 !important;
+    }
+    .CVdegreeDate {
+        width: 40%;
+        display: table-cell;
+        color: #807E82 !important;
+        padding-bottom: 0px;
+        padding-left: 15px;
+    }
+    .empContent {
+        width: 60%;
+        display: table-cell;
+        color: #807E82 !important;
+    }
+}
